@@ -1,4 +1,5 @@
-import { Checkbox, Table as MantineTable, TableProps, Text } from '@mantine/core';
+import type { TableProps } from '@mantine/core';
+import { Checkbox, Table as MantineTable, Text } from '@mantine/core';
 import differenceBy from 'lodash/differenceBy';
 import unionBy from 'lodash/unionBy';
 import xorBy from 'lodash/xorBy';
@@ -9,7 +10,7 @@ import { TablePagination } from './TablePagination.tsx';
 import { TableTd } from './TableTd.tsx';
 import { TableTh } from './TableTh.tsx';
 import { TableWrapper } from './TableWrapper.tsx';
-import { BaseFilters, BaseItem } from './utils.ts';
+import type { BaseFilters, BaseItem } from './utils.ts';
 
 type Props<T extends BaseItem, F extends BaseFilters> = TableProps & {
   children: ReactElement<TableColumnProps<T>>[];

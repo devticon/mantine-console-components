@@ -1,10 +1,10 @@
 import { Group, MultiSelect, NumberInput, Select, Switch, TextInput } from '@mantine/core';
 import { DatePickerInput, DateTimePicker } from '@mantine/dates';
 import type { ComponentProps } from 'react';
-import { IconType } from 'react-icons';
+import type { IconType } from 'react-icons';
 import invariant from 'tiny-invariant';
 import { parseDate } from '../../utils/date.ts';
-import { BaseFilters } from './utils.ts';
+import type { BaseFilters } from './utils.ts';
 
 export type Props<F extends BaseFilters> = {
   name: string;

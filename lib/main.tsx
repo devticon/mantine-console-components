@@ -7,3 +7,4 @@ export { useTableSelection } from './components/Table/useTableSelection.ts';
 export { ContentHeader } from './components/ContentHeader/ContentHeader.tsx';
 export { ErrorAlert } from './components/Alert/ErrorAlert.tsx';
 export { SuccessAlert } from './components/Alert/SuccessAlert.tsx';
+export { FetcherActionButton } from './components/FetcherActionButton/FetcherActionButton.tsx';

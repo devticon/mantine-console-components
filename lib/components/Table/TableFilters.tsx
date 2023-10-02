@@ -4,7 +4,7 @@ import type { ReactElement, ReactNode } from 'react';
 import { Children, cloneElement } from 'react';
 import { MdFilterAlt, MdFilterAltOff } from 'react-icons/md';
 import type { Props as TableFilterProps } from './TableFilter';
-import { BaseFilters } from './utils.ts';
+import type { BaseFilters } from './utils.ts';
 
 type Props<F extends BaseFilters> = {
   children: ReactElement<TableFilterProps<F>>[] | ReactElement<TableFilterProps<F>>;
