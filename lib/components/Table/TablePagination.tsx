@@ -17,7 +17,7 @@ export const TablePagination = <F extends BaseFilters>({
 }: Props<F>) => {
   const perPageKey = getNsField('perPage', ns);
   const pageKey = getNsField('page', ns);
-  const page = (filters[perPageKey] as number) || 1;
+  const page = (filters[pageKey] as number) || 1;
   const perPage = (filters[perPageKey] as number) || 25;
   const perPageOptions = ['10', '25', '50', '100'];
 
