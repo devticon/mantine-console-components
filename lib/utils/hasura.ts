@@ -24,7 +24,7 @@ export function getBaseVariables(filters: BaseFilters, ns?: string) {
   const page = filters[getNsField('page', ns)];
   const perPage = filters[getNsField('perPage', ns)];
 
-  const where: Record<any, any> = {};
+  const where: Record<string, any> = {};
 
   if (typeof orderBy === 'string') {
     where[getNsField('orderBy', ns)] = { [orderBy]: orderDir || OrderBy.Asc };
