@@ -1,3 +1,4 @@
+import { useSearchParams } from '@remix-run/react';
 import debounce from 'lodash/debounce';
 import { useEffect, useMemo, useState } from 'react';
 import { BaseFilters, mapFiltersToSearchParams } from './utils.ts';
@@ -5,19 +6,15 @@ import { BaseFilters, mapFiltersToSearchParams } from './utils.ts';
 type Params<F extends BaseFilters> = {
   initialFilters: F;
   defaultFilters: F;
-  handleSearchParams: (params: URLSearchParams) => void;
 };
 
-export function useTableFilters<F extends BaseFilters>({
-  initialFilters,
-  defaultFilters,
-  handleSearchParams,
-}: Params<F>) {
+export function useTableFilters<F extends BaseFilters>({ initialFilters, defaultFilters }: Params<F>) {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [filters, setFilters] = useState(initialFilters);
 
   const handleDebouncedSearchParams = useMemo(() => {
-    return debounce(handleSearchParams, 500);
-  }, [handleSearchParams]);
+    return debounce(setSearchParams, 500);
+  }, [setSearchParams]);
 
   const handleFiltersChange = (partialFilters: Partial<F>, debounce = false) => {
     const newFilters = { ...filters, ...partialFilters };
@@ -27,13 +24,13 @@ export function useTableFilters<F extends BaseFilters>({
       handleDebouncedSearchParams(mapFiltersToSearchParams(newFilters));
     } else {
       setFilters(newFilters);
-      handleSearchParams(mapFiltersToSearchParams(newFilters));
+      setSearchParams(mapFiltersToSearchParams(newFilters));
     }
   };
 
   const handleFiltersReset = () => {
     setFilters(defaultFilters);
-    handleSearchParams(mapFiltersToSearchParams({}));
+    setSearchParams(mapFiltersToSearchParams({}));
   };
 
   useEffect(() => {
@@ -44,5 +41,6 @@ export function useTableFilters<F extends BaseFilters>({
     filters,
     handleFiltersChange,
     handleFiltersReset,
+    searchParams,
   };
 }
