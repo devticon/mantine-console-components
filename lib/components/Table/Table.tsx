@@ -62,7 +62,7 @@ export const Table = <T extends BaseItem, F extends BaseFilters>({
           <MantineTable.Thead>
             <MantineTable.Tr>
               {selection && data.length > 0 && (
-                <MantineTable.Th bg="gray.0" w={52}>
+                <MantineTable.Th w={52}>
                   <Checkbox
                     aria-label="Select all rows"
                     indeterminate={someItemsChecked && !allItemsChecked}

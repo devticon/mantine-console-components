@@ -38,7 +38,7 @@ export const TableTh = <T extends BaseItem, F extends BaseFilters>({
   };
 
   return (
-    <Table.Th visibleFrom={visibleFrom} bg="gray.0">
+    <Table.Th visibleFrom={visibleFrom}>
       <Group gap="xs" wrap="nowrap">
         <Box fw={500} style={{ whiteSpace: 'nowrap' }}>
           {title}
