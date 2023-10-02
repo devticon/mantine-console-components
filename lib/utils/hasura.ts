@@ -24,23 +24,23 @@ export function getBaseVariables(filters: BaseFilters, ns?: string) {
   const page = filters[getNsField('page', ns)];
   const perPage = filters[getNsField('perPage', ns)];
 
-  const where: {
+  const variables: {
     offset?: number;
     limit?: number;
     orderBy?: { [name: string]: OrderBy };
   } = {};
 
   if (typeof orderBy === 'string' && typeof orderDir === 'string') {
-    where.orderBy = { [orderBy]: orderDir as OrderBy };
+    variables.orderBy = { [orderBy]: orderDir as OrderBy };
   }
 
   if (typeof limit === 'number') {
-    where.limit = limit;
+    variables.limit = limit;
   }
 
   if (typeof page === 'number' && typeof perPage === 'number') {
-    where.offset = (page - 1) * perPage;
+    variables.offset = (page - 1) * perPage;
   }
 
-  return where;
+  return variables;
 }

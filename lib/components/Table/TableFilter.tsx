@@ -1,5 +1,6 @@
 import { Group, MultiSelect, NumberInput, Select, Switch, TextInput } from '@mantine/core';
 import { DatePickerInput, DateTimePicker } from '@mantine/dates';
+import dayjs from 'dayjs';
 import type { ComponentProps } from 'react';
 import type { IconType } from 'react-icons';
 import invariant from 'tiny-invariant';
@@ -108,8 +109,8 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
         ]}
         onChange={([from, to]) =>
           onChange({
-            [`${props.name}From`]: from?.toISOString() || null,
-            [`${props.name}To`]: to?.toISOString() || null,
+            [`${props.name}From`]: from ? dayjs(from).startOf('day').toISOString() : null,
+            [`${props.name}To`]: to ? dayjs(to).endOf('day').toISOString() : null,
           } as Partial<F>)
         }
       />
@@ -118,7 +119,7 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
 
   if (props.type === 'range') {
     return (
-      <Group align="flex-end">
+      <Group align="flex-end" grow>
         <NumberInput
           {...props}
           type="text"
@@ -144,23 +145,5 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
         />
       </Group>
     );
-    // const { type, ...rest } = props;
-    //
-    // return (
-    //   <PriceRangeInputs
-    //     {...rest}
-    //     style={{ flex: 1 }}
-    //     value={[
-    //       filters?.[`${props.name}From` as keyof F] as number | undefined,
-    //       filters?.[`${props.name}To` as keyof F] as number | undefined,
-    //     ]}
-    //     onChange={value =>
-    //       onChange?.({
-    //         [`${props.name}From`]: value[0] || '',
-    //         [`${props.name}To`]: value[1] || '',
-    //       } as Partial<F>)
-    //     }
-    //   />
-    // );
   }
 };
