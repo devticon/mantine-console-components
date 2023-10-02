@@ -9,3 +9,4 @@ export { ErrorAlert } from './components/Alert/ErrorAlert.tsx';
 export { SuccessAlert } from './components/Alert/SuccessAlert.tsx';
 export { FetcherActionButton } from './components/FetcherActionButton/FetcherActionButton.tsx';
 export { ValidatedInput } from './components/ValidatedInput/ValidatedInput.tsx';
+export { mapObjectToSearchParams } from './components/Table/utils.ts';
