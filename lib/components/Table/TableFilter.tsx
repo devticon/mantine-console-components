@@ -31,9 +31,9 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
   if (props.type === 'text') {
     return (
       <TextInput
-        {...props}
         value={(filters[props.name as keyof F] as string) || ''}
         onChange={event => onChange({ [props.name]: event.currentTarget.value } as Partial<F>)}
+        {...props}
       />
     );
   }
@@ -41,11 +41,11 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
   if (props.type === 'select') {
     return (
       <Select
-        {...props}
         checkIconPosition="right"
         clearable
         value={(filters[props.name as keyof F] as string) || ''}
         onChange={value => onChange({ [props.name]: value } as Partial<F>)}
+        {...props}
       />
     );
   }
@@ -53,9 +53,9 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
   if (props.type === 'switch') {
     return (
       <Switch
-        {...props}
         checked={(filters[props.name as keyof F] as boolean) || false}
         onChange={event => onChange({ [props.name]: event.currentTarget.checked } as Partial<F>)}
+        {...props}
       />
     );
   }
@@ -63,12 +63,12 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
   if (props.type === 'multi-select') {
     return (
       <MultiSelect
-        {...props}
         checkIconPosition="right"
         hidePickedOptions
         clearable
         value={(filters[props.name as keyof F] as string[]) || []}
         onChange={value => onChange({ [props.name]: value } as Partial<F>)}
+        {...props}
       />
     );
   }
@@ -76,11 +76,11 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
   if (props.type === 'date') {
     return (
       <DatePickerInput
-        {...props}
-        type="default"
         clearable
         value={parseDate(filters[props.name as keyof F] as string)}
         onChange={value => onChange({ [props.name]: value?.toISOString() || null } as Partial<F>)}
+        {...props}
+        type="default"
       />
     );
   }
@@ -88,10 +88,10 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
   if (props.type === 'date-time') {
     return (
       <DateTimePicker
-        {...props}
         clearable
         value={parseDate(filters[props.name as keyof F] as string)}
         onChange={value => onChange({ [props.name]: value?.toISOString() || null } as Partial<F>)}
+        {...props}
       />
     );
   }
@@ -99,8 +99,6 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
   if (props.type === 'date-range') {
     return (
       <DatePickerInput
-        {...props}
-        type="range"
         clearable
         allowSingleDateInRange
         value={[
@@ -113,6 +111,8 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
             [`${props.name}To`]: to ? dayjs(to).endOf('day').toISOString() : null,
           } as Partial<F>)
         }
+        {...props}
+        type="range"
       />
     );
   }
@@ -121,8 +121,6 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
     return (
       <Group align="flex-end" grow>
         <NumberInput
-          {...props}
-          type="text"
           decimalScale={2}
           decimalSeparator=","
           min={0.01}
@@ -130,11 +128,10 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
           value={(filters[`${props.name}From` as keyof F] as number) || ''}
           onChange={value => onChange({ [`${props.name}From`]: value || null } as Partial<F>)}
           hideControls
+          {...props}
+          type="text"
         />
         <NumberInput
-          {...props}
-          label={undefined}
-          type="text"
           decimalScale={2}
           decimalSeparator=","
           min={0.01}
@@ -142,6 +139,9 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
           value={(filters[`${props.name}To` as keyof F] as number) || ''}
           onChange={value => onChange({ [`${props.name}To`]: value || null } as Partial<F>)}
           hideControls
+          {...props}
+          type="text"
+          label={undefined}
         />
       </Group>
     );
