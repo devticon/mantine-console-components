@@ -38,7 +38,7 @@ export function mapValueToString(value: JsonPrimitive): string {
   return value;
 }
 
-export function mapFiltersToSearchParams<F extends BaseFilters>(filters: F): URLSearchParams {
+export function mapObjectToSearchParams<F extends BaseFilters>(filters: F): URLSearchParams {
   const params = new URLSearchParams();
 
   Object.entries(filters).forEach(([key, value]) => {

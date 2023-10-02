@@ -2,7 +2,7 @@ import { useSearchParams } from '@remix-run/react';
 import debounce from 'lodash/debounce';
 import { useEffect, useMemo, useState } from 'react';
 import type { BaseFilters } from './utils.ts';
-import { mapFiltersToSearchParams } from './utils.ts';
+import { mapObjectToSearchParams } from './utils.ts';
 
 type Params<F extends BaseFilters> = {
   initialFilters: F;
@@ -22,16 +22,16 @@ export function useTableFilters<F extends BaseFilters>({ initialFilters, default
 
     if (debounce) {
       setFilters(newFilters);
-      handleDebouncedSearchParams(mapFiltersToSearchParams(newFilters));
+      handleDebouncedSearchParams(mapObjectToSearchParams(newFilters));
     } else {
       setFilters(newFilters);
-      setSearchParams(mapFiltersToSearchParams(newFilters));
+      setSearchParams(mapObjectToSearchParams(newFilters));
     }
   };
 
   const handleFiltersReset = () => {
     setFilters(defaultFilters);
-    setSearchParams(mapFiltersToSearchParams({}));
+    setSearchParams(mapObjectToSearchParams({}));
   };
 
   useEffect(() => {
