@@ -1,0 +1,69 @@
+import { Button, Drawer, Group, SimpleGrid } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import type { ReactElement, ReactNode } from 'react';
+import { Children, cloneElement } from 'react';
+import { MdFilterAlt, MdFilterAltOff } from 'react-icons/md';
+import type { Props as TableFilterProps } from './TableFilter';
+import { BaseFilters } from './utils.ts';
+
+type Props<F extends BaseFilters> = {
+  children: ReactElement<TableFilterProps<F>>[] | ReactElement<TableFilterProps<F>>;
+  filters: F;
+  handleFiltersChange: (filters: Partial<F>, debounce?: boolean) => void;
+  handleFiltersReset: () => void;
+  actions?: ReactNode;
+};
+
+export const TableFilters = <F extends BaseFilters>({
+  children,
+  filters,
+  handleFiltersChange,
+  handleFiltersReset,
+  actions,
+}: Props<F>) => {
+  const [opened, { open, close }] = useDisclosure(false);
+
+  const handleChild = (child: ReactElement<TableFilterProps<F>>, isAlwaysOn: boolean) => {
+    const debounce = ['range', 'text'].includes(child.props.type);
+
+    const element = cloneElement(child, {
+      alwaysOn: undefined,
+      Icon: undefined,
+      value: filters,
+      onChange: (value: Partial<F>) => handleFiltersChange(value, debounce),
+    });
+
+    if (isAlwaysOn && child.props.alwaysOn) {
+      return element;
+    } else if (!isAlwaysOn && !child.props.alwaysOn) {
+      return element;
+    } else {
+      return null;
+    }
+  };
+
+  return (
+    <>
+      <Drawer opened={opened} onClose={close} title="Filters">
+        <SimpleGrid cols={1} spacing="lg">
+          {Children.map(children, child => handleChild(child, false))}
+        </SimpleGrid>
+      </Drawer>
+
+      <Group justify="space-between" align="flex-end" mb="md">
+        <Group gap="sm" wrap="nowrap">
+          {Children.map(children, child => handleChild(child, true))}
+        </Group>
+        <Group gap="sm">
+          <Button onClick={open} rightSection={<MdFilterAlt size={20} />}>
+            Filters
+          </Button>
+          <Button onClick={handleFiltersReset} color="red" rightSection={<MdFilterAltOff size={20} />}>
+            Reset
+          </Button>
+          {actions}
+        </Group>
+      </Group>
+    </>
+  );
+};
