@@ -52,6 +52,9 @@
     "@remix-run/dev": "^2.0.1",
     "@remix-run/eslint-config": "^2.0.1"
   },
+  "engines": {
+    "node": ">=18"
+  },
   "files": [
     "dist"
   ],
