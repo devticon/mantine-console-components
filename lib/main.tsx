@@ -9,6 +9,8 @@ export { ErrorAlert } from './components/Alert/ErrorAlert.tsx';
 export { SuccessAlert } from './components/Alert/SuccessAlert.tsx';
 export { FetcherActionButton } from './components/FetcherActionButton/FetcherActionButton.tsx';
 export { ValidatedInput } from './components/ValidatedInput/ValidatedInput.tsx';
+export { DetailsBox } from './components/Details/DetailsBox.tsx';
+export { DetailRow } from './components/Details/DetailRow.tsx';
 export { mapObjectToSearchParams } from './components/Table/utils.ts';
 export * from './utils/price.ts';
 export * from './utils/date.ts';
