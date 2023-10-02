@@ -9,7 +9,7 @@ export default defineConfig({
   build: {
     copyPublicDir: false,
     lib: {
-      entry: resolve(__dirname, 'lib/main.tsx'),
+      entry: resolve(__dirname, 'lib/main'),
       fileName: 'main',
       name: packageJson.name,
     },

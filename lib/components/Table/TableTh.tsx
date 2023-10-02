@@ -1,9 +1,9 @@
 import { ActionIcon, Box, Group, Table } from '@mantine/core';
 import { IoArrowDown, IoArrowUp } from 'react-icons/io5';
 import invariant from 'tiny-invariant';
-import type { Props as TableColumnProps } from './TableColumn.tsx';
-import type { BaseFilters, BaseItem } from './utils.ts';
-import { getNsField, OrderBy, revertSortDirection } from './utils.ts';
+import { getNsField, OrderBy, revertSortDirection } from '../../utils/hasura.ts';
+import type { Props as TableColumnProps } from './TableColumn';
+import type { BaseFilters, BaseItem } from './utils';
 
 type Props<T extends BaseItem, F extends BaseFilters> = TableColumnProps<T> & {
   ns?: string;

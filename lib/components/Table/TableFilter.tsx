@@ -3,8 +3,8 @@ import { DatePickerInput, DateTimePicker } from '@mantine/dates';
 import type { ComponentProps } from 'react';
 import type { IconType } from 'react-icons';
 import invariant from 'tiny-invariant';
-import { parseDate } from '../../utils/date.ts';
-import type { BaseFilters } from './utils.ts';
+import { parseDate } from '../../utils/date';
+import type { BaseFilters } from './utils';
 
 export type Props<F extends BaseFilters> = {
   name: string;

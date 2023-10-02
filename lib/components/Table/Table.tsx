@@ -6,11 +6,11 @@ import xorBy from 'lodash/xorBy';
 import type { Dispatch, ReactElement, SetStateAction } from 'react';
 import { Children } from 'react';
 import type { Props as TableColumnProps } from './TableColumn';
-import { TablePagination } from './TablePagination.tsx';
-import { TableTd } from './TableTd.tsx';
-import { TableTh } from './TableTh.tsx';
-import { TableWrapper } from './TableWrapper.tsx';
-import type { BaseFilters, BaseItem } from './utils.ts';
+import { TablePagination } from './TablePagination';
+import { TableTd } from './TableTd';
+import { TableTh } from './TableTh';
+import { TableWrapper } from './TableWrapper';
+import type { BaseFilters, BaseItem } from './utils';
 
 type Props<T extends BaseItem, F extends BaseFilters> = TableProps & {
   children: ReactElement<TableColumnProps<T>>[];

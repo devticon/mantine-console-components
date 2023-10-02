@@ -1,7 +1,7 @@
 import type { GroupProps } from '@mantine/core';
 import { Group, Pagination, Select } from '@mantine/core';
-import type { BaseFilters } from './utils.ts';
-import { getNsField } from './utils.ts';
+import { getNsField } from '../../utils/hasura.ts';
+import type { BaseFilters } from './utils';
 
 type Props<F extends BaseFilters> = GroupProps & {
   pagination: { count: number };

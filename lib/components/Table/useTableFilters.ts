@@ -1,8 +1,8 @@
 import { useSearchParams } from '@remix-run/react';
 import debounce from 'lodash/debounce';
 import { useEffect, useMemo, useState } from 'react';
-import type { BaseFilters } from './utils.ts';
-import { mapObjectToSearchParams } from './utils.ts';
+import { mapObjectToSearchParams } from '../../utils/search-params';
+import type { BaseFilters } from './utils';
 
 type Params<F extends BaseFilters> = {
   initialFilters: F;
