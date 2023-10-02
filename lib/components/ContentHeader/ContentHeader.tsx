@@ -1,8 +1,9 @@
+import type { GroupProps } from '@mantine/core';
 import { Anchor, Breadcrumbs, Group, Title } from '@mantine/core';
 import { Link } from '@remix-run/react';
 import type { FC, ReactNode } from 'react';
 
-type Props = {
+type Props = GroupProps & {
   title: string;
   breadcrumbs?: { label: string; path: string }[];
   actions?: ReactNode;
@@ -10,7 +11,7 @@ type Props = {
 
 export const ContentHeader: FC<Props> = ({ title, breadcrumbs, actions, ...props }) => {
   return (
-    <Group gap="xl" justify="space-between" align="center">
+    <Group gap="xl" justify="space-between" align="center" {...props}>
       {breadcrumbs?.length ? (
         <Breadcrumbs>
           {breadcrumbs.map(({ path, label }) => (
