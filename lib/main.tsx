@@ -11,6 +11,7 @@ export { FetcherActionButton } from './components/FetcherActionButton/FetcherAct
 export { ValidatedInput } from './components/ValidatedInput/ValidatedInput.tsx';
 export { DetailsBox } from './components/Details/DetailsBox.tsx';
 export { DetailRow } from './components/Details/DetailRow.tsx';
+export { ErrorCard } from './components/ErrorCard/ErrorCard.tsx';
 export { mapObjectToSearchParams } from './components/Table/utils.ts';
 export * from './utils/price.ts';
 export * from './utils/date.ts';
