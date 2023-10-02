@@ -13,7 +13,15 @@ export default defineConfig({
       fileName: 'main',
     },
     rollupOptions: {
-      external: ['react', 'react/jsx-runtime', 'react-dom', '@mantine/core', '@mantine/dates', '@remix-run/react'],
+      external: [
+        'react',
+        'react/jsx-runtime',
+        'react-dom',
+        '@mantine/core',
+        '@mantine/dates',
+        '@mantine/hooks',
+        '@remix-run/react',
+      ],
     },
   },
 });
