@@ -130,6 +130,7 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
           hideControls
           {...props}
           type="text"
+          name={`${props.name}From`}
         />
         <NumberInput
           decimalScale={2}
@@ -142,6 +143,7 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
           {...props}
           type="text"
           label={undefined}
+          name={`${props.name}To`}
         />
       </Group>
     );
