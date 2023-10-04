@@ -43,7 +43,7 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
       <Select
         checkIconPosition="right"
         clearable
-        value={(filters[props.name as keyof F] as string) || ''}
+        value={(filters[props.name as keyof F] as string) || null}
         onChange={value => onChange({ [props.name]: value } as Partial<F>)}
         {...props}
       />
