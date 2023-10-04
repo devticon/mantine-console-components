@@ -19,12 +19,12 @@ export const ContentHeader: FC<Props> = ({ title, breadcrumbs, actions, ...props
               {label}
             </Anchor>
           ))}
-          <Title fw={500} order={2} lh="md">
+          <Title order={2} lh="md">
             {title}
           </Title>
         </Breadcrumbs>
       ) : (
-        <Title fw={500} order={2} lh="md">
+        <Title order={2} lh="md">
           {title}
         </Title>
       )}
