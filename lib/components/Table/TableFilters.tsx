@@ -32,6 +32,7 @@ export const TableFilters = <F extends BaseFilters>({
       Icon: undefined,
       value: filters,
       onChange: (value: Partial<F>) => handleFiltersChange(value, debounce),
+      variant: child.props.alwaysOn ? 'default' : 'filled',
     });
 
     if (isAlwaysOn && child.props.alwaysOn) {

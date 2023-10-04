@@ -1,6 +1,8 @@
 import type { z, ZodType } from 'zod';
+import { preprocess } from 'zod';
+import { numeric } from 'zod-form-data';
 
-export { z, number, coerce, string, nativeEnum, array, boolean, object } from 'zod';
+export { z, number, coerce, string, nativeEnum, array, boolean, object, preprocess } from 'zod';
 export { formData, numeric, text, file, repeatable, repeatableOfType, checkbox, json } from 'zod-form-data';
 
 export function validate<T extends ZodType<any, any, any>>(value: URLSearchParams | FormData | any, schema: T) {
@@ -31,4 +33,17 @@ export async function getSearchParams<T extends ZodType<any, any, any>>(request:
 
 export function transformPrice(value: number) {
   return Math.round(value * 100);
+}
+
+export function preprocessNumberInput(schema = numeric(), params?: { prefix?: string; suffix?: string }) {
+  return preprocess(value => {
+    if (typeof value === 'string') {
+      return value
+        .replace(',', '.')
+        .replace(params?.suffix || '', '')
+        .replace(params?.prefix || '', '');
+    } else {
+      return value;
+    }
+  }, schema);
 }

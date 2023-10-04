@@ -2,6 +2,7 @@ import type { GroupProps } from '@mantine/core';
 import { Anchor, Breadcrumbs, Group, Title } from '@mantine/core';
 import { Link } from '@remix-run/react';
 import type { FC, ReactNode } from 'react';
+import { IoChevronForwardOutline } from 'react-icons/io5';
 
 type Props = GroupProps & {
   title: string;
@@ -13,7 +14,7 @@ export const ContentHeader: FC<Props> = ({ title, breadcrumbs, actions, ...props
   return (
     <Group gap="xl" justify="space-between" align="center" {...props}>
       {breadcrumbs?.length ? (
-        <Breadcrumbs>
+        <Breadcrumbs separator={<IoChevronForwardOutline />}>
           {breadcrumbs.map(({ path, label }) => (
             <Anchor key={path} fw={500} fz={26} lh="md" component={Link} to={path}>
               {label}

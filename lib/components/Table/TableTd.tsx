@@ -8,6 +8,6 @@ type Props<T extends BaseItem> = TableColumnProps<T> & {
   index: number;
 };
 
-export const TableTd = <T extends BaseItem>({ item, index, ...props }: Props<T>) => {
-  return <Table.Td {...props}>{props.render ? props.render(item, index) : get(item, props.dataKey)}</Table.Td>;
+export const TableTd = <T extends BaseItem>({ item, index, sortable, render, dataKey, ...props }: Props<T>) => {
+  return <Table.Td {...props}>{render ? render(item, index) : get(item, dataKey)}</Table.Td>;
 };
