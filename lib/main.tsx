@@ -16,4 +16,5 @@ export { mapObjectToSearchParams } from './utils/search-params.ts';
 export { formatPrice } from './utils/price';
 export { formatDate, parseDate, formatDateTime, formatTime } from './utils/date';
 export { getBaseVariables } from './utils/hasura.ts';
+export { baseTheme } from './utils/theme.ts';
 export * from './utils/zod.ts';
