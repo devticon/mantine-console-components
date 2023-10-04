@@ -18,7 +18,7 @@
     "@mantine/modals": "^7.1.0",
     "@remix-run/react": "^1.19.3",
     "react": "^18.2.0",
-    "zod": "^3.22.2",
+    "zod": "^3.22.3",
     "zod-form-data": "^2.0.1"
   },
   "devDependencies": {
@@ -42,7 +42,7 @@
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
     "vite-plugin-dts": "^3.6.0",
-    "zod": "^3.22.2",
+    "zod": "^3.22.3",
     "zod-form-data": "^2.0.1"
   },
   "publishConfig": {
