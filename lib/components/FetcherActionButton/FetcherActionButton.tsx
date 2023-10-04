@@ -55,9 +55,7 @@ export const FetcherActionButton = <T = any,>({
     });
   };
 
-  const handleClick = () => {
-    return modalTitle ? openConfirmModal : handleSubmit;
-  };
+  const handleClick = modalTitle ? openConfirmModal : handleSubmit;
 
   useFetcherNotification(fetcher, {
     successMessage,
