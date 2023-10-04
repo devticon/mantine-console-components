@@ -22,6 +22,7 @@ export const TableFilters = <F extends BaseFilters>({
   actions,
 }: Props<F>) => {
   const [opened, { open, close }] = useDisclosure(false);
+  const hasDrawerFilters = Children.map(children, child => !child.props.alwaysOn).some(Boolean);
 
   const handleChild = (child: ReactElement<TableFilterProps<F>>, isAlwaysOn: boolean) => {
     const debounce = ['range', 'text'].includes(child.props.type);
@@ -55,9 +56,11 @@ export const TableFilters = <F extends BaseFilters>({
           {Children.map(children, child => handleChild(child, true))}
         </Group>
         <Group gap="sm">
-          <Button onClick={open} rightSection={<MdFilterAlt size={20} />}>
-            Filters
-          </Button>
+          {hasDrawerFilters && (
+            <Button onClick={open} rightSection={<MdFilterAlt size={20} />}>
+              Filters
+            </Button>
+          )}
           <Button onClick={handleFiltersReset} color="red" rightSection={<MdFilterAltOff size={20} />}>
             Reset
           </Button>
