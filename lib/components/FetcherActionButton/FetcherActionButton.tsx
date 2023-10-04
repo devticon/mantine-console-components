@@ -1,24 +1,34 @@
-import type { ButtonProps } from '@mantine/core';
-import { Button } from '@mantine/core';
+import type { ActionIconProps, ButtonProps } from '@mantine/core';
+import { ActionIcon, Button } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useFetcher } from '@remix-run/react';
 import type { MouseEvent, ReactNode } from 'react';
-import { useEffect } from 'react';
+import { useFetcherNotification } from '../../utils/notifications.tsx';
+
+type IconButtonType = {
+  buttonType: 'icon';
+} & ActionIconProps;
+
+type DefaultButtonType = {
+  buttonType?: 'default';
+} & ButtonProps;
 
 type Props<T = any> = {
   modalTitle?: ReactNode;
   modalChildren?: ReactNode;
   fetcherAction: string;
   fetcherTarget?: any;
+  successMessage?: string;
   successCallback?: (data: T) => void;
   errorCallback?: (data: T) => void;
-} & ButtonProps;
+} & (IconButtonType | DefaultButtonType);
 
 export const FetcherActionButton = <T = any,>({
   modalTitle,
   modalChildren,
   fetcherAction,
   fetcherTarget,
+  successMessage,
   successCallback,
   errorCallback,
   children,
@@ -45,18 +55,22 @@ export const FetcherActionButton = <T = any,>({
     });
   };
 
-  useEffect(() => {
-    if (fetcher.data !== undefined) {
-      if (fetcher.data?.error) {
-        errorCallback?.(fetcher.data);
-      } else if (!fetcher.data?.fieldErrors) {
-        successCallback?.(fetcher.data);
-      }
-    }
-  }, [errorCallback, fetcher.data, successCallback]);
+  const handleClick = () => {
+    return modalTitle ? openConfirmModal : handleSubmit;
+  };
 
-  return (
-    <Button {...props} onClick={modalTitle ? openConfirmModal : handleSubmit} loading={fetcher.state !== 'idle'}>
+  useFetcherNotification(fetcher, {
+    successMessage,
+    successCallback,
+    errorCallback,
+  });
+
+  return props.buttonType === 'icon' ? (
+    <ActionIcon {...props} onClick={handleClick} loading={fetcher.state !== 'idle'}>
+      {children}
+    </ActionIcon>
+  ) : (
+    <Button {...props} onClick={handleClick} loading={fetcher.state !== 'idle'}>
       {children}
     </Button>
   );

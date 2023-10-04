@@ -8,9 +8,9 @@ type Props = {
 
 export const TableWrapper: FC<Props> = ({ loading, children }) => {
   return (
-    <Paper style={{ overflow: 'hidden' }} withBorder radius="sm">
+    <Paper style={{ overflow: 'hidden' }} withBorder>
       <Box w="100%" pos="relative" style={{ overflowY: 'auto', zIndex: 1 }}>
-        <LoadingOverlay visible={loading} overlayProps={{ radius: 'sm', blur: 2 }} loaderProps={{ type: 'bars' }} />
+        <LoadingOverlay visible={loading} overlayProps={{ blur: 2 }} loaderProps={{ type: 'bars' }} />
         {children}
       </Box>
     </Paper>
