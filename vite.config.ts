@@ -21,6 +21,7 @@ export default defineConfig({
         '@mantine/core',
         '@mantine/dates',
         '@mantine/hooks',
+        '@mantine/notifications',
         '@remix-run/react',
         'dayjs',
         'zod',
