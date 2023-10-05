@@ -20,4 +20,3 @@ export { baseTheme } from './utils/theme';
 export { useFetcherNotification, showErrorNotification, showSuccessNotification } from './utils/notifications';
 export { createRemixI18n, createI18nClientInstance, createI18nServerInstance } from './utils/i18n';
 export * from './utils/zod';
-export * from './translations';
