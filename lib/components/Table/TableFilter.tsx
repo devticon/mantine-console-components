@@ -124,7 +124,6 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
           decimalScale={2}
           decimalSeparator=","
           min={0.01}
-          placeholder="Value from"
           value={(filters[`${props.name}From` as keyof F] as number) || ''}
           onChange={value => onChange({ [`${props.name}From`]: value || null } as Partial<F>)}
           hideControls
@@ -136,7 +135,6 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
           decimalScale={2}
           decimalSeparator=","
           min={0.01}
-          placeholder="Value to"
           value={(filters[`${props.name}To` as keyof F] as number) || ''}
           onChange={value => onChange({ [`${props.name}To`]: value || null } as Partial<F>)}
           hideControls

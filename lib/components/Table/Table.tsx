@@ -5,6 +5,7 @@ import unionBy from 'lodash/unionBy';
 import xorBy from 'lodash/xorBy';
 import type { Dispatch, ReactElement, SetStateAction } from 'react';
 import { Children } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Props as TableColumnProps } from './TableColumn';
 import { TablePagination } from './TablePagination';
 import { TableTd } from './TableTd';
@@ -34,6 +35,7 @@ export const Table = <T extends BaseItem, F extends BaseFilters>({
   selection,
   ...props
 }: Props<T, F>) => {
+  const { t } = useTranslation('mantine-console-components');
   const allItemsChecked = data.every(item => selection?.selectedRows.find(i => i.id === item.id));
   const someItemsChecked = data.some(item => selection?.selectedRows.find(i => i.id === item.id));
 
@@ -64,7 +66,7 @@ export const Table = <T extends BaseItem, F extends BaseFilters>({
               {selection && data.length > 0 && (
                 <MantineTable.Th w={52}>
                   <Checkbox
-                    aria-label="Select all rows"
+                    aria-label={t('Table.selectAllRows')}
                     indeterminate={someItemsChecked && !allItemsChecked}
                     checked={allItemsChecked}
                     onChange={handleToggleAll}
@@ -84,7 +86,7 @@ export const Table = <T extends BaseItem, F extends BaseFilters>({
                   {selection && (
                     <MantineTable.Td>
                       <Checkbox
-                        aria-label="Select row"
+                        aria-label={t('Table.selectRow')}
                         checked={selection.selectedRows.some(r => r.id === item.id)}
                         onChange={() => handleToggleRow(item)}
                       />
@@ -98,7 +100,7 @@ export const Table = <T extends BaseItem, F extends BaseFilters>({
             ) : (
               <MantineTable.Tr>
                 <MantineTable.Td colSpan={Children.count(children)}>
-                  <Text>Not found</Text>
+                  <Text>{t('Table.empty')}</Text>
                 </MantineTable.Td>
               </MantineTable.Tr>
             )}

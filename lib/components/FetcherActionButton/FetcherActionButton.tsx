@@ -3,6 +3,7 @@ import { ActionIcon, Button } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useFetcher } from '@remix-run/react';
 import type { MouseEvent, ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useFetcherNotification } from '../../utils/notifications';
 
 type IconButtonType = {
@@ -34,6 +35,7 @@ export const FetcherActionButton = <T = any,>({
   children,
   ...props
 }: Props<T>) => {
+  const { t } = useTranslation('mantine-console-components');
   const fetcher = useFetcher();
 
   const handleSubmit = () => {
@@ -49,7 +51,7 @@ export const FetcherActionButton = <T = any,>({
     modals.openConfirmModal({
       title: modalTitle,
       children: modalChildren,
-      labels: { confirm: 'Confirm', cancel: 'Cancel' },
+      labels: { confirm: t('FetcherActionButton.confirm'), cancel: t('FetcherActionButton.cancel') },
       centered: true,
       onConfirm: handleSubmit,
     });

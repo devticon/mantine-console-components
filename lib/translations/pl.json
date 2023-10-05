@@ -1,0 +1,15 @@
+{
+  "FetcherActionButton": {
+    "confirm": "Potwierdź",
+    "cancel": "Anuluj"
+  },
+  "Table": {
+    "selectAllRows": "Zaznacz wszystkie wiersze",
+    "selectRow": "Zaznacz wiersz",
+    "empty": "Nie znaleziono danych",
+    "filtersTitle": "Filtry",
+    "openFiltersButton": "Filtry",
+    "resetFiltersButton": "Wyczyść",
+    "sortColumn": "Sortuj kolumnę"
+  }
+}

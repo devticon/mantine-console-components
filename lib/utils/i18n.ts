@@ -47,7 +47,11 @@ export async function createI18nServerInstance(
       react: { useSuspense: false },
       lng: await remixI18next.getLocale(request),
       ns: remixI18next.getRouteNamespaces(remixContext),
-      backend: { loadPath: resolve('./public/locales/{{lng}}/{{ns}}.json') },
+      saveMissing: true,
+      backend: {
+        loadPath: resolve('./public/locales/{{lng}}/{{ns}}.json'),
+        addPath: resolve('./public/locales/{{lng}}/{{ns}}.missing.json'),
+      },
     });
 
   return instance;

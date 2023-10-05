@@ -1,4 +1,5 @@
 import { ActionIcon, Box, Group, Table } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import { IoArrowDown, IoArrowUp } from 'react-icons/io5';
 import invariant from 'tiny-invariant';
 import { getNsField, OrderBy, revertSortDirection } from '../../utils/hasura';
@@ -25,6 +26,7 @@ export const TableTh = <T extends BaseItem, F extends BaseFilters>({
     invariant(handleFiltersChange, '`handleFiltersChange` is required if column is `sortable`');
   }
 
+  const { t } = useTranslation('mantine-console-components');
   const orderByKey = getNsField('orderBy', ns);
   const orderDirKey = getNsField('orderDir', ns);
   const isSorted = filters?.[orderByKey] === dataKey;
@@ -44,7 +46,7 @@ export const TableTh = <T extends BaseItem, F extends BaseFilters>({
           {title}
         </Box>
         {sortable && (
-          <ActionIcon variant={isSorted ? 'filled' : 'subtle'} size="xs" aria-label="Change the sorting order">
+          <ActionIcon variant={isSorted ? 'filled' : 'subtle'} size="xs" aria-label={t('Table.sortColumn')}>
             <SortIcon size="0.875rem" onClick={handleToggleSort} />
           </ActionIcon>
         )}

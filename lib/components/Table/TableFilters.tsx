@@ -2,6 +2,7 @@ import { Button, Drawer, Group, SimpleGrid } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { ReactElement, ReactNode } from 'react';
 import { Children, cloneElement } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MdFilterAlt, MdFilterAltOff } from 'react-icons/md';
 import type { Props as TableFilterProps } from './TableFilter';
 import type { BaseFilters } from './utils';
@@ -21,6 +22,7 @@ export const TableFilters = <F extends BaseFilters>({
   handleFiltersReset,
   actions,
 }: Props<F>) => {
+  const { t } = useTranslation('mantine-console-components');
   const [opened, { open, close }] = useDisclosure(false);
   const hasDrawerFilters = Children.map(children, child => !child.props.alwaysOn).some(Boolean);
 
@@ -46,7 +48,7 @@ export const TableFilters = <F extends BaseFilters>({
 
   return (
     <>
-      <Drawer opened={opened} onClose={close} title="Filters">
+      <Drawer opened={opened} onClose={close} title={t('Table.filtersTitle')}>
         <SimpleGrid cols={1} spacing="lg">
           {Children.map(children, child => handleChild(child, false))}
         </SimpleGrid>
@@ -59,11 +61,11 @@ export const TableFilters = <F extends BaseFilters>({
         <Group gap="sm">
           {hasDrawerFilters && (
             <Button onClick={open} rightSection={<MdFilterAlt size={20} />}>
-              Filters
+              {t('Table.openFiltersButton')}
             </Button>
           )}
           <Button onClick={handleFiltersReset} color="red" rightSection={<MdFilterAltOff size={20} />}>
-            Reset
+            {t('Table.resetFiltersButton')}
           </Button>
           {actions}
         </Group>
