@@ -1,23 +1,27 @@
 import { createCookieSessionStorage, redirect } from '@remix-run/node';
 import jwt_decode from 'jwt-decode';
 
-type Params<Roles extends string, RawDecodedJwtToken, DecodedJwtToken, User> = {
+type RedirectStrategy<Roles extends string> = Partial<
+  Record<`${Roles}_${Roles}` | `${Roles}_*` | `*_${Roles}` | '*_*', string>
+>;
+
+type Params<Roles extends string, User, RawDecodedJwtToken = any, DecodedJwtToken = any> = {
   cookieName: string;
   cookieSecrets?: string[];
-  rawTokenMapper: (raw: RawDecodedJwtToken) => DecodedJwtToken;
-  extractUserRole: (request: Request, data?: DecodedJwtToken | null) => Promise<Roles>;
+  rawTokenMapper?: (raw: RawDecodedJwtToken) => DecodedJwtToken;
+  extractUserRole: (data: { request: Request; token?: string | null; data?: DecodedJwtToken | null }) => Promise<Roles>;
   getUserFromApi: (request: Request) => Promise<User>;
-  redirectStrategy: Partial<Record<`${Roles}_${Roles}` | `${Roles}_*` | `*_${Roles}` | '*_*', string>>;
+  redirectStrategy: RedirectStrategy<Roles> | ((request: Request) => RedirectStrategy<Roles>);
 };
 
-export function createAuthStorage<Roles extends string, RawDecodedJwtToken, DecodedJwtToken, User>({
+export function createAuthStorage<Roles extends string, User, RawDecodedJwtToken = any, DecodedJwtToken = any>({
   cookieName,
   cookieSecrets,
   rawTokenMapper,
   extractUserRole,
   getUserFromApi,
   redirectStrategy,
-}: Params<Roles, RawDecodedJwtToken, DecodedJwtToken, User>) {
+}: Params<Roles, User, RawDecodedJwtToken, DecodedJwtToken>) {
   const storage = createCookieSessionStorage({
     cookie: {
       name: cookieName,
@@ -63,7 +67,7 @@ export function createAuthStorage<Roles extends string, RawDecodedJwtToken, Deco
 
     try {
       const decodedJwt = jwt_decode(token) as RawDecodedJwtToken;
-      return rawTokenMapper(decodedJwt);
+      return rawTokenMapper ? rawTokenMapper(decodedJwt) : null;
     } catch {
       return null;
     }
@@ -84,15 +88,18 @@ export function createAuthStorage<Roles extends string, RawDecodedJwtToken, Deco
   };
 
   const ensureRole = async (request: Request, expectedRoles: Roles[]) => {
+    const token = await getToken(request);
     const decoded = await decodeToken(request);
-    const role = await extractUserRole(request, decoded);
+    const role = await extractUserRole({ request, token, data: decoded });
 
     if (!expectedRoles.includes(role)) {
+      const strategy = typeof redirectStrategy === 'function' ? redirectStrategy(request) : redirectStrategy;
+
       const redirects = [
-        ...expectedRoles.map(expectedRole => redirectStrategy[`${role}_${expectedRole}`]),
-        redirectStrategy[`${role}_*`],
-        ...expectedRoles.map(expectedRole => redirectStrategy[`*_${expectedRole}`]),
-        redirectStrategy['*_*'],
+        ...expectedRoles.map(expectedRole => strategy[`${role}_${expectedRole}`]),
+        strategy[`${role}_*`],
+        ...expectedRoles.map(expectedRole => strategy[`*_${expectedRole}`]),
+        strategy['*_*'],
       ];
 
       const firstRedirect = redirects.find(Boolean);
