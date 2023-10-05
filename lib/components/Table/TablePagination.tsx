@@ -1,6 +1,6 @@
 import type { GroupProps } from '@mantine/core';
 import { Group, Pagination, Select } from '@mantine/core';
-import { getNsField } from '../../utils/hasura.ts';
+import { getNsField } from '../../utils/hasura';
 import type { BaseFilters } from './utils';
 
 type Props<F extends BaseFilters> = GroupProps & {

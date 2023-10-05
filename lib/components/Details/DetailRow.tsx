@@ -18,7 +18,7 @@ export const DetailRow: FC<Props> = ({ label, value, ...props }) => {
   }, [value]);
 
   return (
-    <Stack gap={4} {...props}>
+    <Stack gap={4} align="flex-start" {...props}>
       <Text c="dimmed" inline>
         {label}
       </Text>

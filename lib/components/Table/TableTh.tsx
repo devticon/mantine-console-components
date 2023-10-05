@@ -1,7 +1,7 @@
 import { ActionIcon, Box, Group, Table } from '@mantine/core';
 import { IoArrowDown, IoArrowUp } from 'react-icons/io5';
 import invariant from 'tiny-invariant';
-import { getNsField, OrderBy, revertSortDirection } from '../../utils/hasura.ts';
+import { getNsField, OrderBy, revertSortDirection } from '../../utils/hasura';
 import type { Props as TableColumnProps } from './TableColumn';
 import type { BaseFilters, BaseItem } from './utils';
 

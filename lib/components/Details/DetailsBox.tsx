@@ -12,7 +12,7 @@ type Props = PaperProps & {
 
 export const DetailsBox: FC<Props> = ({ title, titleSize, titleOrder, actions, children, ...props }) => {
   return (
-    <Paper p="xl" {...props}>
+    <Paper p={{ base: 'lg', md: 'xl' }} {...props}>
       {title && (
         <Group mb={children ? 'lg' : undefined} gap="xs" justify="space-between">
           <Title size={titleSize || 'h5'} order={titleOrder || 3}>

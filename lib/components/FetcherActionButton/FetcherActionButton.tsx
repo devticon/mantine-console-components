@@ -3,7 +3,7 @@ import { ActionIcon, Button } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useFetcher } from '@remix-run/react';
 import type { MouseEvent, ReactNode } from 'react';
-import { useFetcherNotification } from '../../utils/notifications.tsx';
+import { useFetcherNotification } from '../../utils/notifications';
 
 type IconButtonType = {
   buttonType: 'icon';
