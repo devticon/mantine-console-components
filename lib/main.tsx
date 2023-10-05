@@ -12,13 +12,16 @@ export { ValidatedInput } from './components/ValidatedInput/ValidatedInput';
 export { DetailsBox } from './components/Details/DetailsBox';
 export { DetailRow } from './components/Details/DetailRow';
 export { ErrorCard } from './components/ErrorCard/ErrorCard';
-export { mapObjectToSearchParams } from './utils/search-params';
-export { formatPrice } from './utils/price';
-export { formatDate, parseDate, formatDateTime, formatTime } from './utils/date';
-export { getBaseVariables } from './utils/hasura';
-export { baseTheme } from './utils/theme';
-export { useFetcherNotification, showErrorNotification, showSuccessNotification } from './utils/notifications';
-export { createRemixI18n, createI18nClientInstance, createI18nServerInstance } from './utils/i18n';
+
+export * from './utils/search-params';
+export * from './utils/price';
+export * from './utils/date';
+export * from './utils/hasura';
+export * from './utils/theme';
+export * from './utils/notifications';
+export * from './utils/i18n';
 export * from './utils/zod';
+export * from './utils/auth';
+
 export { default as pl } from './translations/pl/mantine-console-components.json';
 export { default as en } from './translations/en/mantine-console-components.json';
