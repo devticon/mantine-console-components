@@ -1,6 +1,6 @@
 {
   "name": "@devticon/mantine-console-components",
-  "version": "1.10.3",
+  "version": "1.10.4",
   "type": "module",
   "main": "./dist/main.umd.cjs",
   "module": "./dist/main.js",
