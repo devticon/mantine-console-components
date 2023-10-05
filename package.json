@@ -45,6 +45,9 @@
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   },
+  "bin": {
+    "copy-translations": "./copy-translations.sh"
+  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
