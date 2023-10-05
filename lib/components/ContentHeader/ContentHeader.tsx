@@ -22,19 +22,19 @@ export const ContentHeader: FC<Props> = ({ title, titleOrder = 2, titleSize, bre
               key={path}
               fw={500}
               fz={`var(--mantine-${titleSize || 'h' + titleOrder}-font-size)`}
-              lh="md"
+              lh="sm"
               component={Link}
               to={path}
             >
               {label}
             </Anchor>
           ))}
-          <Title order={titleOrder} size={titleSize} lh="md">
+          <Title order={titleOrder} size={titleSize} lh="sm">
             {title}
           </Title>
         </Breadcrumbs>
       ) : (
-        <Title order={titleOrder} size={titleSize} lh="md">
+        <Title order={titleOrder} size={titleSize} lh="sm">
           {title}
         </Title>
       )}
