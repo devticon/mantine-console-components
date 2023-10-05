@@ -4,6 +4,7 @@
   "main": "./dist/cjs/main.js",
   "module": "./dist/esm/main.js",
   "types": "./dist/esm/main.d.ts",
+  "bin": "./copy-translations.sh",
   "sideEffects": false,
   "scripts": {
     "build": "npm run build:esm && npm run build:cjs",
@@ -44,9 +45,6 @@
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
-  },
-  "bin": {
-    "copy-translations": "./copy-translations.sh"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"

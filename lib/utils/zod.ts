@@ -26,6 +26,11 @@ export async function getFormData<T extends ZodType<any, any, any>>(request: Pic
   return validate(value, schema);
 }
 
+export async function getJSON<T extends ZodType<any, any, any>>(request: Pick<Request, 'json'>, schema: T) {
+  const value = await request.json();
+  return validate(value, schema);
+}
+
 export async function getSearchParams<T extends ZodType<any, any, any>>(request: Pick<Request, 'url'>, schema: T) {
   const value = new URL(request.url).searchParams;
   return validate(value, schema);
