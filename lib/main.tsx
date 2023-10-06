@@ -12,6 +12,8 @@ export { ValidatedInput } from './components/ValidatedInput/ValidatedInput';
 export { DetailsBox } from './components/Details/DetailsBox';
 export { DetailRow } from './components/Details/DetailRow';
 export { ErrorCard } from './components/ErrorCard/ErrorCard';
+export { TransferList } from './components/TransferList/TransferList';
+export { divideByIds } from './components/TransferList/utils';
 
 export * from './utils/search-params';
 export * from './utils/price';

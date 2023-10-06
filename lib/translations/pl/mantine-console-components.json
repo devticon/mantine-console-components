@@ -11,5 +11,9 @@
     "openFiltersButton": "Filtry",
     "resetFiltersButton": "Wyczyść",
     "sortColumn": "Sortuj kolumnę"
+  },
+  "TransferList": {
+    "searchPlaceholder": "Szukaj...",
+    "empty": "Nic nie znaleziono..."
   }
 }
