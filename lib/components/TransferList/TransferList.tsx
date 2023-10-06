@@ -50,7 +50,7 @@ const RenderList: FC<RenderListProps> = ({ options, onTransfer, type }) => {
             </ActionIcon>
           </Group>
         </Combobox.EventsTarget>
-        <Paper py="xs" mt={4}>
+        <Paper py="xs" mt={4} h={320} style={{ overflowY: 'auto' }}>
           <Combobox.Options>
             {filteredItems.length > 0 ? (
               filteredItems.map(item => (
