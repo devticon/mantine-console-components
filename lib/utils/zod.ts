@@ -1,6 +1,6 @@
-import type { z, ZodType } from 'zod';
-import { preprocess } from 'zod';
-import { numeric } from 'zod-form-data';
+import type { z, ZodType, ZodSchema } from 'zod';
+import { preprocess, string } from 'zod';
+import { numeric, text } from 'zod-form-data';
 
 export { z, number, coerce, string, nativeEnum, array, boolean, object, preprocess } from 'zod';
 export { formData, numeric, text, file, repeatable, repeatableOfType, checkbox, json } from 'zod-form-data';
@@ -40,7 +40,7 @@ export function transformPrice(value: number) {
   return Math.round(value * 100);
 }
 
-export function preprocessNumberInput(schema = numeric(), params?: { prefix?: string; suffix?: string }) {
+export function preprocessNumberInput(schema: ZodSchema = numeric(), params?: { prefix?: string; suffix?: string }) {
   return preprocess(value => {
     if (typeof value === 'string') {
       return value
@@ -51,4 +51,8 @@ export function preprocessNumberInput(schema = numeric(), params?: { prefix?: st
       return value;
     }
   }, schema);
+}
+
+export function nullableText() {
+  return text(string().nullish()).transform(v => v || null);
 }
