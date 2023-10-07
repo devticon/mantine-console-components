@@ -1,3 +1,4 @@
+import type { BoxProps } from '@mantine/core';
 import { ActionIcon, Box, Checkbox, Combobox, Group, Paper, TextInput, useCombobox } from '@mantine/core';
 import xor from 'lodash/xor';
 import type { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
@@ -82,13 +83,13 @@ const RenderList: FC<RenderListProps> = ({ options, onTransfer, type }) => {
   );
 };
 
-type TransferListProps = {
+type TransferListProps = BoxProps & {
   name?: string;
   value: [BaseItem[], BaseItem[]];
   onChange: Dispatch<SetStateAction<[BaseItem[], BaseItem[]]>>;
 };
 
-export const TransferList: FC<TransferListProps> = ({ name, value, onChange }) => {
+export const TransferList: FC<TransferListProps> = ({ name, value, onChange, ...props }) => {
   const handleTransfer = (transferFrom: number, options: BaseItem[]) => {
     onChange(current => {
       const transferTo = transferFrom === 0 ? 1 : 0;
@@ -102,7 +103,7 @@ export const TransferList: FC<TransferListProps> = ({ name, value, onChange }) =
   };
 
   return (
-    <Box>
+    <Box {...props}>
       {name && value[1].map(item => <input key={item.id} type="hidden" name={name} value={item.id} />)}
       <Group align="start" grow>
         <RenderList type="forward" options={value[0]} onTransfer={options => handleTransfer(0, options)} />
