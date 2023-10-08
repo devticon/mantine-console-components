@@ -24,6 +24,7 @@ export * from './utils/notifications';
 export * from './utils/i18n';
 export * from './utils/zod';
 export * from './utils/auth';
+export * from './utils/errors';
 
 export { default as pl } from './translations/pl/mantine-console-components.json';
 export { default as en } from './translations/en/mantine-console-components.json';
