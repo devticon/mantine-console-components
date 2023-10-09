@@ -17,7 +17,7 @@ type Props<T extends BaseItem, F extends BaseFilters> = TableProps & {
   children: ReactElement<TableColumnProps<T>>[];
   data: T[];
   loading?: boolean;
-  pagination?: { count: number };
+  pagination: { count: number; type?: 'default' | 'optimized' };
   ns?: string;
   filters?: F;
   handleFiltersChange?: (filters: Partial<F>) => void;
