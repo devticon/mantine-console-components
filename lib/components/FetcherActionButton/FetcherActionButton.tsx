@@ -2,6 +2,7 @@ import type { ActionIconProps, ButtonProps } from '@mantine/core';
 import { ActionIcon, Button } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useFetcher } from '@remix-run/react';
+import omit from 'lodash/omit';
 import type { MouseEvent, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFetcherNotification } from '../../utils/notifications';
@@ -66,11 +67,11 @@ export const FetcherActionButton = <T = any,>({
   });
 
   return props.buttonType === 'icon' ? (
-    <ActionIcon {...props} onClick={handleClick} loading={fetcher.state !== 'idle'}>
+    <ActionIcon {...omit(props, 'buttonType')} onClick={handleClick} loading={fetcher.state !== 'idle'}>
       {children}
     </ActionIcon>
   ) : (
-    <Button {...props} onClick={handleClick} loading={fetcher.state !== 'idle'}>
+    <Button {...omit(props, 'buttonType')} onClick={handleClick} loading={fetcher.state !== 'idle'}>
       {children}
     </Button>
   );
