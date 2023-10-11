@@ -26,5 +26,11 @@ export const baseTheme: MantineThemeOverride = {
         checkIconPosition: 'right',
       },
     },
+    NumberInput: {
+      defaultProps: {
+        hideControls: true,
+        decimalSeparator: ',',
+      },
+    },
   },
 };
