@@ -1,0 +1,27 @@
+import type { ActionIconProps, DefaultMantineColor } from '@mantine/core';
+import { ActionIcon, CopyButton as MantineCopyButton, Tooltip } from '@mantine/core';
+import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import { IoCopy } from 'react-icons/io5';
+
+type Props = {
+  value: string;
+  copyColor?: DefaultMantineColor;
+  copiedColor?: DefaultMantineColor;
+} & ActionIconProps;
+
+export const CopyButton: FC<Props> = ({ value, copyColor, copiedColor = 'green', ...props }) => {
+  const { t } = useTranslation('mantine-console-components');
+
+  return (
+    <MantineCopyButton value={value}>
+      {({ copied, copy }) => (
+        <Tooltip label={t(`CopyButton.${copied ? 'copied' : 'copy'}`)} withArrow position="right" fz="xs">
+          <ActionIcon variant="transparent" onClick={copy} c={copied ? copiedColor : copyColor} {...props}>
+            <IoCopy />
+          </ActionIcon>
+        </Tooltip>
+      )}
+    </MantineCopyButton>
+  );
+};
