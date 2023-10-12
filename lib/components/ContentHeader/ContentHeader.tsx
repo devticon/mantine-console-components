@@ -25,6 +25,7 @@ export const ContentHeader: FC<Props> = ({ title, titleOrder = 2, titleSize, bre
               lh="sm"
               component={Link}
               to={path}
+              c="dimmed"
             >
               {label}
             </Anchor>
