@@ -10,14 +10,14 @@ type Props = {
   copiedColor?: DefaultMantineColor;
 } & ActionIconProps;
 
-export const CopyButton: FC<Props> = ({ value, copyColor, copiedColor = 'green', ...props }) => {
+export const CopyButton: FC<Props> = ({ value, copyColor = 'gray', copiedColor = 'green', ...props }) => {
   const { t } = useTranslation('mantine-console-components');
 
   return (
     <MantineCopyButton value={value}>
       {({ copied, copy }) => (
         <Tooltip label={t(`CopyButton.${copied ? 'copied' : 'copy'}`)} withArrow position="right" fz="xs">
-          <ActionIcon variant="transparent" onClick={copy} c={copied ? copiedColor : copyColor} {...props}>
+          <ActionIcon variant="transparent" onClick={copy} color={copied ? copiedColor : copyColor} {...props}>
             <IoCopy />
           </ActionIcon>
         </Tooltip>
