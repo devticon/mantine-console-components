@@ -2,14 +2,14 @@ import type { NotificationData } from '@mantine/notifications';
 import { notifications } from '@mantine/notifications';
 import type { Fetcher } from '@remix-run/react';
 import { useEffect } from 'react';
-import { IoAlertCircle, IoCheckmarkCircle } from 'react-icons/io5';
+import { TbInfoCircle, TbInfoTriangle } from 'react-icons/tb';
 
 export function showSuccessNotification(params: NotificationData) {
-  notifications.show({ withCloseButton: true, color: 'green', icon: <IoCheckmarkCircle />, ...params });
+  notifications.show({ withCloseButton: true, color: 'green', icon: <TbInfoCircle />, ...params });
 }
 
 export function showErrorNotification(params: NotificationData) {
-  notifications.show({ withCloseButton: true, color: 'red', icon: <IoAlertCircle />, ...params });
+  notifications.show({ withCloseButton: true, color: 'red', icon: <TbInfoTriangle />, ...params });
 }
 
 type Params<T> = {

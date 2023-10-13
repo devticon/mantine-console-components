@@ -2,7 +2,7 @@ import type { GroupProps, TitleOrder, TitleSize } from '@mantine/core';
 import { Anchor, Breadcrumbs, Group, Title } from '@mantine/core';
 import { Link } from '@remix-run/react';
 import type { FC, ReactNode } from 'react';
-import { IoChevronForwardOutline } from 'react-icons/io5';
+import { TbChevronRight } from 'react-icons/tb';
 
 type Props = GroupProps & {
   title: string;
@@ -16,7 +16,7 @@ export const ContentHeader: FC<Props> = ({ title, titleOrder = 2, titleSize, bre
   return (
     <Group gap="xl" justify="space-between" align="center" {...props}>
       {breadcrumbs?.length ? (
-        <Breadcrumbs separator={<IoChevronForwardOutline />}>
+        <Breadcrumbs separator={<TbChevronRight />}>
           {breadcrumbs.map(({ path, label }) => (
             <Anchor
               key={path}

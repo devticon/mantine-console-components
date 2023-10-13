@@ -3,7 +3,7 @@ import { useDisclosure } from '@mantine/hooks';
 import type { ReactElement, ReactNode } from 'react';
 import { Children, cloneElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MdFilterAlt, MdFilterAltOff } from 'react-icons/md';
+import { TbFilter, TbFilterX } from 'react-icons/tb';
 import type { Props as TableFilterProps } from './TableFilter';
 import type { BaseFilters } from './utils';
 
@@ -60,12 +60,12 @@ export const TableFilters = <F extends BaseFilters>({
         </Group>
         <Group gap="sm">
           {hasDrawerFilters && (
-            <Button onClick={open} rightSection={<MdFilterAlt size={20} />}>
+            <Button onClick={open} rightSection={<TbFilter size={20} />}>
               {t('Table.openFiltersButton')}
             </Button>
           )}
           {handleFiltersReset && (
-            <Button onClick={handleFiltersReset} color="red" rightSection={<MdFilterAltOff size={20} />}>
+            <Button onClick={handleFiltersReset} color="red" rightSection={<TbFilterX size={20} />}>
               {t('Table.resetFiltersButton')}
             </Button>
           )}

@@ -4,7 +4,7 @@ import xor from 'lodash/xor';
 import type { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IoArrowBack, IoArrowForward } from 'react-icons/io5';
+import { TbChevronLeft, TbChevronRight, TbChevronsLeft, TbChevronsRight } from 'react-icons/tb';
 import type { BaseItem } from './utils';
 
 type RenderListProps = {

@@ -1,6 +1,6 @@
 import { ActionIcon, Box, Group, Table } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { IoArrowDown, IoArrowUp } from 'react-icons/io5';
+import { TbArrowDown, TbArrowUp } from 'react-icons/tb';
 import invariant from 'tiny-invariant';
 import { getNsField, OrderBy, revertSortDirection } from '../../utils/hasura';
 import type { Props as TableColumnProps } from './TableColumn';
@@ -30,7 +30,7 @@ export const TableTh = <T extends BaseItem, F extends BaseFilters>({
   const orderByKey = getNsField('orderBy', ns);
   const orderDirKey = getNsField('orderDir', ns);
   const isSorted = filters?.[orderByKey] === dataKey;
-  const SortIcon = isSorted && filters?.[orderDirKey] === OrderBy.Desc ? IoArrowUp : IoArrowDown;
+  const SortIcon = isSorted && filters?.[orderDirKey] === OrderBy.Desc ? TbArrowUp : TbArrowDown;
 
   const handleToggleSort = () => {
     handleFiltersChange?.({
