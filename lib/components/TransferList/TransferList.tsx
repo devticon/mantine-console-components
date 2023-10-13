@@ -35,6 +35,11 @@ const RenderList: FC<RenderListProps> = ({ options, onTransfer, type }) => {
     setSelected([]);
   };
 
+  const handleTransferAll = () => {
+    onTransfer(filteredItems);
+    setSelected([]);
+  };
+
   return (
     <Box>
       <Combobox store={combobox} onOptionSubmit={handleValueSelect}>
@@ -46,8 +51,11 @@ const RenderList: FC<RenderListProps> = ({ options, onTransfer, type }) => {
               value={search}
               onChange={handleSearchChange}
             />
-            <ActionIcon style={{}} variant="default" size={36} onClick={handleTransfer}>
-              {type === 'forward' ? <IoArrowForward /> : <IoArrowBack />}
+            <ActionIcon variant="default" size={36} onClick={handleTransfer}>
+              {type === 'forward' ? <TbChevronRight /> : <TbChevronLeft />}
+            </ActionIcon>
+            <ActionIcon variant="default" size={36} onClick={handleTransferAll}>
+              {type === 'forward' ? <TbChevronsRight /> : <TbChevronsLeft />}
             </ActionIcon>
           </Group>
         </Combobox.EventsTarget>
