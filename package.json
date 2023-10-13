@@ -1,6 +1,6 @@
 {
   "name": "@devticon/mantine-console-components",
-  "version": "2.9.2",
+  "version": "2.9.3",
   "main": "./dist/cjs/main.js",
   "module": "./dist/esm/main.js",
   "types": "./dist/esm/main.d.ts",
