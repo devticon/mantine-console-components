@@ -11,7 +11,7 @@ type Props<F extends BaseFilters> = {
   children: ReactElement<TableFilterProps<F>>[] | ReactElement<TableFilterProps<F>>;
   filters: F;
   handleFiltersChange: (filters: Partial<F>, debounce?: boolean) => void;
-  handleFiltersReset: () => void;
+  handleFiltersReset?: () => void;
   actions?: ReactNode;
 };
 
@@ -64,9 +64,11 @@ export const TableFilters = <F extends BaseFilters>({
               {t('Table.openFiltersButton')}
             </Button>
           )}
-          <Button onClick={handleFiltersReset} color="red" rightSection={<MdFilterAltOff size={20} />}>
-            {t('Table.resetFiltersButton')}
-          </Button>
+          {handleFiltersReset && (
+            <Button onClick={handleFiltersReset} color="red" rightSection={<MdFilterAltOff size={20} />}>
+              {t('Table.resetFiltersButton')}
+            </Button>
+          )}
           {actions}
         </Group>
       </Group>
