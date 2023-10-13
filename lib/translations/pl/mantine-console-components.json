@@ -15,5 +15,9 @@
   "TransferList": {
     "searchPlaceholder": "Szukaj...",
     "empty": "Nic nie znaleziono..."
+  },
+  "CopyButton": {
+    "copy": "Kopiuj",
+    "copied": "Skopiowano"
   }
 }
