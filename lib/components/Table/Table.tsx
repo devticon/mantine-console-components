@@ -1,5 +1,5 @@
 import type { TableProps } from '@mantine/core';
-import { Checkbox, Table as MantineTable, Text } from '@mantine/core';
+import { Box, Checkbox, Table as MantineTable, Text } from '@mantine/core';
 import differenceBy from 'lodash/differenceBy';
 import unionBy from 'lodash/unionBy';
 import xorBy from 'lodash/xorBy';
@@ -52,7 +52,7 @@ export const Table = <T extends BaseItem, F extends BaseFilters>({
   };
 
   return (
-    <>
+    <Box>
       <TableWrapper loading={loading}>
         <MantineTable
           w="100%"
@@ -119,6 +119,6 @@ export const Table = <T extends BaseItem, F extends BaseFilters>({
           handleFiltersChange={handleFiltersChange}
         />
       )}
-    </>
+    </Box>
   );
 };
