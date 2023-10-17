@@ -4,7 +4,7 @@ import differenceBy from 'lodash/differenceBy';
 import unionBy from 'lodash/unionBy';
 import xorBy from 'lodash/xorBy';
 import type { Dispatch, ReactElement, SetStateAction } from 'react';
-import { Children } from 'react';
+import { Children, isValidElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Props as TableColumnProps } from './TableColumn';
 import { TablePagination } from './TablePagination';
@@ -73,9 +73,11 @@ export const Table = <T extends BaseItem, F extends BaseFilters>({
                   />
                 </MantineTable.Th>
               )}
-              {Children.map(children, ({ props }) => (
-                <TableTh filters={filters} handleFiltersChange={handleFiltersChange} ns={ns} {...props} />
-              ))}
+              {Children.map(children, child =>
+                isValidElement(child) ? (
+                  <TableTh filters={filters} handleFiltersChange={handleFiltersChange} ns={ns} {...child.props} />
+                ) : null,
+              )}
             </MantineTable.Tr>
           </MantineTable.Thead>
 
@@ -92,9 +94,9 @@ export const Table = <T extends BaseItem, F extends BaseFilters>({
                       />
                     </MantineTable.Td>
                   )}
-                  {Children.map(children, ({ props }) => (
-                    <TableTd item={item} index={index} {...props} />
-                  ))}
+                  {Children.map(children, child =>
+                    isValidElement(child) ? <TableTd item={item} index={index} {...child.props} /> : null,
+                  )}
                 </MantineTable.Tr>
               ))
             ) : (

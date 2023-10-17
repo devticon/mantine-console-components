@@ -1,7 +1,7 @@
 import { Button, Drawer, Group, SimpleGrid } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { ReactElement, ReactNode } from 'react';
-import { Children, cloneElement } from 'react';
+import { Children, cloneElement, isValidElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TbFilter, TbFilterX } from 'react-icons/tb';
 import type { Props as TableFilterProps } from './TableFilter';
@@ -27,6 +27,10 @@ export const TableFilters = <F extends BaseFilters>({
   const hasDrawerFilters = Children.map(children, child => !child.props.alwaysOn).some(Boolean);
 
   const handleChild = (child: ReactElement<TableFilterProps<F>>, isAlwaysOn: boolean) => {
+    if (!isValidElement(child)) {
+      return null;
+    }
+
     const debounce = ['range', 'text'].includes(child.props.type);
 
     const element = cloneElement(child, {
