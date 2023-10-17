@@ -4,7 +4,9 @@ import type { RemixI18Next } from 'remix-i18next';
 export function getRawErrorCode(error: unknown) {
   if (error instanceof Error) {
     // @ts-ignore
-    return error.gqlErrors?.[0]?.extensions?.code || 'INTERNAL_ERROR';
+    return (error.gqlErrors?.[0]?.extensions?.code as string) || 'INTERNAL_ERROR';
+  } else if (typeof error === 'string') {
+    return error;
   } else {
     return 'INTERNAL_ERROR';
   }
@@ -13,7 +15,7 @@ export function getRawErrorCode(error: unknown) {
 export function getRawErrorMessage(error: unknown) {
   if (error instanceof Error) {
     // @ts-ignore
-    return error.gqlErrors?.[0]?.message || error.message;
+    return (error.gqlErrors?.[0]?.message as string) || error.message;
   } else {
     return JSON.stringify(error);
   }
