@@ -15,11 +15,21 @@ export const RemixTabs: FC<Props> = ({ tabs, i18nPrefix, ...props }) => {
   const { pathname } = useLocation();
 
   const currentTab = tabs.find(t => {
-    return pathname.endsWith(`/${t}`) || pathname.includes(`/${t}/`);
+    if (tabs.length === 1) {
+      return t[0];
+    } else {
+      return pathname.endsWith(`/${t}`);
+    }
   });
 
+  const onChange = (value: string | null) => {
+    if (tabs.length > 1) {
+      navigate(`./${value}`);
+    }
+  };
+
   return (
-    <Tabs value={currentTab} onChange={value => navigate(`./${value}`)} {...props}>
+    <Tabs value={currentTab} onChange={onChange} {...props}>
       <Tabs.List>
         {tabs.map(tab => (
           <Tabs.Tab key={tab} value={tab}>
