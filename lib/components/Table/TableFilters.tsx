@@ -24,7 +24,10 @@ export const TableFilters = <F extends BaseFilters>({
 }: Props<F>) => {
   const { t } = useTranslation('mantine-console-components');
   const [opened, { open, close }] = useDisclosure(false);
-  const hasDrawerFilters = Children.map(children, child => !child.props.alwaysOn).some(Boolean);
+
+  const hasDrawerFilters = Children.map(children, child => {
+    return isValidElement(child) && !child.props.alwaysOn;
+  }).some(Boolean);
 
   const handleChild = (child: ReactElement<TableFilterProps<F>>, isAlwaysOn: boolean) => {
     if (!isValidElement(child)) {
