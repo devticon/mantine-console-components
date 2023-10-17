@@ -16,6 +16,8 @@ export function getRawErrorMessage(error: unknown) {
   if (error instanceof Error) {
     // @ts-ignore
     return (error.gqlErrors?.[0]?.message as string) || error.message;
+  } else if (typeof error === 'string') {
+    return error;
   } else {
     return JSON.stringify(error);
   }
