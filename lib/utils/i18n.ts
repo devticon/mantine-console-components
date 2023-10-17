@@ -7,6 +7,8 @@ import HttpBackend from 'i18next-http-backend';
 import { resolve } from 'node:path';
 import { initReactI18next } from 'react-i18next';
 import { getInitialNamespaces, RemixI18Next } from 'remix-i18next';
+import { makeZodI18nMap } from 'zod-i18n-map';
+import { z } from './zod';
 
 export function createRemixI18n(supportedLngs: string[]) {
   const i18nCookie = createCookie('lang', {
@@ -28,7 +30,12 @@ export function createRemixI18n(supportedLngs: string[]) {
     plugins: [FsBackend],
   });
 
-  return { i18nCookie, i18nRemix };
+  const setZodI18n = async (request: Request) => {
+    const t = await i18nRemix.getFixedT(request, ['zod', 'common']);
+    z.setErrorMap(makeZodI18nMap({ t, ns: ['zod', 'common'] }));
+  };
+
+  return { i18nCookie, i18nRemix, setZodI18n };
 }
 
 export async function createI18nServerInstance(
