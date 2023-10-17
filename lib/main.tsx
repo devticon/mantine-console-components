@@ -15,6 +15,7 @@ export { ErrorCard } from './components/ErrorCard/ErrorCard';
 export { TransferList } from './components/TransferList/TransferList';
 export { divideByIds } from './components/TransferList/utils';
 export { CopyButton } from './components/Buttons/CopyButton';
+export { RemixTabs } from './components/Tabs/RemixTabs';
 
 export * from './utils/search-params';
 export * from './utils/price';
