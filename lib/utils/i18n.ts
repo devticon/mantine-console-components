@@ -10,7 +10,7 @@ import { getInitialNamespaces, RemixI18Next } from 'remix-i18next';
 import { makeZodI18nMap } from 'zod-i18n-map';
 import { z } from './zod';
 
-export function createRemixI18n(supportedLngs: string[]) {
+export function createRemixI18n(supportedLngs: string[], prefix = '') {
   const i18nCookie = createCookie('lang', {
     maxAge: 2_592_000, // 30 days
   });
@@ -25,7 +25,7 @@ export function createRemixI18n(supportedLngs: string[]) {
       supportedLngs: supportedLngs,
       fallbackLng: supportedLngs[0],
       defaultNS: 'common',
-      backend: { loadPath: resolve('./public/locales/{{lng}}/{{ns}}.json') },
+      backend: { loadPath: resolve(`./public${prefix}/locales/{{lng}}/{{ns}}.json`) },
     },
     plugins: [FsBackend],
   });
@@ -42,6 +42,7 @@ export async function createI18nServerInstance(
   remixI18next: RemixI18Next,
   request: Request,
   remixContext: EntryContext,
+  prefix = '',
 ) {
   const instance = createInstance();
 
@@ -56,15 +57,15 @@ export async function createI18nServerInstance(
       ns: remixI18next.getRouteNamespaces(remixContext),
       saveMissing: true,
       backend: {
-        loadPath: resolve('./public/locales/{{lng}}/{{ns}}.json'),
-        addPath: resolve('./public/locales/{{lng}}/{{ns}}.missing.json'),
+        loadPath: resolve(`./public${prefix}/locales/{{lng}}/{{ns}}.json`),
+        addPath: resolve(`./public${prefix}/locales/{{lng}}/{{ns}}.missing.json`),
       },
     });
 
   return instance;
 }
 
-export async function createI18nClientInstance() {
+export async function createI18nClientInstance(prefix = '') {
   await i18next
     .use(initReactI18next)
     .use(LanguageDetector)
@@ -74,7 +75,7 @@ export async function createI18nClientInstance() {
       defaultNS: 'common',
       react: { useSuspense: false },
       ns: getInitialNamespaces(),
-      backend: { loadPath: '/locales/{{lng}}/{{ns}}.json' },
+      backend: { loadPath: `${prefix}/locales/{{lng}}/{{ns}}.json` },
       detection: { order: ['htmlTag'], caches: [] },
     });
 }
