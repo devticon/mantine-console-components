@@ -7,8 +7,10 @@ import { TbFilter, TbFilterX } from 'react-icons/tb';
 import type { Props as TableFilterProps } from './TableFilter';
 import type { BaseFilters } from './utils';
 
+type Child<F extends BaseFilters> = ReactElement<TableFilterProps<F>> | false;
+
 type Props<F extends BaseFilters> = {
-  children: ReactElement<TableFilterProps<F>>[] | ReactElement<TableFilterProps<F>>;
+  children: Child<F> | Child<F>[];
   filters: F;
   handleFiltersChange: (filters: Partial<F>, debounce?: boolean) => void;
   handleFiltersReset?: () => void;
@@ -29,7 +31,7 @@ export const TableFilters = <F extends BaseFilters>({
     return isValidElement(child) && !child.props.alwaysOn;
   }).some(Boolean);
 
-  const handleChild = (child: ReactElement<TableFilterProps<F>>, isAlwaysOn: boolean) => {
+  const handleChild = (child: Child<F>, isAlwaysOn: boolean) => {
     if (!isValidElement(child)) {
       return null;
     }

@@ -13,8 +13,10 @@ import { TableTh } from './TableTh';
 import { TableWrapper } from './TableWrapper';
 import type { BaseFilters, BaseItem } from './utils';
 
+type Child<T extends BaseItem> = ReactElement<TableColumnProps<T>> | false;
+
 type Props<T extends BaseItem, F extends BaseFilters> = TableProps & {
-  children: ReactElement<TableColumnProps<T>>[];
+  children: Child<T> | Child<T>[];
   data: T[];
   loading?: boolean;
   pagination?: { count: number; type?: 'default' | 'optimized' };
