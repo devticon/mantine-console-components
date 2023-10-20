@@ -7,7 +7,10 @@ export { useTableSelection } from './components/Table/useTableSelection';
 export { ContentHeader } from './components/ContentHeader/ContentHeader';
 export { ErrorAlert } from './components/Alert/ErrorAlert';
 export { SuccessAlert } from './components/Alert/SuccessAlert';
-export { FetcherActionButton } from './components/FetcherActionButton/FetcherActionButton';
+export {
+  FetcherActionButton,
+  Props as FetcherActionButtonProps,
+} from './components/FetcherActionButton/FetcherActionButton';
 export { ValidatedInput } from './components/ValidatedInput/ValidatedInput';
 export { DetailsBox } from './components/Details/DetailsBox';
 export { DetailRow } from './components/Details/DetailRow';

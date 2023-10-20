@@ -15,7 +15,7 @@ type DefaultButtonType = {
   buttonType?: 'default';
 } & ButtonProps;
 
-type Props<T = any> = {
+export type Props<T = any> = {
   modalTitle?: ReactNode;
   modalChildren?: ReactNode;
   fetcherAction: string;
