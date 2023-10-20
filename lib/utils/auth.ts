@@ -83,7 +83,7 @@ export function createAuthStorage<Roles extends string, User, RawDecodedJwtToken
     try {
       return await getUserFromApi(request);
     } catch (error) {
-      return null;
+      throw await destroyUserSession(request);
     }
   };
 
