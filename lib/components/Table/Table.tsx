@@ -24,6 +24,7 @@ type Props<T extends BaseItem, F extends BaseFilters> = TableProps & {
   filters?: F;
   handleFiltersChange?: (filters: Partial<F>) => void;
   selection?: { selectedRows: T[]; setSelectedRows: Dispatch<SetStateAction<T[]>> };
+  withBorder?: boolean;
 };
 
 export const Table = <T extends BaseItem, F extends BaseFilters>({
@@ -35,6 +36,7 @@ export const Table = <T extends BaseItem, F extends BaseFilters>({
   filters,
   handleFiltersChange,
   selection,
+  withBorder,
   ...props
 }: Props<T, F>) => {
   const { t } = useTranslation('mantine-console-components');
@@ -55,7 +57,7 @@ export const Table = <T extends BaseItem, F extends BaseFilters>({
 
   return (
     <Box>
-      <TableWrapper loading={loading}>
+      <TableWrapper loading={loading} withBorder={withBorder}>
         <MantineTable
           w="100%"
           verticalSpacing="md"
