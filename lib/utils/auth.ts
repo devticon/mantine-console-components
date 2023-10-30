@@ -1,5 +1,6 @@
 import { createCookieSessionStorage, redirect } from '@remix-run/node';
 import jwt_decode from 'jwt-decode';
+import { getRawErrorCode, getRawErrorMessage } from './errors';
 
 type RedirectStrategy<Roles extends string> = Partial<
   Record<`${Roles}_${Roles}` | `${Roles}_*` | `*_${Roles}` | '*_*', string>
@@ -83,7 +84,7 @@ export function createAuthStorage<Roles extends string, User, RawDecodedJwtToken
     try {
       return await getUserFromApi(request);
     } catch (error) {
-      console.error(error);
+      console.error({ code: getRawErrorCode(error), message: getRawErrorMessage(error) });
       throw await destroyUserSession(request);
     }
   };
