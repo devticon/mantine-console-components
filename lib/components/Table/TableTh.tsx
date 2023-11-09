@@ -1,6 +1,6 @@
-import { ActionIcon, Box, Group, Table } from '@mantine/core';
+import { ActionIcon, Box, Group, Table, Tooltip } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { TbArrowDown, TbArrowUp } from 'react-icons/tb';
+import { TbArrowDown, TbArrowUp, TbInfoCircle } from 'react-icons/tb';
 import invariant from 'tiny-invariant';
 import { getNsField, OrderBy, revertSortDirection } from '../../utils/hasura';
 import type { Props as TableColumnProps } from './TableColumn';
@@ -20,6 +20,7 @@ export const TableTh = <T extends BaseItem, F extends BaseFilters>({
   visibleFrom,
   sortable,
   title,
+  tooltipLabel,
 }: Props<T, F>) => {
   if (sortable) {
     invariant(filters, '`filters` is required if column is `sortable`');
@@ -49,6 +50,13 @@ export const TableTh = <T extends BaseItem, F extends BaseFilters>({
           <ActionIcon variant={isSorted ? 'filled' : 'subtle'} size="xs" aria-label={t('Table.sortColumn')}>
             <SortIcon size="0.875rem" onClick={handleToggleSort} />
           </ActionIcon>
+        )}
+        {tooltipLabel && (
+          <Tooltip label={tooltipLabel} withArrow>
+            <ActionIcon variant="subtle" size="xs">
+              <TbInfoCircle size="0.875rem" />
+            </ActionIcon>
+          </Tooltip>
         )}
       </Group>
     </Table.Th>

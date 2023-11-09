@@ -5,6 +5,7 @@ export type Props<T> = Omit<TableTdProps, 'title'> & {
   title?: string;
   dataKey: string;
   sortable?: boolean;
+  tooltipLabel?: string;
   render?: (item: T, index: number) => ReactNode;
 };
 
