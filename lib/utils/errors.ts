@@ -33,11 +33,11 @@ export function handleErrorFactory(i18nRemix: RemixI18Next, constraints: { key: 
     console.error({ code, message });
     console.error(error);
 
-    const translatedMessage =
-      t(`common:errors.${code}.${constraint?.key}`, { defaultValue: '' }) ||
-      t(`common:errors.${code}.${action}`, { defaultValue: '' }) ||
-      t(`common:errors.${code}.default`, { defaultValue: '' }) ||
-      t(`common:errors.${code}`, { defaultValue: message });
+    const translatedMessage = constraint
+      ? t(`common:errors.${code}.${constraint?.key}`, { defaultValue: message })
+      : t(`common:errors.${code}.${action}`, { defaultValue: '' }) ||
+        t(`common:errors.${code}.default`, { defaultValue: '' }) ||
+        t(`common:errors.${code}`, { defaultValue: message });
 
     if (constraint?.field) {
       return json({ fieldErrors: { [constraint.field]: translatedMessage } }, { status: 400 });
