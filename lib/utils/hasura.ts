@@ -2,8 +2,8 @@ import { set } from 'lodash';
 import type { BaseFilters } from '../components/Table/utils';
 
 export enum OrderBy {
-  Asc = 'asc',
-  Desc = 'desc',
+  Asc = 'ASC',
+  Desc = 'DESC',
 }
 
 export function getNsField(field: string, ns?: string) {
