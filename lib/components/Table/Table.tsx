@@ -3,7 +3,7 @@ import { Box, Checkbox, Table as MantineTable, Text } from '@mantine/core';
 import differenceBy from 'lodash/differenceBy';
 import unionBy from 'lodash/unionBy';
 import xorBy from 'lodash/xorBy';
-import type { Dispatch, ReactElement, SetStateAction } from 'react';
+import type { Dispatch, ReactElement, ReactNode, SetStateAction } from 'react';
 import { Children, isValidElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Props as TableColumnProps } from './TableColumn';
@@ -15,7 +15,7 @@ import type { BaseFilters, BaseItem } from './utils';
 
 type Child<T extends BaseItem> = ReactElement<TableColumnProps<T>> | false;
 
-type Props<T extends BaseItem, F extends BaseFilters> = TableProps & {
+type Props<T extends BaseItem, F extends BaseFilters> = Omit<TableProps, 'data'> & {
   children: Child<T> | Child<T>[];
   data: T[];
   loading?: boolean;
@@ -25,6 +25,7 @@ type Props<T extends BaseItem, F extends BaseFilters> = TableProps & {
   handleFiltersChange?: (filters: Partial<F>) => void;
   selection?: { selectedRows: T[]; setSelectedRows: Dispatch<SetStateAction<T[]>> };
   withBorder?: boolean;
+  additionalRows?: ReactNode;
 };
 
 export const Table = <T extends BaseItem, F extends BaseFilters>({
@@ -37,6 +38,7 @@ export const Table = <T extends BaseItem, F extends BaseFilters>({
   handleFiltersChange,
   selection,
   withBorder,
+  additionalRows,
   ...props
 }: Props<T, F>) => {
   const { t } = useTranslation('mantine-console-components');
@@ -110,6 +112,7 @@ export const Table = <T extends BaseItem, F extends BaseFilters>({
                 </MantineTable.Td>
               </MantineTable.Tr>
             )}
+            {additionalRows}
           </MantineTable.Tbody>
         </MantineTable>
       </TableWrapper>
