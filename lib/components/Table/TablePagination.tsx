@@ -38,7 +38,7 @@ export const TablePagination = <F extends BaseFilters>({
     } as Partial<F>);
   };
 
-  const handlePerPageChange = (newPerPage: string) => {
+  const handlePerPageChange = (newPerPage: string | null) => {
     handleFiltersChange?.({
       [pageKey]: 1,
       [perPageKey]: parseInt(newPerPage || '25'),
