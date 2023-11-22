@@ -1,7 +1,7 @@
 import { Button, Drawer, Group, SimpleGrid, useMantineTheme } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import type { ReactElement, ReactNode } from 'react';
-import { Children, cloneElement, isValidElement } from 'react';
+import { Children, cloneElement, isValidElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TbFilter, TbFilterX } from 'react-icons/tb';
 import type { Props as TableFilterProps } from './TableFilter';
@@ -28,10 +28,21 @@ export const TableFilters = <F extends BaseFilters>({
   const [opened, { open, close }] = useDisclosure(false);
   const theme = useMantineTheme();
   const isDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.md})`);
+  const [drawerFilters, setDrawerFilters] = useState<F>(filters);
 
   const hasDrawerFilters = Children.map(children, child => {
     return isValidElement(child) && !child.props.alwaysOn;
   }).some(Boolean);
+
+  const openDrawer = () => {
+    setDrawerFilters(filters);
+    open();
+  };
+
+  const closeDrawer = () => {
+    handleFiltersChange(drawerFilters);
+    close();
+  };
 
   const handleChild = (child: Child<F>, isAlwaysOn: boolean) => {
     if (!isValidElement(child)) {
@@ -43,8 +54,9 @@ export const TableFilters = <F extends BaseFilters>({
     const element = cloneElement(child, {
       alwaysOn: undefined,
       Icon: undefined,
-      value: filters,
-      onChange: (value: Partial<F>) => handleFiltersChange(value, debounce),
+      value: isAlwaysOn ? filters : drawerFilters,
+      onChange: (value: Partial<F>) =>
+        isAlwaysOn ? handleFiltersChange(value, debounce) : setDrawerFilters(c => ({ ...c, ...value })),
       variant: child.props.alwaysOn ? 'default' : 'filled',
     });
 
@@ -59,7 +71,7 @@ export const TableFilters = <F extends BaseFilters>({
 
   return (
     <>
-      <Drawer opened={opened} onClose={close} title={t('Table.filtersTitle')}>
+      <Drawer opened={opened} onClose={closeDrawer} title={t('Table.filtersTitle')}>
         <SimpleGrid cols={1} spacing="lg">
           {Children.map(children, child => handleChild(child, false))}
         </SimpleGrid>
@@ -71,7 +83,7 @@ export const TableFilters = <F extends BaseFilters>({
         </Group>
         <Group gap="sm">
           {hasDrawerFilters && (
-            <Button onClick={open} rightSection={<TbFilter size={20} />}>
+            <Button onClick={openDrawer} rightSection={<TbFilter size={20} />}>
               {t('Table.openFiltersButton')}
             </Button>
           )}
