@@ -1,5 +1,5 @@
-import { Button, Drawer, Group, SimpleGrid } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { Button, Drawer, Group, SimpleGrid, useMantineTheme } from '@mantine/core';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import type { ReactElement, ReactNode } from 'react';
 import { Children, cloneElement, isValidElement } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -26,6 +26,8 @@ export const TableFilters = <F extends BaseFilters>({
 }: Props<F>) => {
   const { t } = useTranslation('mantine-console-components');
   const [opened, { open, close }] = useDisclosure(false);
+  const theme = useMantineTheme();
+  const isDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.md})`);
 
   const hasDrawerFilters = Children.map(children, child => {
     return isValidElement(child) && !child.props.alwaysOn;
@@ -46,12 +48,12 @@ export const TableFilters = <F extends BaseFilters>({
       variant: child.props.alwaysOn ? 'default' : 'filled',
     });
 
-    if (isAlwaysOn && child.props.alwaysOn) {
-      return element;
-    } else if (!isAlwaysOn && !child.props.alwaysOn) {
-      return element;
+    if (isAlwaysOn) {
+      // display on page
+      return isDesktop && child.props.alwaysOn ? element : null;
     } else {
-      return null;
+      // display in drawer
+      return !isDesktop || !child.props.alwaysOn ? element : null;
     }
   };
 
