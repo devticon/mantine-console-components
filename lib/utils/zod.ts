@@ -1,4 +1,4 @@
-import type { z, ZodType, ZodSchema } from 'zod';
+import type { z, ZodSchema, ZodType } from 'zod';
 import { preprocess, string } from 'zod';
 import { numeric, text } from 'zod-form-data';
 
@@ -47,6 +47,16 @@ export function preprocessNumberInput(schema: ZodSchema = numeric(), params?: { 
         .replace(',', '.')
         .replace(params?.suffix || '', '')
         .replace(params?.prefix || '', '');
+    } else {
+      return value;
+    }
+  }, schema);
+}
+
+export function preprocessPatternInput(schema: ZodSchema = text()) {
+  return preprocess(value => {
+    if (typeof value === 'string') {
+      return value.replace('-', '').replace(' ', '');
     } else {
       return value;
     }
