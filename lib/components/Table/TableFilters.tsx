@@ -31,7 +31,7 @@ export const TableFilters = <F extends BaseFilters>({
   const [drawerFilters, setDrawerFilters] = useState<F>(filters);
 
   const hasDrawerFilters = Children.map(children, child => {
-    return isValidElement(child) && !child.props.alwaysOn;
+    return isValidElement(child) && (!child.props.alwaysOn || !isDesktop);
   }).some(Boolean);
 
   const openDrawer = () => {
