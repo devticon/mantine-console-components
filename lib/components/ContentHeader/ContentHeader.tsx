@@ -12,9 +12,17 @@ type Props = GroupProps & {
   actions?: ReactNode;
 };
 
-export const ContentHeader: FC<Props> = ({ title, titleOrder = 2, titleSize, breadcrumbs, actions, ...props }) => {
+export const ContentHeader: FC<Props> = ({
+  title,
+  titleOrder = 2,
+  titleSize,
+  breadcrumbs,
+  actions,
+  style,
+  ...props
+}) => {
   return (
-    <Group gap="xl" justify="space-between" align="center" {...props}>
+    <Group gap="xl" justify="space-between" align="center" style={{ ...style, overflowX: 'auto' }} {...props}>
       {breadcrumbs?.length ? (
         <Breadcrumbs separator={<TbChevronRight />}>
           {breadcrumbs.map(({ path, label }) => (
