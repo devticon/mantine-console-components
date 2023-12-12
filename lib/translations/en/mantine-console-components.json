@@ -10,6 +10,7 @@
     "filtersTitle": "Filters",
     "openFiltersButton": "Filters",
     "resetFiltersButton": "Reset",
+    "saveFiltersButton": "Save",
     "sortColumn": "Sort column"
   },
   "TransferList": {

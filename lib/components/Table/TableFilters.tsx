@@ -40,6 +40,10 @@ export const TableFilters = <F extends BaseFilters>({
   };
 
   const closeDrawer = () => {
+    close();
+  };
+
+  const saveDrawer = () => {
     handleFiltersChange(drawerFilters);
     close();
   };
@@ -74,6 +78,9 @@ export const TableFilters = <F extends BaseFilters>({
       <Drawer opened={opened} onClose={closeDrawer} title={t('Table.filtersTitle')}>
         <SimpleGrid cols={1} spacing="lg">
           {Children.map(children, child => handleChild(child, false))}
+          <Button onClick={saveDrawer} rightSection={<TbFilter size={20} />} fullWidth mt="auto">
+            {t('Table.saveFiltersButton')}
+          </Button>
         </SimpleGrid>
       </Drawer>
 
