@@ -52,7 +52,7 @@ export const TableTh = <T extends BaseItem, F extends BaseFilters>({
           </ActionIcon>
         )}
         {tooltipLabel && (
-          <Tooltip label={tooltipLabel} withArrow maw={160}>
+          <Tooltip label={tooltipLabel} withArrow maw={160} multiline>
             <ActionIcon variant="subtle" size="xs">
               <TbInfoCircle size="0.875rem" />
             </ActionIcon>

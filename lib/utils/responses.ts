@@ -35,3 +35,11 @@ export function serverError<Data = unknown>(data: Data, init?: Omit<ResponseInit
 export function notModified(init?: Omit<ResponseInit, 'status'>) {
   return new Response('', { ...init, status: 304 });
 }
+
+export async function tryOrNotFound<T>(fn: () => Promise<T>) {
+  try {
+    return await fn();
+  } catch (er) {
+    throw notFound({});
+  }
+}
