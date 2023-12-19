@@ -1,4 +1,4 @@
-import { Button, Drawer, Group, SimpleGrid, useMantineTheme } from '@mantine/core';
+import { ActionIcon, Button, Drawer, Group, SimpleGrid, useMantineTheme } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import type { ReactElement, ReactNode } from 'react';
 import { Children, cloneElement, isValidElement, useState } from 'react';
@@ -90,14 +90,30 @@ export const TableFilters = <F extends BaseFilters>({
         </Group>
         <Group gap="sm">
           {hasDrawerFilters && (
-            <Button onClick={openDrawer} rightSection={<TbFilter size={20} />}>
-              {t('Table.openFiltersButton')}
-            </Button>
+            <>
+              <Button visibleFrom="md" onClick={openDrawer} rightSection={<TbFilter size={20} />}>
+                {t('Table.openFiltersButton')}
+              </Button>
+              <ActionIcon hiddenFrom="md" size="lg" onClick={openDrawer} aria-label={t('Table.openFiltersButton')}>
+                <TbFilter size={20} />
+              </ActionIcon>
+            </>
           )}
           {handleFiltersReset && (
-            <Button onClick={handleFiltersReset} color="red" rightSection={<TbFilterX size={20} />}>
-              {t('Table.resetFiltersButton')}
-            </Button>
+            <>
+              <Button onClick={handleFiltersReset} color="red" rightSection={<TbFilterX size={20} />}>
+                {t('Table.resetFiltersButton')}
+              </Button>
+              <ActionIcon
+                hiddenFrom="md"
+                size="lg"
+                onClick={handleFiltersReset}
+                color="red"
+                aria-label={t('Table.resetFiltersButton')}
+              >
+                <TbFilterX size={20} />
+              </ActionIcon>
+            </>
           )}
           {actions}
         </Group>
