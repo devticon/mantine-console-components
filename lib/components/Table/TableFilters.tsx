@@ -101,7 +101,7 @@ export const TableFilters = <F extends BaseFilters>({
           )}
           {handleFiltersReset && (
             <>
-              <Button onClick={handleFiltersReset} color="red" rightSection={<TbFilterX size={20} />}>
+              <Button visibleFrom="md" onClick={handleFiltersReset} color="red" rightSection={<TbFilterX size={20} />}>
                 {t('Table.resetFiltersButton')}
               </Button>
               <ActionIcon
