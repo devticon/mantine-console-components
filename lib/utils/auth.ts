@@ -10,7 +10,7 @@ type Params<Roles extends string, User, RawDecodedJwtToken = any, DecodedJwtToke
   cookieSecrets?: string[];
   rawTokenMapper?: (raw: RawDecodedJwtToken) => DecodedJwtToken;
   extractUserRole: (data: { request: Request; token?: string | null; data?: DecodedJwtToken | null }) => Promise<Roles>;
-  getUserFromApi: (request: Request) => Promise<User>;
+  getUserFromApi: (request: Request, data: { token: string; data: DecodedJwtToken }) => Promise<User>;
   redirectStrategy: RedirectStrategy<Roles> | ((request: Request) => RedirectStrategy<Roles>);
 };
 
@@ -75,12 +75,13 @@ export function createAuthStorage<Roles extends string, User, RawDecodedJwtToken
 
   const getUser = async (request?: Request | null) => {
     const token = await getToken(request);
+    const decoded = await decodeToken(request);
 
-    if (!token || !request) {
+    if (!token || !request || !decoded) {
       return null;
     }
 
-    return await getUserFromApi(request);
+    return await getUserFromApi(request, { token, data: decoded });
   };
 
   const ensureRole = async (request: Request, expectedRoles: Roles[]) => {
