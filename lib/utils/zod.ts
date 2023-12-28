@@ -1,6 +1,8 @@
+import type { RemixI18Next } from 'remix-i18next';
 import type { z, ZodSchema, ZodType } from 'zod';
-import { preprocess, string } from 'zod';
+import { preprocess, setErrorMap, string } from 'zod';
 import { numeric, text } from 'zod-form-data';
+import { makeZodI18nMap } from 'zod-i18n-map';
 
 export { z, number, coerce, string, nativeEnum, array, boolean, object, preprocess } from 'zod';
 export { formData, numeric, text, file, repeatable, repeatableOfType, checkbox, json } from 'zod-form-data';
@@ -65,4 +67,9 @@ export function preprocessPatternInput(schema: ZodSchema = text()) {
 
 export function nullableText() {
   return text(string().nullish()).transform(v => v || null);
+}
+
+export async function setZodI18n(request: Request, i18nRemix: RemixI18Next) {
+  const t = await i18nRemix.getFixedT(request, ['zod', 'common']);
+  setErrorMap(makeZodI18nMap({ t, ns: ['zod', 'common'] }));
 }

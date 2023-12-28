@@ -8,6 +8,10 @@ import { resolve } from 'node:path';
 import { initReactI18next } from 'react-i18next';
 import { getInitialNamespaces, RemixI18Next } from 'remix-i18next';
 import { makeZodI18nMap } from 'zod-i18n-map';
+import zodEn from 'zod-i18n-map/locales/en/zod.json';
+import zodPl from 'zod-i18n-map/locales/pl/zod.json';
+import translationsEn from '../translations/en/mantine-console-components.json';
+import translationsPl from '../translations/pl/mantine-console-components.json';
 import { z } from './zod';
 
 export function createRemixI18n(supportedLngs: string[], prefix = '') {
@@ -62,6 +66,11 @@ export async function createI18nServerInstance(
       },
     });
 
+  instance.addResources('pl', 'zod', zodPl);
+  instance.addResources('en', 'zod', zodEn);
+  instance.addResources('pl', 'mantine-console-components', translationsPl);
+  instance.addResources('en', 'mantine-console-components', translationsEn);
+
   return instance;
 }
 
@@ -78,4 +87,9 @@ export async function createI18nClientInstance(prefix = '') {
       backend: { loadPath: `${prefix}/locales/{{lng}}/{{ns}}.json` },
       detection: { order: ['htmlTag'], caches: [] },
     });
+
+  i18next.addResources('pl', 'zod', zodPl);
+  i18next.addResources('en', 'zod', zodEn);
+  i18next.addResources('pl', 'mantine-console-components', translationsPl);
+  i18next.addResources('en', 'mantine-console-components', translationsEn);
 }
