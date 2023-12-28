@@ -58,8 +58,8 @@ export function createAuthStorage<Roles extends string, User, RawDecodedJwtToken
     return session.get('token');
   };
 
-  const decodeToken = async (request?: Request | null) => {
-    const token = await getToken(request);
+  const decodeToken = async (requestOrToken?: Request | null | string) => {
+    const token = typeof requestOrToken === 'string' ? requestOrToken : await getToken(requestOrToken);
 
     if (!token) {
       return null;
