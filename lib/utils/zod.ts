@@ -1,6 +1,7 @@
 import type { z, ZodSchema, ZodType } from 'zod';
 import { preprocess, string } from 'zod';
 import { numeric, text } from 'zod-form-data';
+import type { ZodString } from 'zod/lib/types';
 
 export { z, number, coerce, string, nativeEnum, array, boolean, object, preprocess } from 'zod';
 export { formData, numeric, text, file, repeatable, repeatableOfType, checkbox, json } from 'zod-form-data';
@@ -63,6 +64,6 @@ export function preprocessPatternInput(schema: ZodSchema = text()) {
   }, schema);
 }
 
-export function nullableText() {
-  return text(string().nullish()).transform(v => v || null);
+export function nullableText(schema: ZodString = string()) {
+  return text(schema.nullish()).transform(v => v || null);
 }
