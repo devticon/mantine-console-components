@@ -1,4 +1,5 @@
 export { Table } from './components/Table/Table';
+export { TablePagination } from './components/Table/TablePagination';
 export { TableColumn } from './components/Table/TableColumn';
 export { TableFilter } from './components/Table/TableFilter';
 export { TableFilters } from './components/Table/TableFilters';
