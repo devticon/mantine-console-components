@@ -1,5 +1,5 @@
 import { createCookieSessionStorage, redirect } from '@remix-run/node';
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 type RedirectStrategy<Roles extends string> = Partial<
   Record<`${Roles}_${Roles}` | `${Roles}_*` | `*_${Roles}` | '*_*', string>
@@ -66,7 +66,7 @@ export function createAuthStorage<Roles extends string, User, RawDecodedJwtToken
     }
 
     try {
-      const decodedJwt = jwt_decode(token) as RawDecodedJwtToken;
+      const decodedJwt = jwtDecode<RawDecodedJwtToken>(token);
       return rawTokenMapper ? rawTokenMapper(decodedJwt) : null;
     } catch {
       return null;

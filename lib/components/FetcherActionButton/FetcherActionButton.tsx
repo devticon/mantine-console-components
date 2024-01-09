@@ -37,7 +37,7 @@ export const FetcherActionButton = <T = any,>({
   ...props
 }: Props<T>) => {
   const { t } = useTranslation('mantine-console-components');
-  const fetcher = useFetcher();
+  const fetcher = useFetcher<any>();
 
   const handleSubmit = () => {
     fetcher.submit(fetcherTarget || null, {
