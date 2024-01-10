@@ -1,6 +1,7 @@
+import type { JSONSchema7 } from 'json-schema';
 import type { z, ZodSchema, ZodType } from 'zod';
-import { preprocess, string } from 'zod';
-import { numeric, text } from 'zod-form-data';
+import { number, preprocess, string } from 'zod';
+import { checkbox, formData, numeric, text } from 'zod-form-data';
 import type { ZodString } from 'zod/lib/types';
 
 export { z, number, coerce, string, nativeEnum, array, boolean, object, preprocess } from 'zod';
@@ -66,4 +67,24 @@ export function preprocessPatternInput(schema: ZodSchema = text()) {
 
 export function nullableText(schema: ZodString = string()) {
   return text(schema.nullish()).transform(v => v || null);
+}
+
+export function jsonSchemaToZod(schema: JSONSchema7) {
+  return formData(
+    Object.fromEntries(
+      Object.entries(schema.properties || {}).map(([name, options]) => {
+        if (typeof options === 'boolean') {
+          throw new Error('not_supported');
+        } else if (options.type === 'string') {
+          return [name, text()];
+        } else if (options.type === 'integer' || options.type === 'number') {
+          return [name, numeric(number())];
+        } else if (options.type === 'boolean') {
+          return [name, checkbox()];
+        } else {
+          throw new Error('not_supported');
+        }
+      }),
+    ),
+  );
 }
