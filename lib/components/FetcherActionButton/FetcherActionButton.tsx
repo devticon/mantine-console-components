@@ -26,8 +26,11 @@ export type Props<T = any> = {
   errorCallback?: (data: T) => void;
 } & (IconButtonType | DefaultButtonType);
 
-export const FetcherActionButton = forwardRef(
-  <T = any,>(
+type FetcherActionButtonType = <T = any>(props: Props<T> & { ref?: Ref<HTMLButtonElement> }) => JSX.Element;
+
+// @ts-ignore
+export const FetcherActionButton: FetcherActionButtonType = forwardRef<HTMLButtonElement, Props>(
+  (
     {
       modalTitle,
       modalChildren,
@@ -38,8 +41,8 @@ export const FetcherActionButton = forwardRef(
       errorCallback,
       children,
       ...props
-    }: Props<T>,
-    ref: Ref<HTMLButtonElement>,
+    },
+    ref,
   ) => {
     const { t } = useTranslation('mantine-console-components');
     const fetcher = useFetcher<any>();
