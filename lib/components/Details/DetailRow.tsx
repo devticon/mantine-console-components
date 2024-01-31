@@ -29,7 +29,8 @@ export const DetailRow: FC<Props> = ({ icon, label, value, copyText, actions, ..
         <Center
           w={rem(40)}
           h={rem(40)}
-          bg={`${primaryColor}.1`}
+          bg={`${primaryColor}.0`}
+          c={`${primaryColor}.6`}
           style={{ flexShrink: 0, borderRadius: radius[defaultRadius as keyof MantineRadiusValues] }}
         >
           {icon}
@@ -41,7 +42,7 @@ export const DetailRow: FC<Props> = ({ icon, label, value, copyText, actions, ..
         </Text>
         <Content />
       </Stack>
-      <Group ml="auto">
+      <Group>
         {copyText && <CopyButton value={copyText} />}
         {actions}
       </Group>
