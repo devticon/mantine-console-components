@@ -4,7 +4,6 @@
   "main": "./dist/cjs/main.js",
   "module": "./dist/esm/main.js",
   "types": "./dist/esm/main.d.ts",
-  "bin": "./copy-translations.sh",
   "sideEffects": false,
   "scripts": {
     "build": "npm run build:esm && npm run build:cjs",
