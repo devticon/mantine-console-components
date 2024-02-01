@@ -1,5 +1,5 @@
 import type { JSONSchema7 } from 'json-schema';
-import type { z, ZodSchema, ZodType } from 'zod';
+import type { z, ZodSchema, ZodType, ZodTypeAny } from 'zod';
 import { number, preprocess, string } from 'zod';
 import { checkbox, formData, numeric, text } from 'zod-form-data';
 import type { ZodString } from 'zod/lib/types';
@@ -61,6 +61,16 @@ export function preprocessPatternInput(schema: ZodSchema = text()) {
       return value.replace('-', '').replace(' ', '');
     } else {
       return value;
+    }
+  }, schema);
+}
+
+export function preprocessJSONInput<I extends ZodTypeAny>(schema: I) {
+  return preprocess(value => {
+    try {
+      return JSON.parse(value as string);
+    } catch {
+      return undefined;
     }
   }, schema);
 }
