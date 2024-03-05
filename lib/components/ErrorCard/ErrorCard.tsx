@@ -29,14 +29,26 @@ export const ErrorCard: FC<Props> = ({ errorCode }) => {
               Back to home page
             </Button>
           </>
+        ) : errorCode === 403 ? (
+          <>
+            <Title c="white" size="h1" mb="lg">
+              Something bad just happened...
+            </Title>
+            <Text size="lg" mb="xl" c={`${primaryColor}.1`}>
+              You do not have permission to access this page. If you think this is an error contact support.
+            </Text>
+            <Button size="lg" component="a" href="/">
+              Back to home page
+            </Button>
+          </>
         ) : (
           <>
             <Title c="white" size="h1" mb="lg">
               Something bad just happened...
             </Title>
             <Text size="lg" mb="xl" c={`${primaryColor}.1`}>
-              An unexpected server error has occurred! Please try refreshing the page, or contact the administrator if
-              the problem persists.
+              An unexpected server error has occurred! Please try refreshing the page, or contact support if the problem
+              persists.
             </Text>
             <Button size="lg" component="a" href={location.pathname}>
               Refresh page
