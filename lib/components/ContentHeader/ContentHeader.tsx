@@ -39,12 +39,12 @@ export const ContentHeader: FC<Props> = ({
               {label}
             </Anchor>
           ))}
-          <Title order={titleOrder} size={titleSize} lh="sm" style={{ textWrap: 'nowrap' }}>
+          <Title order={titleOrder} size={titleSize} lh="sm" styles={{ root: { textWrap: 'nowrap' } }}>
             {title}
           </Title>
         </Breadcrumbs>
       ) : (
-        <Title order={titleOrder} size={titleSize} lh="sm" style={{ textWrap: 'nowrap' }}>
+        <Title order={titleOrder} size={titleSize} lh="sm" styles={{ root: { textWrap: 'nowrap' } }}>
           {title}
         </Title>
       )}
