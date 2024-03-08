@@ -15,6 +15,8 @@ type Props<F extends BaseFilters> = {
   handleFiltersChange: (filters: Partial<F>, debounce?: boolean) => void;
   handleFiltersReset?: () => void;
   actions?: ReactNode;
+  openFiltersButtonLabel?: string;
+  saveFiltersButtonLabel?: string;
 };
 
 export const TableFilters = <F extends BaseFilters>({
@@ -23,6 +25,8 @@ export const TableFilters = <F extends BaseFilters>({
   handleFiltersChange,
   handleFiltersReset,
   actions,
+  saveFiltersButtonLabel,
+  openFiltersButtonLabel,
 }: Props<F>) => {
   const { t } = useTranslation('mantine-console-components');
   const [opened, { open, close }] = useDisclosure(false);
@@ -79,7 +83,7 @@ export const TableFilters = <F extends BaseFilters>({
         <SimpleGrid cols={1} spacing="lg">
           {Children.map(children, child => handleChild(child, false))}
           <Button hiddenFrom="md" onClick={saveDrawer} rightSection={<TbFilter size={20} />} fullWidth mt="auto">
-            {t('Table.saveFiltersButton')}
+            {saveFiltersButtonLabel || t('Table.saveFiltersButton')}
           </Button>
         </SimpleGrid>
       </Drawer>
@@ -92,7 +96,7 @@ export const TableFilters = <F extends BaseFilters>({
           {hasDrawerFilters && (
             <>
               <Button visibleFrom="md" onClick={openDrawer} rightSection={<TbFilter size={20} />}>
-                {t('Table.openFiltersButton')}
+                {openFiltersButtonLabel || t('Table.openFiltersButton')}
               </Button>
               <ActionIcon hiddenFrom="md" size="lg" onClick={openDrawer} aria-label={t('Table.openFiltersButton')}>
                 <TbFilter size={20} />
