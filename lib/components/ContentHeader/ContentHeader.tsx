@@ -34,16 +34,17 @@ export const ContentHeader: FC<Props> = ({
               component={Link}
               to={path}
               c="dimmed"
+              style={{ textWrap: 'nowrap' }}
             >
               {label}
             </Anchor>
           ))}
-          <Title order={titleOrder} size={titleSize} lh="sm">
+          <Title order={titleOrder} size={titleSize} lh="sm" style={{ textWrap: 'nowrap' }}>
             {title}
           </Title>
         </Breadcrumbs>
       ) : (
-        <Title order={titleOrder} size={titleSize} lh="sm">
+        <Title order={titleOrder} size={titleSize} lh="sm" style={{ textWrap: 'nowrap' }}>
           {title}
         </Title>
       )}
