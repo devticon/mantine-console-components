@@ -2,9 +2,12 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/en';
 import 'dayjs/locale/pl';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+import timezone from 'dayjs/plugin/timezone';
 
 dayjs.locale('pl');
 dayjs.extend(localizedFormat);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('Europe/Warsaw');
 
 export function formatDate(date: Date | number | string): string {
   return dayjs(date).format('L');
@@ -25,3 +28,5 @@ export function parseDate(date: Date | string | null | undefined) {
     return null;
   }
 }
+
+export { dayjs };
