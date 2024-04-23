@@ -1,8 +1,19 @@
 import { json } from '@remix-run/node';
 import type { RemixI18Next } from 'remix-i18next';
 
+export class CodeError extends Error {
+  constructor(
+    message: string,
+    public code: string,
+  ) {
+    super(message);
+  }
+}
+
 export function getRawErrorCode(error: unknown) {
-  if (error instanceof Error) {
+  if (error instanceof CodeError) {
+    return error.code;
+  } else if (error instanceof Error && 'gqlErrors' in error) {
     // @ts-ignore
     return (error.gqlErrors?.[0]?.extensions?.code as string) || 'INTERNAL_ERROR';
   } else if (typeof error === 'string') {
@@ -13,7 +24,9 @@ export function getRawErrorCode(error: unknown) {
 }
 
 export function getRawErrorMessage(error: unknown) {
-  if (error instanceof Error) {
+  if (error instanceof CodeError) {
+    return error.message;
+  } else if (error instanceof Error && 'gqlErrors' in error) {
     // @ts-ignore
     return (error.gqlErrors?.[0]?.message as string) || error.message;
   } else if (typeof error === 'string') {
