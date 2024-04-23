@@ -1,4 +1,4 @@
-import { set } from 'lodash';
+import _set from 'lodash/set';
 import type { BaseFilters } from '../components/Table/utils';
 
 export enum OrderBy {
@@ -32,7 +32,7 @@ export function getBaseVariables(filters: BaseFilters, ns?: string) {
   } = {};
 
   if (typeof orderBy === 'string' && typeof orderDir === 'string') {
-    variables.orderBy = set({}, orderBy, orderDir);
+    variables.orderBy = _set({}, orderBy, orderDir);
   }
 
   if (typeof limit === 'number') {
