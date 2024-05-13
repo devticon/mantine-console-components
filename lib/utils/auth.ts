@@ -100,7 +100,7 @@ export function createAuthStorage<Roles extends string, User, RawDecodedJwtToken
       ];
 
       const firstRedirect = redirects.find(Boolean);
-      const params = new URLSearchParams({ redirectTo: request.url });
+      const params = new URLSearchParams({ redirectTo: request.url.replace('http://', 'https://') });
       throw redirect(`${firstRedirect || '/'}?${params.toString()}`);
     }
   };
