@@ -99,8 +99,12 @@ export function createAuthStorage<Roles extends string, User, RawDecodedJwtToken
         strategy['*_*'],
       ];
 
+      const redirectTo = request.url.includes('http://localhost')
+        ? request.url
+        : request.url.replace('http://', 'https://');
+
       const firstRedirect = redirects.find(Boolean);
-      const params = new URLSearchParams({ redirectTo: request.url.replace('http://', 'https://') });
+      const params = new URLSearchParams({ redirectTo });
       throw redirect(`${firstRedirect || '/'}?${params.toString()}`);
     }
   };
