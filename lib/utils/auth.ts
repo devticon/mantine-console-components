@@ -15,9 +15,10 @@ type Params<Roles extends string, User, RawDecodedJwtToken = any, DecodedJwtToke
   redirectStrategy: RedirectStrategy<Roles> | ((request: Request) => RedirectStrategy<Roles>);
 };
 
-type SessionData = {
+export type SessionData = {
   accessToken: string;
-  refreshToken: string;
+  refreshToken?: string;
+  [key: string]: any;
 };
 
 export function createAuthStorage<Roles extends string, User, RawDecodedJwtToken = any, DecodedJwtToken = any>({
