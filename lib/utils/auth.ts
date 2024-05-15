@@ -1,3 +1,4 @@
+import type { Session } from '@remix-run/node';
 import { createCookieSessionStorage, redirect } from '@remix-run/node';
 import type { JwtPayload } from 'jwt-decode';
 import { jwtDecode } from 'jwt-decode';
@@ -60,6 +61,11 @@ export function createAuthStorage<
     const session = await storage.getSession(cookies);
     const newCookies = await storage.destroySession(session);
     return redirect(redirectTo, { headers: { 'Set-Cookie': newCookies } });
+  };
+
+  const getUserSession = async (request: Request): Promise<Session<SD>> => {
+    const cookies = request.headers.get('Cookie');
+    return await storage.getSession(cookies);
   };
 
   const getToken = async (request?: Request | null): Promise<string | null> => {
@@ -137,6 +143,7 @@ export function createAuthStorage<
     storage,
     createUserSession,
     destroyUserSession,
+    getUserSession,
     getToken,
     getRefreshToken,
     decodeToken,
