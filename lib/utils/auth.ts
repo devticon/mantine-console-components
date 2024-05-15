@@ -21,7 +21,13 @@ export type SessionData = {
   [key: string]: any;
 };
 
-export function createAuthStorage<Roles extends string, User, RawDecodedJwtToken = any, DecodedJwtToken = any>({
+export function createAuthStorage<
+  Roles extends string,
+  User,
+  RawDecodedJwtToken = any,
+  DecodedJwtToken = any,
+  SD extends SessionData = SessionData,
+>({
   cookieName,
   cookieSecrets,
   rawTokenMapper,
@@ -29,7 +35,7 @@ export function createAuthStorage<Roles extends string, User, RawDecodedJwtToken
   getUserFromApi,
   redirectStrategy,
 }: Params<Roles, User, RawDecodedJwtToken, DecodedJwtToken>) {
-  const storage = createCookieSessionStorage<SessionData>({
+  const storage = createCookieSessionStorage<SD>({
     cookie: {
       name: cookieName,
       secure: process.env.NODE_ENV === 'production',
