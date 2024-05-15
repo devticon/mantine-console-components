@@ -1,4 +1,5 @@
 import { createCookieSessionStorage, redirect } from '@remix-run/node';
+import type { JwtPayload } from 'jwt-decode';
 import { jwtDecode } from 'jwt-decode';
 
 type RedirectStrategy<Roles extends string> = Partial<
@@ -14,6 +15,11 @@ type Params<Roles extends string, User, RawDecodedJwtToken = any, DecodedJwtToke
   redirectStrategy: RedirectStrategy<Roles> | ((request: Request) => RedirectStrategy<Roles>);
 };
 
+type SessionData = {
+  accessToken: string;
+  refreshToken: string;
+};
+
 export function createAuthStorage<Roles extends string, User, RawDecodedJwtToken = any, DecodedJwtToken = any>({
   cookieName,
   cookieSecrets,
@@ -22,7 +28,7 @@ export function createAuthStorage<Roles extends string, User, RawDecodedJwtToken
   getUserFromApi,
   redirectStrategy,
 }: Params<Roles, User, RawDecodedJwtToken, DecodedJwtToken>) {
-  const storage = createCookieSessionStorage({
+  const storage = createCookieSessionStorage<SessionData>({
     cookie: {
       name: cookieName,
       secure: process.env.NODE_ENV === 'production',
@@ -34,9 +40,10 @@ export function createAuthStorage<Roles extends string, User, RawDecodedJwtToken
     },
   });
 
-  const createUserSession = async (token: string, redirectTo: string) => {
+  const createUserSession = async (data: SessionData, redirectTo: string) => {
     const session = await storage.getSession();
-    session.set('token', token);
+    session.set('accessToken', data.accessToken);
+    session.set('refreshToken', data.refreshToken);
     const newCookies = await storage.commitSession(session);
     return redirect(redirectTo, { headers: { 'Set-Cookie': newCookies } });
   };
@@ -55,7 +62,17 @@ export function createAuthStorage<Roles extends string, User, RawDecodedJwtToken
 
     const cookies = request.headers.get('Cookie');
     const session = await storage.getSession(cookies);
-    return session.get('token');
+    return session.get('accessToken') || null;
+  };
+
+  const getRefreshToken = async (request?: Request | null): Promise<string | null> => {
+    if (!request) {
+      return null;
+    }
+
+    const cookies = request.headers.get('Cookie');
+    const session = await storage.getSession(cookies);
+    return session.get('refreshToken') || null;
   };
 
   const decodeToken = async (requestOrToken?: Request | null | string) => {
@@ -114,8 +131,14 @@ export function createAuthStorage<Roles extends string, User, RawDecodedJwtToken
     createUserSession,
     destroyUserSession,
     getToken,
+    getRefreshToken,
     decodeToken,
     getUser,
     ensureRole,
   };
+}
+
+export function isTokenExpired(token: string) {
+  const { exp } = jwtDecode(token) as JwtPayload;
+  return exp! * 1000 < Date.now();
 }
