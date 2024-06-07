@@ -4,7 +4,7 @@ import i18next, { createInstance } from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import FsBackend from 'i18next-fs-backend';
 import HttpBackend from 'i18next-http-backend';
-import { resolve } from 'node:path';
+import { resolve } from 'path';
 import { initReactI18next } from 'react-i18next';
 import { getInitialNamespaces, RemixI18Next } from 'remix-i18next';
 import { makeZodI18nMap } from 'zod-i18n-map';
