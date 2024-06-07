@@ -1,7 +1,7 @@
 import { TextInput } from '@mantine/core';
 import type { Fetcher } from '@remix-run/react';
 import { useActionData } from '@remix-run/react';
-import get from 'lodash/get';
+import { get } from 'lodash-es';
 import type { ComponentProps, ElementType } from 'react';
 
 type Props<C extends ElementType = typeof TextInput> = ComponentProps<C> & {

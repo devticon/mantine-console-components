@@ -1,6 +1,6 @@
 import type { BoxProps } from '@mantine/core';
 import { ActionIcon, Box, Checkbox, Combobox, Group, Paper, TextInput, useCombobox } from '@mantine/core';
-import xor from 'lodash/xor';
+import { xor } from 'lodash-es';
 import type { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';

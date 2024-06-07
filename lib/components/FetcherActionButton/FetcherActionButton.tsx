@@ -2,7 +2,7 @@ import type { ActionIconProps, ButtonProps } from '@mantine/core';
 import { ActionIcon, Button } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useFetcher } from '@remix-run/react';
-import omit from 'lodash/omit';
+import { omit } from 'lodash-es';
 import type { MouseEvent, ReactNode, Ref } from 'react';
 import { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';

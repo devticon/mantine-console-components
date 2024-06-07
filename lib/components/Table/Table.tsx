@@ -1,8 +1,6 @@
 import type { TableProps } from '@mantine/core';
 import { Box, Checkbox, Table as MantineTable, Text } from '@mantine/core';
-import differenceBy from 'lodash/differenceBy';
-import unionBy from 'lodash/unionBy';
-import xorBy from 'lodash/xorBy';
+import { differenceBy, unionBy, xorBy } from 'lodash-es';
 import type { Dispatch, ReactElement, ReactNode, SetStateAction } from 'react';
 import { Children, isValidElement } from 'react';
 import { useTranslation } from 'react-i18next';

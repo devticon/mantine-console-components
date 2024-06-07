@@ -1,5 +1,5 @@
 import { Table } from '@mantine/core';
-import get from 'lodash/get';
+import { get } from 'lodash-es';
 import type { Props as TableColumnProps } from './TableColumn';
 import type { BaseItem } from './utils';
 
