@@ -106,12 +106,14 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
           parseDate(filters[`${props.name}From` as keyof F] as string),
           parseDate(filters[`${props.name}To` as keyof F] as string),
         ]}
-        onChange={([from, to]) =>
-          onChange({
-            [`${props.name}From`]: from ? dayjs(from).startOf('day').toISOString() : null,
-            [`${props.name}To`]: to ? dayjs(to).endOf('day').toISOString() : null,
-          } as Partial<F>)
-        }
+        onChange={([from, to]) => {
+          if (from && to) {
+            onChange({
+              [`${props.name}From`]: dayjs(from).startOf('day').toISOString(),
+              [`${props.name}To`]: dayjs(to).endOf('day').toISOString(),
+            } as Partial<F>);
+          }
+        }}
         {...props}
         type="range"
       />
