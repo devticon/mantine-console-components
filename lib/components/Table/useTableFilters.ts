@@ -14,7 +14,7 @@ export function useTableFilters<F extends BaseFilters>({ initialFilters, default
   const [filters, setFilters] = useState(initialFilters);
 
   const handleDebouncedSearchParams = useMemo(() => {
-    return debounce(setSearchParams, 500);
+    return debounce(setSearchParams, 1000);
   }, [setSearchParams]);
 
   const handleFiltersChange = (partialFilters: Partial<F>, debounce = false) => {
