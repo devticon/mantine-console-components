@@ -1,7 +1,9 @@
 import { Group, MultiSelect, NumberInput, Select, Switch, TextInput } from '@mantine/core';
-import { DatePickerInput, DateTimePicker } from '@mantine/dates';
+import { DatePickerInput, DateTimePicker, DateValue } from '@mantine/dates';
+import type { DatePickerValue } from '@mantine/dates/lib/types/DatePickerValue';
 import dayjs from 'dayjs';
 import type { ComponentProps, ReactNode } from 'react';
+import { useState } from 'react';
 import type { IconType } from 'react-icons';
 import invariant from 'tiny-invariant';
 import { parseDate } from '../../utils/date';
@@ -28,6 +30,11 @@ export type Props<F extends BaseFilters> = {
 export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, ...props }: Props<F>) => {
   invariant(filters, '`filters` is required');
   invariant(onChange, '`onChange` is required');
+
+  const [tmpDateRangeValue, setTmpDateRangeValue] = useState([
+    parseDate(filters[`${props.name}From` as keyof F] as string),
+    parseDate(filters[`${props.name}To` as keyof F] as string),
+  ] as DatePickerValue<'range'>);
 
   if (props.type === 'text') {
     return (
@@ -102,11 +109,10 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
       <DatePickerInput
         clearable
         allowSingleDateInRange
-        value={[
-          parseDate(filters[`${props.name}From` as keyof F] as string),
-          parseDate(filters[`${props.name}To` as keyof F] as string),
-        ]}
+        value={tmpDateRangeValue}
         onChange={([from, to]) => {
+          setTmpDateRangeValue([from, to]);
+
           if (from && to) {
             onChange({
               [`${props.name}From`]: dayjs(from).startOf('day').toISOString(),
