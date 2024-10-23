@@ -31,7 +31,7 @@ export function useTableFilters<F extends BaseFilters>({ initialFilters, default
 
   const handleFiltersReset = () => {
     setFilters(defaultFilters);
-    setSearchParams(mapObjectToSearchParams({}));
+    setSearchParams(mapObjectToSearchParams(defaultFilters));
   };
 
   useEffect(() => {
