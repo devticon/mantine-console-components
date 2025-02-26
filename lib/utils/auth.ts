@@ -1,5 +1,6 @@
 import type { Session } from '@remix-run/node';
 import { createCookieSessionStorage, redirect } from '@remix-run/node';
+import axios from 'axios';
 import type { JwtPayload } from 'jwt-decode';
 import { jwtDecode } from 'jwt-decode';
 
@@ -68,24 +69,31 @@ export function createAuthStorage<
     return await storage.getSession(cookies);
   };
 
-  const getToken = async (request?: Request | null): Promise<string | null> => {
+  const getToken = async (
+    request?: Request | null,
+    type: 'accessToken' | 'refreshToken' = 'accessToken',
+  ): Promise<string | null> => {
     if (!request) {
       return null;
     }
 
     const cookies = request.headers.get('Cookie');
     const session = await storage.getSession(cookies);
-    return session.get('accessToken') || null;
+    const token = session.get(type) || null;
+
+    if (!token) {
+      return null;
+    }
+
+    if (isTokenExpired(token)) {
+      return null;
+    }
+
+    return token;
   };
 
   const getRefreshToken = async (request?: Request | null): Promise<string | null> => {
-    if (!request) {
-      return null;
-    }
-
-    const cookies = request.headers.get('Cookie');
-    const session = await storage.getSession(cookies);
-    return session.get('refreshToken') || null;
+    return getToken(request, 'refreshToken');
   };
 
   const decodeToken = async (requestOrToken?: Request | null | string) => {
@@ -139,6 +147,74 @@ export function createAuthStorage<
     }
   };
 
+  const refreshAccessToken = async (request: Request, userData: object) => {
+    const refreshToken = await getRefreshToken(request);
+
+    if (!refreshToken) {
+      return {
+        accessToken: null,
+        refreshToken: null,
+      };
+    }
+
+    const { url } = jwtDecode(refreshToken) as JwtPayload & { url: string };
+
+    try {
+      const client = axios.create({
+        baseURL: url,
+      });
+
+      const response = await client.post<{ accessToken: string }>('/refresh', {
+        refreshToken,
+        userData: userData,
+      });
+
+      return {
+        accessToken: response.data.accessToken as string,
+        refreshToken,
+      };
+    } catch (error) {
+      console.error('Error refreshing access token');
+      console.error(error);
+
+      return {
+        accessToken: null,
+        refreshToken: null,
+      };
+    }
+  };
+
+  const handleForceRefreshToken = async (request: Request, userData: object, redirect?: string) => {
+    const { accessToken, refreshToken } = await refreshAccessToken(request, userData);
+
+    if (!accessToken || !refreshToken) {
+      return await destroyUserSession(request);
+    } else {
+      return await createUserSession({ accessToken, refreshToken }, redirect || request.url);
+    }
+  };
+
+  const handleCheckTokens = async (request: Request, userData: object) => {
+    const currentAccessToken = await getToken(request);
+    const currentRefreshToken = await getRefreshToken(request);
+
+    if (currentAccessToken) {
+      return null;
+    }
+
+    if (!currentRefreshToken) {
+      return null;
+    }
+
+    const { accessToken, refreshToken } = await refreshAccessToken(request, userData);
+
+    if (!accessToken || !refreshToken) {
+      return await destroyUserSession(request);
+    } else {
+      return await createUserSession({ accessToken, refreshToken }, request.url);
+    }
+  };
+
   return {
     storage,
     createUserSession,
@@ -149,6 +225,9 @@ export function createAuthStorage<
     decodeToken,
     getUser,
     ensureRole,
+    refreshAccessToken,
+    handleForceRefreshToken,
+    handleCheckTokens,
   };
 }
 

@@ -25,6 +25,7 @@
     "@mantine/notifications": "^7.0.0",
     "@remix-run/node": "^1.0.0 || ^2.0.0",
     "@remix-run/react": "^1.0.0 || ^2.0.0",
+    "axios": "^1.8.1",
     "dayjs": "^1.11.10",
     "i18next-browser-languagedetector": "^8.0.0",
     "i18next-fs-backend": "^2.3.1",
