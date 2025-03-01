@@ -5,9 +5,10 @@ import type { FC, ReactNode } from 'react';
 type Props = {
   errorCode?: string | number;
   customContent?: ReactNode;
+  defaultContentOverrides: Record<string | number, ReactNode>;
 };
 
-export const ErrorCard: FC<Props> = ({ errorCode, customContent }) => {
+export const ErrorCard: FC<Props> = ({ errorCode, customContent, defaultContentOverrides }) => {
   const location = useLocation();
   const { primaryColor } = useMantineTheme();
 
@@ -53,6 +54,7 @@ export const ErrorCard: FC<Props> = ({ errorCode, customContent }) => {
         </Button>
       </>
     ),
+    ...defaultContentOverrides,
   };
 
   return (
