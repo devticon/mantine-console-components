@@ -184,6 +184,17 @@ export function createAuthStorage<
     }
   };
 
+  const getOrRefreshAccessToken = async (request: Request) => {
+    const accessToken = await getToken(request);
+
+    if (accessToken) {
+      return accessToken;
+    } else {
+      const newTokens = await refreshAccessToken(request, {});
+      return newTokens.accessToken;
+    }
+  };
+
   const handleForceRefreshToken = async (request: Request, userData: object, redirect?: string) => {
     const { accessToken, refreshToken } = await refreshAccessToken(request, userData);
 
@@ -226,6 +237,7 @@ export function createAuthStorage<
     getUser,
     ensureRole,
     refreshAccessToken,
+    getOrRefreshAccessToken,
     handleForceRefreshToken,
     handleCheckTokens,
   };
