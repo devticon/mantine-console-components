@@ -190,7 +190,7 @@ export function createAuthStorage<
     if (!accessToken || !refreshToken) {
       return await destroyUserSession(request);
     } else {
-      return await createUserSession({ accessToken, refreshToken }, redirect || request.url);
+      return await createUserSession({ accessToken, refreshToken }, redirect || new URL(request.url).pathname);
     }
   };
 
@@ -211,7 +211,7 @@ export function createAuthStorage<
     if (!accessToken || !refreshToken) {
       return await destroyUserSession(request);
     } else {
-      return await createUserSession({ accessToken, refreshToken }, request.url);
+      return await createUserSession({ accessToken, refreshToken }, new URL(request.url).pathname);
     }
   };
 
