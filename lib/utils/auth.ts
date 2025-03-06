@@ -85,9 +85,9 @@ export function createAuthStorage<
       return null;
     }
 
-    if (isTokenExpired(token)) {
-      return null;
-    }
+    // if (isTokenExpired(token)) {
+    //   return null;
+    // }
 
     return token;
   };
@@ -150,7 +150,7 @@ export function createAuthStorage<
   const refreshAccessToken = async (request: Request, userData: object) => {
     const refreshToken = await getRefreshToken(request);
 
-    if (!refreshToken) {
+    if (!refreshToken || isTokenExpired(refreshToken)) {
       return {
         accessToken: null,
         refreshToken: null,
@@ -187,7 +187,7 @@ export function createAuthStorage<
   const getOrRefreshAccessToken = async (request: Request) => {
     const accessToken = await getToken(request);
 
-    if (accessToken) {
+    if (accessToken && !isTokenExpired(accessToken)) {
       return accessToken;
     } else {
       const newTokens = await refreshAccessToken(request, {});
@@ -209,11 +209,11 @@ export function createAuthStorage<
     const currentAccessToken = await getToken(request);
     const currentRefreshToken = await getRefreshToken(request);
 
-    if (currentAccessToken) {
+    if (currentAccessToken && !isTokenExpired(currentAccessToken)) {
       return null;
     }
 
-    if (!currentRefreshToken) {
+    if (!currentRefreshToken || isTokenExpired(currentRefreshToken)) {
       return null;
     }
 
