@@ -184,13 +184,13 @@ export function createAuthStorage<
     }
   };
 
-  const getOrRefreshAccessToken = async (request: Request) => {
+  const getOrRefreshAccessToken = async (request: Request, userData: object = {}) => {
     const accessToken = await getToken(request);
 
     if (accessToken && !isTokenExpired(accessToken)) {
       return accessToken;
     } else {
-      const newTokens = await refreshAccessToken(request, {});
+      const newTokens = await refreshAccessToken(request, userData);
       return newTokens.accessToken;
     }
   };
@@ -205,7 +205,7 @@ export function createAuthStorage<
     }
   };
 
-  const handleCheckTokens = async (request: Request, userData: object) => {
+  const handleCheckTokens = async (request: Request, userData: object = {}) => {
     const currentAccessToken = await getToken(request);
     const currentRefreshToken = await getRefreshToken(request);
 
