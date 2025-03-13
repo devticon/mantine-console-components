@@ -58,7 +58,7 @@ export function preprocessNumberInput(schema: ZodSchema = numeric(), params?: { 
 export function preprocessPatternInput(schema: ZodSchema = text()) {
   return preprocess(value => {
     if (typeof value === 'string') {
-      return value.replace('-', '').replace(' ', '');
+      return value.replace(/-/g, '').replace(/_/g, '');
     } else {
       return value;
     }
