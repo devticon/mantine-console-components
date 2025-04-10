@@ -1,5 +1,5 @@
 import type { JSONSchema7 } from 'json-schema';
-import type { z, ZodSchema, ZodType, ZodTypeAny } from 'zod';
+import type { TypeOf, ZodSchema, ZodType, ZodTypeAny } from 'zod';
 import { number, preprocess, string } from 'zod';
 import { checkbox, formData, numeric, text } from 'zod-form-data';
 import type { ZodString } from 'zod/lib/types';
@@ -7,12 +7,20 @@ import type { ZodString } from 'zod/lib/types';
 export { z, number, coerce, string, nativeEnum, array, boolean, object, preprocess } from 'zod';
 export { formData, numeric, text, file, repeatable, repeatableOfType, checkbox, json } from 'zod-form-data';
 
-export function validate<T extends ZodType<any, any, any>>(value: URLSearchParams | FormData | any, schema: T) {
+export type ValidateResult<T> = {
+  data: T | undefined;
+  fieldErrors: Record<string, string> | undefined;
+};
+
+export function validate<T extends ZodType>(
+  value: URLSearchParams | FormData | any,
+  schema: T,
+): ValidateResult<TypeOf<T>> {
   const result = schema.safeParse(value);
 
   if (result.success) {
     return {
-      data: result.data as z.infer<T>,
+      data: result.data,
       fieldErrors: undefined,
     };
   } else {
@@ -23,17 +31,17 @@ export function validate<T extends ZodType<any, any, any>>(value: URLSearchParam
   }
 }
 
-export async function getFormData<T extends ZodType<any, any, any>>(request: Pick<Request, 'formData'>, schema: T) {
+export async function getFormData<T extends ZodType>(request: Pick<Request, 'formData'>, schema: T) {
   const value = await request.formData();
   return validate(value, schema);
 }
 
-export async function getJSON<T extends ZodType<any, any, any>>(request: Pick<Request, 'json'>, schema: T) {
+export async function getJSON<T extends ZodType>(request: Pick<Request, 'json'>, schema: T) {
   const value = await request.json();
   return validate(value, schema);
 }
 
-export async function getSearchParams<T extends ZodType<any, any, any>>(request: Pick<Request, 'url'>, schema: T) {
+export async function getSearchParams<T extends ZodType>(request: Pick<Request, 'url'>, schema: T) {
   const value = new URL(request.url).searchParams;
   return validate(value, schema);
 }
