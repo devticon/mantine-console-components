@@ -1,4 +1,4 @@
-import type { ActionIconProps, ButtonProps } from '@mantine/core';
+import type { ActionIconProps, ButtonProps, ModalProps } from '@mantine/core';
 import { ActionIcon, Button } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useFetcher } from '@remix-run/react';
@@ -19,6 +19,7 @@ type DefaultButtonType = {
 export type Props<T = any> = {
   modalTitle?: ReactNode;
   modalChildren?: ReactNode;
+  modalProps?: Partial<ModalProps>;
   fetcherAction: string;
   fetcherTarget?: any;
   successMessage?: string;
@@ -34,6 +35,7 @@ export const FetcherActionButton: FetcherActionButtonType = forwardRef<HTMLButto
     {
       modalTitle,
       modalChildren,
+      modalProps,
       fetcherAction,
       fetcherTarget,
       successMessage,
@@ -63,6 +65,7 @@ export const FetcherActionButton: FetcherActionButtonType = forwardRef<HTMLButto
         labels: { confirm: t('FetcherActionButton.confirm'), cancel: t('FetcherActionButton.cancel') },
         centered: true,
         onConfirm: handleSubmit,
+        ...modalProps,
       });
     };
 
