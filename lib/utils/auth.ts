@@ -1,5 +1,5 @@
 import type { Session } from '@remix-run/node';
-import { createCookieSessionStorage, redirect } from '@remix-run/node';
+import { createCookieSessionStorage, json, redirect } from '@remix-run/node';
 import axios from 'axios';
 import type { JwtPayload } from 'jwt-decode';
 import { jwtDecode } from 'jwt-decode';
@@ -49,12 +49,17 @@ export function createAuthStorage<
     },
   });
 
-  const createUserSession = async (data: SessionData, redirectTo: string) => {
+  const createUserSession = async (data: SessionData, redirectTo?: string) => {
     const session = await storage.getSession();
     session.set('accessToken', data.accessToken);
     session.set('refreshToken', data.refreshToken);
     const newCookies = await storage.commitSession(session);
-    return redirect(redirectTo, { headers: { 'Set-Cookie': newCookies } });
+
+    if (redirectTo) {
+      return redirect(redirectTo, { headers: { 'Set-Cookie': newCookies } });
+    } else {
+      return json({}, { headers: { 'Set-Cookie': newCookies } });
+    }
   };
 
   const destroyUserSession = async (request: Request, redirectTo = '/') => {
@@ -201,7 +206,7 @@ export function createAuthStorage<
     if (!accessToken || !refreshToken) {
       return await destroyUserSession(request);
     } else {
-      return await createUserSession({ accessToken, refreshToken }, redirect || new URL(request.url).pathname);
+      return await createUserSession({ accessToken, refreshToken }, redirect);
     }
   };
 
@@ -222,7 +227,7 @@ export function createAuthStorage<
     if (!accessToken || !refreshToken) {
       return await destroyUserSession(request);
     } else {
-      return await createUserSession({ accessToken, refreshToken }, new URL(request.url).pathname);
+      return await createUserSession({ accessToken, refreshToken });
     }
   };
 
