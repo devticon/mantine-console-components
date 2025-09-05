@@ -218,7 +218,7 @@ export function createAuthStorage<
       return null;
     }
 
-    if (!currentRefreshToken || isTokenExpired(currentRefreshToken)) {
+    if (!currentRefreshToken) {
       return null;
     }
 
