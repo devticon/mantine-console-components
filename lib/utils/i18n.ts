@@ -10,6 +10,7 @@ import mantinePl from '../translations/pl/mantine-console-components.json';
 import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
 import Fetch from 'i18next-fetch-backend';
 import { badRequest } from './responses';
+// @ts-ignore
 import { createI18nextMiddleware } from 'remix-i18next/middleware';
 
 export type I18nLibConfig = {
