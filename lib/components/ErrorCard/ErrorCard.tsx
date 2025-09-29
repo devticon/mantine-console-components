@@ -1,5 +1,5 @@
 import { Button, Center, Container, Text, Title, useMantineTheme } from '@mantine/core';
-import { useLocation } from '@remix-run/react';
+import { useLocation } from 'react-router';
 import type { FC, ReactNode } from 'react';
 
 type Props = {

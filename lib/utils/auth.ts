@@ -1,5 +1,5 @@
-import type { Session } from '@remix-run/node';
-import { createCookieSessionStorage, json, redirect } from '@remix-run/node';
+import type { Session } from 'react-router';
+import { createCookieSessionStorage, data as rrData, redirect } from 'react-router';
 import axios from 'axios';
 import type { JwtPayload } from 'jwt-decode';
 import { jwtDecode } from 'jwt-decode';
@@ -58,7 +58,7 @@ export function createAuthStorage<
     if (redirectTo) {
       return redirect(redirectTo, { headers: { 'Set-Cookie': newCookies } });
     } else {
-      return json({}, { headers: { 'Set-Cookie': newCookies } });
+      return rrData({}, { headers: { 'Set-Cookie': newCookies } });
     }
   };
 

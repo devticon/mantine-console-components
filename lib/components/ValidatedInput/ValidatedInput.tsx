@@ -1,6 +1,6 @@
 import { TextInput } from '@mantine/core';
-import type { Fetcher } from '@remix-run/react';
-import { useActionData } from '@remix-run/react';
+import type { Fetcher } from 'react-router';
+import { useActionData } from 'react-router';
 import { get } from 'lodash-es';
 import type { ComponentProps, ElementType } from 'react';
 

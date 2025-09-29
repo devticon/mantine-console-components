@@ -1,6 +1,6 @@
 import type { GroupProps, TitleOrder, TitleSize } from '@mantine/core';
 import { Anchor, Breadcrumbs, Group, Title } from '@mantine/core';
-import { Link } from '@remix-run/react';
+import { Link } from 'react-router';
 import type { FC, ReactNode } from 'react';
 import { TbChevronRight } from 'react-icons/tb';
 

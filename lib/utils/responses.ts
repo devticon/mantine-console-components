@@ -1,7 +1,7 @@
-import { json, redirect } from '@remix-run/node';
+import { data as rrData, redirect } from 'react-router';
 
 export function created<Data = unknown>(data: Data, init?: Omit<ResponseInit, 'status'>) {
-  return json(data, { ...init, status: 201 });
+  return rrData(data, { ...init, status: 201 });
 }
 
 export function redirectBack(request: Request, { fallback, ...init }: ResponseInit & { fallback: string }): Response {
@@ -9,27 +9,27 @@ export function redirectBack(request: Request, { fallback, ...init }: ResponseIn
 }
 
 export function badRequest<Data = unknown>(data: Data, init?: Omit<ResponseInit, 'status'>) {
-  return json<Data>(data, { ...init, status: 400 });
+  return rrData<Data>(data, { ...init, status: 400 });
 }
 
 export function unauthorized<Data = unknown>(data: Data, init?: Omit<ResponseInit, 'status'>) {
-  return json<Data>(data, { ...init, status: 401 });
+  return rrData<Data>(data, { ...init, status: 401 });
 }
 
 export function forbidden<Data = unknown>(data: Data, init?: Omit<ResponseInit, 'status'>) {
-  return json<Data>(data, { ...init, status: 403 });
+  return rrData<Data>(data, { ...init, status: 403 });
 }
 
 export function notFound<Data = unknown>(data: Data, init?: Omit<ResponseInit, 'status'>) {
-  return json<Data>(data, { ...init, status: 404 });
+  return rrData<Data>(data, { ...init, status: 404 });
 }
 
 export function unprocessableEntity<Data = unknown>(data: Data, init?: Omit<ResponseInit, 'status'>) {
-  return json<Data>(data, { ...init, status: 422 });
+  return rrData<Data>(data, { ...init, status: 422 });
 }
 
 export function serverError<Data = unknown>(data: Data, init?: Omit<ResponseInit, 'status'>) {
-  return json<Data>(data, { ...init, status: 500 });
+  return rrData<Data>(data, { ...init, status: 500 });
 }
 
 export function notModified(init?: Omit<ResponseInit, 'status'>) {

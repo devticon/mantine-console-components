@@ -1,9 +1,9 @@
 import type { ActionIconProps, ButtonProps, ModalProps } from '@mantine/core';
 import { ActionIcon, Button } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { useFetcher } from '@remix-run/react';
+import { useFetcher } from 'react-router';
 import { omit } from 'lodash-es';
-import type { MouseEvent, ReactNode, Ref } from 'react';
+import type { MouseEvent, ReactElement, ReactNode, Ref } from 'react';
 import { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFetcherNotification } from '../../utils/notifications';
@@ -27,7 +27,7 @@ export type Props<T = any> = {
   errorCallback?: (data: T) => void;
 } & (IconButtonType | DefaultButtonType);
 
-type FetcherActionButtonType = <T = any>(props: Props<T> & { ref?: Ref<HTMLButtonElement> }) => JSX.Element;
+type FetcherActionButtonType = <T = any>(props: Props<T> & { ref?: Ref<HTMLButtonElement> }) => ReactElement;
 
 // @ts-ignore
 export const FetcherActionButton: FetcherActionButtonType = forwardRef<HTMLButtonElement, Props>(

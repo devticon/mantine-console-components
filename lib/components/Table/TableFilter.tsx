@@ -1,7 +1,7 @@
 import { Group, MultiSelect, NumberInput, Select, Switch, TextInput } from '@mantine/core';
 import { DatePickerInput, DateTimePicker } from '@mantine/dates';
 import dayjs from 'dayjs';
-import type { ComponentProps, ReactNode } from 'react';
+import type { ComponentProps, ReactElement } from 'react';
 import type { IconType } from 'react-icons';
 import invariant from 'tiny-invariant';
 import { parseDate } from '../../utils/date';
@@ -22,7 +22,7 @@ export type Props<F extends BaseFilters> = {
   | ({ type: 'date-time' } & Omit<ComponentProps<typeof DateTimePicker>, 'value' | 'onChange'>)
   | ({ type: 'date-range' } & Omit<ComponentProps<typeof DatePickerInput<'range'>>, 'value' | 'onChange' | 'type'>)
   | ({ type: 'range' } & Omit<ComponentProps<typeof NumberInput>, 'value' | 'onChange' | 'type'>)
-  | ({ type: 'custom' } & { render: (filters: F, onChange?: (filters: Partial<F>) => void) => ReactNode })
+  | ({ type: 'custom' } & { render: (filters: F, onChange?: (filters: Partial<F>) => void) => ReactElement })
 );
 
 export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, ...props }: Props<F>) => {
@@ -79,7 +79,7 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
       <DatePickerInput
         clearable
         value={parseDate(filters[props.name as keyof F] as string)}
-        onChange={value => onChange({ [props.name]: value?.toISOString() || null } as Partial<F>)}
+        onChange={value => onChange({ [props.name]: value } as Partial<F>)}
         {...props}
         type="default"
       />
@@ -91,7 +91,7 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
       <DateTimePicker
         clearable
         value={parseDate(filters[props.name as keyof F] as string)}
-        onChange={value => onChange({ [props.name]: value?.toISOString() || null } as Partial<F>)}
+        onChange={value => onChange({ [props.name]: value } as Partial<F>)}
         {...props}
       />
     );

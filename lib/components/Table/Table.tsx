@@ -79,7 +79,12 @@ export const Table = <T extends BaseItem, F extends BaseFilters>({
               )}
               {Children.map(children, child =>
                 isValidElement(child) ? (
-                  <TableTh filters={filters} handleFiltersChange={handleFiltersChange} ns={ns} {...child.props} />
+                  <TableTh
+                    filters={filters}
+                    handleFiltersChange={handleFiltersChange}
+                    ns={ns}
+                    {...(child.props as any)}
+                  />
                 ) : null,
               )}
             </MantineTable.Tr>
@@ -99,7 +104,7 @@ export const Table = <T extends BaseItem, F extends BaseFilters>({
                     </MantineTable.Td>
                   )}
                   {Children.map(children, child =>
-                    isValidElement(child) ? <TableTd item={item} index={index} {...child.props} /> : null,
+                    isValidElement(child) ? <TableTd item={item} index={index} {...(child.props as any)} /> : null,
                   )}
                 </MantineTable.Tr>
               ))

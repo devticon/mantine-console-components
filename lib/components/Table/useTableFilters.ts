@@ -1,4 +1,4 @@
-import { useSearchParams } from '@remix-run/react';
+import { useSearchParams } from 'react-router';
 import { debounce } from 'lodash-es';
 import { useEffect, useMemo, useState } from 'react';
 import { mapObjectToSearchParams } from '../../utils/search-params';

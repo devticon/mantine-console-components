@@ -1,5 +1,5 @@
-import { json } from '@remix-run/node';
-import type { RemixI18Next } from 'remix-i18next';
+import type { RemixI18Next } from 'remix-i18next/server';
+import { badRequest } from './responses';
 
 export class CodeError extends Error {
   constructor(
@@ -53,9 +53,9 @@ export function handleErrorFactory(i18nRemix: RemixI18Next, constraints: { key: 
         t(`common:errors.${code}`, { defaultValue: message });
 
     if (constraint?.field) {
-      return json({ fieldErrors: { [constraint.field]: translatedMessage } }, { status: 400 });
+      return badRequest({ fieldErrors: { [constraint.field]: translatedMessage } });
     } else {
-      return json({ error: translatedMessage }, { status: 400 });
+      return badRequest({ error: translatedMessage });
     }
   };
 }

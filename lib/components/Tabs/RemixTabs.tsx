@@ -1,6 +1,6 @@
 import type { TabsProps } from '@mantine/core';
 import { Tabs } from '@mantine/core';
-import { useLocation, useNavigate } from '@remix-run/react';
+import { useLocation, useNavigate } from 'react-router';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 

@@ -1,6 +1,6 @@
 import type { NotificationData } from '@mantine/notifications';
 import { notifications } from '@mantine/notifications';
-import type { Fetcher } from '@remix-run/react';
+import type { Fetcher } from 'react-router';
 import { useEffect } from 'react';
 import { TbInfoCircle, TbInfoTriangle } from 'react-icons/tb';
 

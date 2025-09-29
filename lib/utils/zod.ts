@@ -1,8 +1,7 @@
 import type { JSONSchema7 } from 'json-schema';
-import type { TypeOf, ZodSchema, ZodType, ZodTypeAny } from 'zod';
+import type { TypeOf, ZodSchema, ZodString, ZodType, ZodTypeAny } from 'zod';
 import { number, preprocess, string } from 'zod';
 import { checkbox, formData, numeric, text } from 'zod-form-data';
-import type { ZodString } from 'zod/lib/types';
 
 export { z, number, coerce, string, nativeEnum, array, boolean, object, preprocess } from 'zod';
 export { formData, numeric, text, file, repeatable, repeatableOfType, checkbox, json } from 'zod-form-data';
