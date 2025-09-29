@@ -1,12 +1,12 @@
 /* eslint-disable import/no-duplicates */
 import dayjs from 'dayjs';
-import 'dayjs/locale/en';
-import 'dayjs/locale/pl';
+import 'dayjs/locale/en.js';
+import 'dayjs/locale/pl.js';
 import customParseFormat from 'dayjs/plugin/customParseFormat.js';
 import localizedFormat from 'dayjs/plugin/localizedFormat.js';
 import timezone from 'dayjs/plugin/timezone.js';
-import 'dayjs/plugin/localizedFormat';
-import 'dayjs/plugin/timezone';
+import 'dayjs/plugin/localizedFormat.js';
+import 'dayjs/plugin/timezone.js';
 
 dayjs.locale('pl');
 dayjs.extend(localizedFormat);
