@@ -6,6 +6,10 @@
   "module": "./dist/main.js",
   "types": "./dist/main.d.ts",
   "sideEffects": false,
+  "exports": {
+    "require": "./dist/main.js",
+    "import": "./dist/main.js"
+  },
   "scripts": {
     "build": "tsc",
     "format": "prettier . --write --ignore-path .gitignore",
@@ -17,7 +21,6 @@
     "@mantine/dates": "^8.0.0",
     "@mantine/modals": "^8.0.0",
     "@mantine/notifications": "^8.0.0",
-    "@react-router/node": "^7.0.0",
     "axios": "^1.8.1",
     "dayjs": "^1.11.10",
     "i18next-browser-languagedetector": "^8.0.0",
