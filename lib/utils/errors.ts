@@ -1,5 +1,5 @@
-import type { RemixI18Next } from 'remix-i18next/server';
 import { badRequest } from './responses';
+import { i18n } from 'i18next';
 
 export class CodeError extends Error {
   constructor(
@@ -36,9 +36,8 @@ export function getRawErrorMessage(error: unknown) {
   }
 }
 
-export function handleErrorFactory(i18nRemix: RemixI18Next, constraints: { key: string; field: string | null }[]) {
-  return async (request: Request, error: unknown, action?: string) => {
-    const t = await i18nRemix.getFixedT(request);
+export function handleErrorFactory(constraints: { key: string; field: string | null }[]) {
+  return async ({ t }: i18n, error: unknown, action?: string) => {
     const code = getRawErrorCode(error);
     const message = getRawErrorMessage(error);
     const constraint = constraints.find(({ key }) => message.includes(key));
