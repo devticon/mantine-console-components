@@ -5,7 +5,7 @@ import type { ChangeEvent, Dispatch, FC, SetStateAction } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TbChevronLeft, TbChevronRight, TbChevronsLeft, TbChevronsRight } from 'react-icons/tb';
-import type { BaseItem } from './utils';
+import type { BaseItem } from './utils.js';
 
 type RenderListProps = {
   options: BaseItem[];

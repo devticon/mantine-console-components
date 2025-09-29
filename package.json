@@ -2,18 +2,11 @@
   "name": "@devticon/mantine-console-components",
   "version": "5.0.4",
   "type": "module",
-  "main": "./dist/cjs/main.js",
-  "module": "./dist/esm/main.js",
-  "types": "./dist/esm/main.d.ts",
+  "module": "./dist/main.js",
+  "types": "./dist/main.d.ts",
   "sideEffects": false,
-  "exports": {
-    "require": "./dist/cjs/main.js",
-    "import": "./dist/esm/main.js"
-  },
   "scripts": {
-    "build": "npm run build:esm && npm run build:cjs",
-    "build:esm": "tsc --project tsconfig.json --module ESNext --outDir ./dist/esm",
-    "build:cjs": "tsc --project tsconfig.json --module CommonJS --outDir ./dist/cjs",
+    "build": "tsc",
     "format": "prettier . --write --ignore-path .gitignore",
     "lint": "eslint . --fix --ignore-path .gitignore",
     "postinstall": "husky"

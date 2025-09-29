@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "target": "ES2022",
     "strict": true,
     "skipLibCheck": true,
     "declaration": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
+    "module": "NodeNext",
     "outDir": "./dist",
     "jsx": "react-jsx"
   },

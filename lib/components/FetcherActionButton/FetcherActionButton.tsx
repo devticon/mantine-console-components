@@ -6,7 +6,7 @@ import { omit } from 'lodash-es';
 import type { MouseEvent, ReactElement, ReactNode, Ref } from 'react';
 import { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useFetcherNotification } from '../../utils/notifications';
+import { useFetcherNotification } from '../../utils/notifications.js';
 
 type IconButtonType = {
   buttonType: 'icon';

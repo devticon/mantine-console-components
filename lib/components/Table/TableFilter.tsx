@@ -4,8 +4,8 @@ import dayjs from 'dayjs';
 import type { ComponentProps, ReactElement } from 'react';
 import type { IconType } from 'react-icons';
 import invariant from 'tiny-invariant';
-import { parseDate } from '../../utils/date';
-import type { BaseFilters } from './utils';
+import { parseDate } from '../../utils/date.js';
+import type { BaseFilters } from './utils.js';
 
 export type Props<F extends BaseFilters> = {
   name: string;

@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { mapObjectToSearchParams } from '../../utils/search-params';
+import { mapObjectToSearchParams } from '../../utils/search-params.js';
 
 export function useTableSelection<T extends object>(rowId: keyof T, initial?: T[]) {
   const [selectedRows, setSelectedRows] = useState<T[]>(initial || []);

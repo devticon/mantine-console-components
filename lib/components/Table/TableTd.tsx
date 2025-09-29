@@ -1,7 +1,7 @@
 import { Table } from '@mantine/core';
 import { get } from 'lodash-es';
-import type { Props as TableColumnProps } from './TableColumn';
-import type { BaseItem } from './utils';
+import type { Props as TableColumnProps } from './TableColumn.js';
+import type { BaseItem } from './utils.js';
 
 type Props<T extends BaseItem> = TableColumnProps<T> & {
   item: T;

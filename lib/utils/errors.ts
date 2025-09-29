@@ -1,4 +1,4 @@
-import { badRequest } from './responses';
+import { badRequest } from './responses.js';
 import { i18n } from 'i18next';
 
 export class CodeError extends Error {

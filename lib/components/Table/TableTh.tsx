@@ -2,9 +2,9 @@ import { ActionIcon, Box, Group, Table, Tooltip } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { TbArrowDown, TbArrowUp, TbInfoCircle } from 'react-icons/tb';
 import invariant from 'tiny-invariant';
-import { getNsField, OrderBy, revertSortDirection } from '../../utils/hasura';
-import type { Props as TableColumnProps } from './TableColumn';
-import type { BaseFilters, BaseItem } from './utils';
+import { getNsField, OrderBy, revertSortDirection } from '../../utils/hasura.js';
+import type { Props as TableColumnProps } from './TableColumn.js';
+import type { BaseFilters, BaseItem } from './utils.js';
 
 type Props<T extends BaseItem, F extends BaseFilters> = TableColumnProps<T> & {
   ns?: string;

@@ -1,5 +1,5 @@
 import { set } from 'lodash-es';
-import type { BaseFilters } from '../components/Table/utils';
+import type { BaseFilters } from '../components/Table/utils.js';
 
 export enum OrderBy {
   Asc = 'ASC',

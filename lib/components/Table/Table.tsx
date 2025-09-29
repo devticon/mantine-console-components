@@ -4,12 +4,12 @@ import { differenceBy, unionBy, xorBy } from 'lodash-es';
 import type { Dispatch, ReactElement, ReactNode, SetStateAction } from 'react';
 import { Children, isValidElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Props as TableColumnProps } from './TableColumn';
-import { TablePagination } from './TablePagination';
-import { TableTd } from './TableTd';
-import { TableTh } from './TableTh';
-import { TableWrapper } from './TableWrapper';
-import type { BaseFilters, BaseItem } from './utils';
+import type { Props as TableColumnProps } from './TableColumn.js';
+import { TablePagination } from './TablePagination.js';
+import { TableTd } from './TableTd.js';
+import { TableTh } from './TableTh.js';
+import { TableWrapper } from './TableWrapper.js';
+import type { BaseFilters, BaseItem } from './utils.js';
 
 type Child<T extends BaseItem> = ReactElement<TableColumnProps<T>> | false;
 

@@ -1,8 +1,8 @@
 import { useSearchParams } from 'react-router';
 import { debounce } from 'lodash-es';
 import { useEffect, useMemo, useState } from 'react';
-import { mapObjectToSearchParams } from '../../utils/search-params';
-import type { BaseFilters } from './utils';
+import { mapObjectToSearchParams } from '../../utils/search-params.js';
+import type { BaseFilters } from './utils.js';
 
 type Params<F extends BaseFilters> = {
   initialFilters: F;

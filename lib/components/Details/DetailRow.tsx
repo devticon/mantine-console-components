@@ -2,7 +2,7 @@ import type { GroupProps, MantineRadiusValues } from '@mantine/core';
 import { Center, Group, rem, Stack, Text, useMantineTheme } from '@mantine/core';
 import type { FC, ReactNode } from 'react';
 import { useCallback } from 'react';
-import { CopyButton } from '../Buttons/CopyButton';
+import { CopyButton } from '../Buttons/CopyButton.js';
 
 type Props = GroupProps & {
   icon?: ReactNode;

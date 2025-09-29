@@ -4,8 +4,8 @@ import type { ReactElement, ReactNode } from 'react';
 import { Children, cloneElement, isValidElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TbFilter, TbFilterX } from 'react-icons/tb';
-import type { Props as TableFilterProps } from './TableFilter';
-import type { BaseFilters } from './utils';
+import type { Props as TableFilterProps } from './TableFilter.js';
+import type { BaseFilters } from './utils.js';
 import { isEqual } from 'lodash-es';
 
 type Child<F extends BaseFilters> = ReactElement<TableFilterProps<F>> | false;

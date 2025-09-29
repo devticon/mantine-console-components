@@ -3,14 +3,13 @@ import { createCookie } from 'react-router';
 import type { Resource } from 'i18next';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import zodPl from 'zod-i18n-map/locales/pl/zod.json';
-import zodEn from 'zod-i18n-map/locales/en/zod.json';
-import mantineEn from '../translations/en/mantine-console-components.json';
-import mantinePl from '../translations/pl/mantine-console-components.json';
+import zodPl from 'zod-i18n-map/locales/pl/zod.json' with { type: 'json' };
+import zodEn from 'zod-i18n-map/locales/en/zod.json' with { type: 'json' };
+import mantineEn from '../translations/en/mantine-console-components.json' with { type: 'json' };
+import mantinePl from '../translations/pl/mantine-console-components.json' with { type: 'json' };
 import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
 import Fetch from 'i18next-fetch-backend';
-import { badRequest } from './responses';
-// @ts-ignore
+import { badRequest } from './responses.js';
 import { createI18nextMiddleware } from 'remix-i18next/middleware';
 
 export type I18nLibConfig = {
