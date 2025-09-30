@@ -47,7 +47,7 @@ export function createRemixI18n(config: I18nLibConfig) {
     }
   };
 
-  const createI18nClientInstance = async () => {
+  const createI18nClientInstance = async (prefix = '') => {
     await i18next
       .use(initReactI18next)
       .use(Fetch)
@@ -57,7 +57,7 @@ export function createRemixI18n(config: I18nLibConfig) {
         fallbackLng: config.fallbackLng,
         supportedLngs: config.supportedLngs,
         detection: { order: ['htmlTag'], caches: [] },
-        backend: { loadPath: '/api/locales?lng={{lng}}&ns={{ns}}' },
+        backend: { loadPath: `${prefix}/api/locales?lng={{lng}}&ns={{ns}}` },
       });
   };
 
