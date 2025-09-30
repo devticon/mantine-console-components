@@ -30,8 +30,8 @@ export function validate<T extends ZodType>(
   }
 }
 
-export async function getFormData<T extends ZodType>(request: Pick<Request, 'formData'>, schema: T) {
-  const value = await request.formData();
+export async function getFormData<T extends ZodType>(request: Pick<Request, 'formData'> | FormData, schema: T) {
+  const value = request instanceof FormData ? request : await request.formData();
   return validate(value, schema);
 }
 
