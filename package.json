@@ -6,8 +6,8 @@
   "types": "./dist/main.d.ts",
   "sideEffects": false,
   "exports": {
-    "import": "./dist/main.js",
-    "types": "./dist/main.d.ts"
+    ".": "./dist/main.js",
+    "./server": "./dist/server.js"
   },
   "scripts": {
     "build": "tsc",
