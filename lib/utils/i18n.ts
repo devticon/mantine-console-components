@@ -1,4 +1,4 @@
-import type { LoaderFunctionArgs } from 'react-router';
+import type { LoaderFunctionArgs, RouterContextProvider } from 'react-router';
 import { createCookie } from 'react-router';
 import type { Resource } from 'i18next';
 import i18next from 'i18next';
@@ -11,6 +11,8 @@ import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
 import Fetch from 'i18next-fetch-backend';
 import { badRequest } from './responses.js';
 import { createI18nextMiddleware } from 'remix-i18next/middleware';
+import { z } from 'zod';
+import { makeZodI18nMap } from 'zod-i18n-map';
 
 export type I18nLibConfig = {
   supportedLngs: string[];
@@ -40,9 +42,9 @@ export function createRemixI18n(config: I18nLibConfig) {
     plugins: [initReactI18next],
   });
 
-  const setZodI18n = async (request: Request) => {
-    // const t = await i18nRemix.getFixedT(request, ['zod', 'common']);
-    // z.setErrorMap(makeZodI18nMap({ t, ns: ['zod', 'common'] }));
+  const setZodI18n = async (context: RouterContextProvider) => {
+    const { t } = getInstance(context);
+    z.setErrorMap(makeZodI18nMap({ t, ns: ['zod', 'common'] }));
   };
 
   const createI18nClientInstance = async () => {
