@@ -1,4 +1,4 @@
-import type { LoaderFunctionArgs, RouterContextProvider } from 'react-router';
+import { data, LoaderFunctionArgs, RouterContextProvider } from 'react-router';
 import { createCookie } from 'react-router';
 import type { Resource } from 'i18next';
 import i18next from 'i18next';
@@ -68,9 +68,13 @@ export function createRemixI18n(config: I18nLibConfig) {
 
     if (!lng || !ns) {
       return badRequest({ error: '"lng" and "ns" query params are required' });
-    } else {
-      return config.resources?.[lng]?.[ns] || {};
     }
+
+    return data(config.resources?.[lng]?.[ns] || {}, {
+      headers: {
+        'Cache-Control': 'max-age=86400, stale-while-revalidate=604800',
+      },
+    });
   };
 
   return {
