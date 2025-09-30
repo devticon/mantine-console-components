@@ -77,6 +77,10 @@ export function createRemixI18n(config: I18nLibConfig) {
     });
   };
 
+  const setLocaleLoader = async ({ params }: LoaderFunctionArgs) => {
+    return data('/', { headers: { 'Set-Cookie': await i18nCookie.serialize(params.locale) } });
+  };
+
   return {
     i18nextMiddleware,
     getLocale,
@@ -85,5 +89,6 @@ export function createRemixI18n(config: I18nLibConfig) {
     setZodI18n,
     createI18nClientInstance,
     localeLoader,
+    setLocaleLoader,
   };
 }
