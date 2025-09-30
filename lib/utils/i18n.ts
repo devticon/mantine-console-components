@@ -36,7 +36,7 @@ export function createRemixI18n(config: I18nLibConfig) {
 
   const [i18nextMiddleware, getLocale, getInstance] = createI18nextMiddleware({
     detection: { supportedLanguages: ['en', 'pl'], fallbackLanguage: 'en', cookie: i18nCookie },
-    i18next: { resources: config.resources, defaultNS: 'common' },
+    i18next: { resources: config.resources, defaultNS: config.defaultNS || 'common' },
     plugins: [initReactI18next],
   });
 

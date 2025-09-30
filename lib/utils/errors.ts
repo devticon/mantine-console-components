@@ -1,5 +1,6 @@
 import { badRequest } from './responses.js';
 import { i18n } from 'i18next';
+import { RouterContextProvider } from 'react-router';
 
 export class CodeError extends Error {
   constructor(
@@ -36,8 +37,12 @@ export function getRawErrorMessage(error: unknown) {
   }
 }
 
-export function handleErrorFactory(constraints: { key: string; field: string | null }[]) {
-  return async ({ t }: i18n, error: unknown, action?: string) => {
+export function handleErrorFactory(
+  getI18nInstance: (context: Readonly<RouterContextProvider>) => i18n,
+  constraints: { key: string; field: string | null }[],
+) {
+  return (context: Readonly<RouterContextProvider>, error: unknown, action?: string) => {
+    const { t } = getI18nInstance(context);
     const code = getRawErrorCode(error);
     const message = getRawErrorMessage(error);
     const constraint = constraints.find(({ key }) => message.includes(key));
