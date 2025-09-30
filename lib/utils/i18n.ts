@@ -1,10 +1,6 @@
-import { data, LoaderFunctionArgs, RouterContextProvider } from 'react-router';
-import { createCookie } from 'react-router';
+import { createCookie, data, LoaderFunctionArgs, RouterContextProvider } from 'react-router';
 import type { Resource } from 'i18next';
-import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
-import Fetch from 'i18next-fetch-backend';
 import { badRequest } from './responses.js';
 import { createI18nextMiddleware } from 'remix-i18next/middleware';
 import { z } from 'zod';
@@ -47,20 +43,6 @@ export function createRemixI18n(config: I18nLibConfig) {
     }
   };
 
-  const createI18nClientInstance = async (prefix = '') => {
-    await i18next
-      .use(initReactI18next)
-      .use(Fetch)
-      .use(I18nextBrowserLanguageDetector)
-      .init({
-        defaultNS: config.defaultNS || 'common',
-        fallbackLng: config.fallbackLng,
-        supportedLngs: config.supportedLngs,
-        detection: { order: ['htmlTag'], caches: [] },
-        backend: { loadPath: `${prefix}/api/locales?lng={{lng}}&ns={{ns}}` },
-      });
-  };
-
   const localeLoader = async ({ request }: LoaderFunctionArgs) => {
     const url = new URL(request.url);
     const lng = url.searchParams.get('lng');
@@ -87,7 +69,6 @@ export function createRemixI18n(config: I18nLibConfig) {
     getInstance,
     i18nCookie,
     setZodI18n,
-    createI18nClientInstance,
     localeLoader,
     setLocaleLoader,
   };
