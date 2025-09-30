@@ -3,7 +3,7 @@ import type { output, ZodString, ZodType } from 'zod';
 import { number, preprocess, string } from 'zod';
 import { checkbox, formData, numeric, text } from 'zod-form-data';
 
-export { z, number, coerce, string, nativeEnum, array, boolean, object, preprocess } from 'zod';
+export { z, number, coerce, string, enum as nativeEnum, array, boolean, object, preprocess } from 'zod';
 export { formData, numeric, text, file, repeatable, repeatableOfType, checkbox, json } from 'zod-form-data';
 
 export type ValidateResult<T> = {
@@ -45,11 +45,14 @@ export async function getSearchParams<T extends ZodType>(request: Pick<Request, 
   return validate(value, schema);
 }
 
-export function transformPrice(value: number) {
-  return Math.round(value * 100);
+export function transformPrice(value?: number) {
+  return value ? Math.round(value * 100) : 0;
 }
 
-export function preprocessNumberInput(schema: ZodType = numeric(), params?: { prefix?: string; suffix?: string }) {
+export function preprocessNumberInput(
+  schema: ZodType<number | undefined> = numeric(),
+  params?: { prefix?: string; suffix?: string },
+) {
   return preprocess(value => {
     if (typeof value === 'string') {
       return value
