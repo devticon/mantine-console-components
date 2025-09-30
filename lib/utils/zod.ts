@@ -1,5 +1,5 @@
 import type { JSONSchema7 } from 'json-schema';
-import type { TypeOf, ZodSchema, ZodString, ZodType, ZodTypeAny } from 'zod';
+import type { output, ZodString, ZodType } from 'zod';
 import { number, preprocess, string } from 'zod';
 import { checkbox, formData, numeric, text } from 'zod-form-data';
 
@@ -14,7 +14,7 @@ export type ValidateResult<T> = {
 export function validate<T extends ZodType>(
   value: URLSearchParams | FormData | any,
   schema: T,
-): ValidateResult<TypeOf<T>> {
+): ValidateResult<output<T>> {
   const result = schema.safeParse(value);
 
   if (result.success) {
@@ -25,7 +25,7 @@ export function validate<T extends ZodType>(
   } else {
     return {
       data: undefined,
-      fieldErrors: Object.fromEntries(result.error.errors.map(error => [error.path.join('.'), error.message])),
+      fieldErrors: Object.fromEntries(result.error.issues.map(error => [error.path.join('.'), error.message])),
     };
   }
 }
@@ -49,7 +49,7 @@ export function transformPrice(value: number) {
   return Math.round(value * 100);
 }
 
-export function preprocessNumberInput(schema: ZodSchema = numeric(), params?: { prefix?: string; suffix?: string }) {
+export function preprocessNumberInput(schema: ZodType = numeric(), params?: { prefix?: string; suffix?: string }) {
   return preprocess(value => {
     if (typeof value === 'string') {
       return value
@@ -62,7 +62,7 @@ export function preprocessNumberInput(schema: ZodSchema = numeric(), params?: { 
   }, schema);
 }
 
-export function preprocessPatternInput(schema: ZodSchema = text()) {
+export function preprocessPatternInput(schema: ZodType = text()) {
   return preprocess(value => {
     if (typeof value === 'string') {
       return value.replace(/-/g, '').replace(/_/g, '').replace(/\s/g, '');
@@ -72,7 +72,7 @@ export function preprocessPatternInput(schema: ZodSchema = text()) {
   }, schema);
 }
 
-export function preprocessJSONInput<I extends ZodTypeAny>(schema: I) {
+export function preprocessJSONInput<I extends ZodType>(schema: I) {
   return preprocess(value => {
     try {
       return JSON.parse(value as string);

@@ -3,16 +3,13 @@ import { createCookie } from 'react-router';
 import type { Resource } from 'i18next';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import zodPl from 'zod-i18n-map/locales/pl/zod.json' with { type: 'json' };
-import zodEn from 'zod-i18n-map/locales/en/zod.json' with { type: 'json' };
-import mantineEn from '../translations/en/mantine-console-components.json' with { type: 'json' };
-import mantinePl from '../translations/pl/mantine-console-components.json' with { type: 'json' };
 import I18nextBrowserLanguageDetector from 'i18next-browser-languagedetector';
 import Fetch from 'i18next-fetch-backend';
 import { badRequest } from './responses.js';
 import { createI18nextMiddleware } from 'remix-i18next/middleware';
 import { z } from 'zod';
-import { makeZodI18nMap } from 'zod-i18n-map';
+import { pl } from '../translations/pl.js';
+import { en } from '../translations/en.js';
 
 export type I18nLibConfig = {
   supportedLngs: string[];
@@ -27,13 +24,11 @@ export function createRemixI18n(config: I18nLibConfig) {
   });
 
   if (config.resources.pl) {
-    config.resources.pl.zod = zodPl;
-    config.resources.pl['mantine-console-components'] = mantinePl;
+    config.resources.pl['mantine-console-components'] = pl;
   }
 
   if (config.resources.en) {
-    config.resources.en.zod = zodEn;
-    config.resources.en['mantine-console-components'] = mantineEn;
+    config.resources.en['mantine-console-components'] = en;
   }
 
   const [i18nextMiddleware, getLocale, getInstance] = createI18nextMiddleware({
@@ -43,8 +38,13 @@ export function createRemixI18n(config: I18nLibConfig) {
   });
 
   const setZodI18n = async (context: RouterContextProvider) => {
-    const { t } = getInstance(context);
-    z.setErrorMap(makeZodI18nMap({ t, ns: ['zod', 'common'] }));
+    const { language } = getInstance(context);
+
+    if (language === 'pl') {
+      z.config(z.locales.pl());
+    } else {
+      z.config(z.locales.en());
+    }
   };
 
   const createI18nClientInstance = async () => {
