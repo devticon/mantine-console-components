@@ -37,7 +37,7 @@ export function createRemixI18n(config: I18nLibConfig) {
     plugins: [initReactI18next],
   });
 
-  const setZodI18n = async (context: RouterContextProvider) => {
+  const setZodI18n = async (context: Readonly<RouterContextProvider>) => {
     const { language } = getInstance(context);
 
     if (language === 'pl') {
