@@ -18,8 +18,8 @@ type Params<Roles extends string, User, RawDecodedJwtToken = any> = {
 };
 
 export type SessionData = {
-  accessToken?: string;
-  refreshToken?: string;
+  accessToken?: string | null;
+  refreshToken?: string | null;
   [key: string]: any;
 };
 
@@ -27,7 +27,6 @@ export function createAuthStorage<
   Roles extends string,
   User,
   RawDecodedJwtToken = any,
-  DecodedJwtToken = any,
   SD extends SessionData = SessionData,
 >({
   cookieName,
@@ -37,7 +36,7 @@ export function createAuthStorage<
   redirectStrategy,
   extractUserData,
 }: Params<Roles, User, RawDecodedJwtToken>) {
-  const storage = createCookieSessionStorage<SessionData>({
+  const storage = createCookieSessionStorage<SD>({
     cookie: {
       name: cookieName,
       secure: process.env.NODE_ENV === 'production',
@@ -49,197 +48,41 @@ export function createAuthStorage<
     },
   });
 
-  // const createUserSession = async (data: SessionData, redirectTo?: string) => {
-  //   const session = await storage.getSession();
-  //   session.set('accessToken', data.accessToken);
-  //   session.set('refreshToken', data.refreshToken);
-  //   const newCookies = await storage.commitSession(session);
-  //
-  //   if (redirectTo) {
-  //     return redirect(redirectTo, { headers: { 'Set-Cookie': newCookies } });
-  //   } else {
-  //     return rrData({}, { headers: { 'Set-Cookie': newCookies } });
-  //   }
-  // };
+  const handleForceRefreshToken = async (userData: object) => {
+    const session = getSession();
+    const accessToken = await refreshAccessToken(userData);
+    session.set('accessToken', accessToken);
+  };
 
-  // const destroyUserSession = async (request: Request, redirectTo = '/') => {
-  //   const cookies = request.headers.get('Cookie');
-  //   const session = await storage.getSession(cookies);
-  //   const newCookies = await storage.destroySession(session);
-  //   return redirect(redirectTo, { headers: { 'Set-Cookie': newCookies } });
-  // };
+  const refreshAccessToken = async (userData?: object) => {
+    const refreshToken = getRefreshToken();
 
-  // const getUserSession = async (request: Request): Promise<Session<SessionData>> => {
-  //   const cookies = request.headers.get('Cookie');
-  //   return await storage.getSession(cookies);
-  // };
+    if (!refreshToken || isTokenExpired(refreshToken)) {
+      return null;
+    }
 
-  // const getToken = async (
-  //   request?: Request | null,
-  //   type: 'accessToken' | 'refreshToken' = 'accessToken',
-  // ): Promise<string | null> => {
-  //   if (!request) {
-  //     return null;
-  //   }
-  //
-  //   const cookies = request.headers.get('Cookie');
-  //   const session = await storage.getSession(cookies);
-  //   const token = session.get(type) || null;
-  //
-  //   if (!token) {
-  //     return null;
-  //   }
-  //
-  //   // if (isTokenExpired(token)) {
-  //   //   return null;
-  //   // }
-  //
-  //   return token;
-  // };
-
-  // const getRefreshToken = async (request?: Request | null): Promise<string | null> => {
-  //   return getToken(request, 'refreshToken');
-  // };
-
-  // const decodeToken = async (requestOrToken?: Request | null | string) => {
-  //   const token = typeof requestOrToken === 'string' ? requestOrToken : await getToken(requestOrToken);
-  //
-  //   if (!token) {
-  //     return null;
-  //   }
-  //
-  //   try {
-  //     const decodedJwt = jwtDecode<RawDecodedJwtToken>(token);
-  //     return rawTokenMapper ? rawTokenMapper(decodedJwt) : null;
-  //   } catch {
-  //     return null;
-  //   }
-  // };
-
-  // const getUser = async (request?: Request | null) => {
-  //   const token = await getToken(request);
-  //   const decoded = await decodeToken(request);
-  //
-  //   if (!token || !request || !decoded) {
-  //     return null;
-  //   }
-  //
-  //   return await getUserFromApi(request, { token, data: decoded });
-  // };
-
-  // const ensureRole = async (request: Request, expectedRoles: Roles[]) => {
-  //   const token = await getToken(request);
-  //   const decoded = await decodeToken(request);
-  //   const role = await extractUserRole({ request, token, data: decoded });
-  //
-  //   if (!expectedRoles.includes(role)) {
-  //     const strategy = typeof redirectStrategy === 'function' ? redirectStrategy(request) : redirectStrategy;
-  //
-  //     const redirects = [
-  //       ...expectedRoles.map(expectedRole => strategy[`${role}_${expectedRole}`]),
-  //       strategy[`${role}_*`],
-  //       ...expectedRoles.map(expectedRole => strategy[`*_${expectedRole}`]),
-  //       strategy['*_*'],
-  //     ];
-  //
-  //     const redirectTo = request.url.includes('http://localhost')
-  //       ? request.url
-  //       : request.url.replace('http://', 'https://');
-  //
-  //     const firstRedirect = redirects.find(Boolean);
-  //     const params = new URLSearchParams({ redirectTo });
-  //     throw redirect(`${firstRedirect || '/'}?${params.toString()}`);
-  //   }
-  // };
-
-  // const refreshAccessToken = async (request: Request, userData: object) => {
-  //   const refreshToken = await getRefreshToken(request);
-  //
-  //   if (!refreshToken || isTokenExpired(refreshToken)) {
-  //     return {
-  //       accessToken: null,
-  //       refreshToken: null,
-  //     };
-  //   }
-  //
-  //   const { url } = jwtDecode(refreshToken) as JwtPayload & { url: string };
-  //
-  //   try {
-  //     const client = axios.create({
-  //       baseURL: url,
-  //     });
-  //
-  //     const response = await client.post<{ accessToken: string }>('/refresh', {
-  //       refreshToken,
-  //       userData: userData,
-  //     });
-  //
-  //     return {
-  //       accessToken: response.data.accessToken as string,
-  //       refreshToken,
-  //     };
-  //   } catch (error) {
-  //     console.error('Error refreshing access token');
-  //     console.error(error);
-  //
-  //     return {
-  //       accessToken: null,
-  //       refreshToken: null,
-  //     };
-  //   }
-  // };
-
-  // const getOrRefreshAccessToken = async (request: Request, userData: object = {}) => {
-  //   const accessToken = await getToken(request);
-  //
-  //   if (accessToken && !isTokenExpired(accessToken)) {
-  //     return accessToken;
-  //   } else {
-  //     const newTokens = await refreshAccessToken(request, userData);
-  //     return newTokens.accessToken;
-  //   }
-  // };
-
-  // const handleForceRefreshToken = async (request: Request, userData: object, redirect?: string) => {
-  //   const { accessToken, refreshToken } = await refreshAccessToken(request, userData);
-  //
-  //   if (!accessToken || !refreshToken) {
-  //     return await destroyUserSession(request);
-  //   } else {
-  //     return await createUserSession({ accessToken, refreshToken }, redirect);
-  //   }
-  // };
-
-  // const handleCheckTokens = async (request: Request, userData: object = {}) => {
-  //   const currentAccessToken = await getToken(request);
-  //   const currentRefreshToken = await getRefreshToken(request);
-  //
-  //   if (currentAccessToken && !isTokenExpired(currentAccessToken)) {
-  //     return null;
-  //   }
-  //
-  //   if (!currentRefreshToken) {
-  //     return null;
-  //   }
-  //
-  //   const { accessToken, refreshToken } = await refreshAccessToken(request, userData);
-  //
-  //   if (!accessToken || !refreshToken) {
-  //     return await destroyUserSession(request);
-  //   } else {
-  //     return await createUserSession({ accessToken, refreshToken });
-  //   }
-  // };
+    try {
+      const { url } = jwtDecode(refreshToken) as JwtPayload & { url: string };
+      const client = axios.create({ baseURL: url });
+      const body = { refreshToken, userData: userData || {} };
+      const response = await client.post<{ accessToken: string }>('/refresh', body);
+      return response.data.accessToken;
+    } catch (error) {
+      console.error('Error refreshing access token');
+      console.error(error);
+      return null;
+    }
+  };
 
   const authContext = createContext<{
-    session: Session<SessionData>;
+    session: Session<SD>;
     user: User | null;
   }>();
 
   const authMiddleware: MiddlewareFunction<Response> = async ({ request, context }, next) => {
     const cookies = request.headers.get('Cookie');
     const session = await storage.getSession(cookies);
-    let accessToken = session.get('accessToken');
+    let accessToken = session.get('accessToken') as string | null;
     let refreshToken = session.get('refreshToken');
 
     let user: User | null = null;
@@ -253,33 +96,9 @@ export function createAuthStorage<
       }
     }
 
-    if (accessToken && refreshToken) {
-      if (isTokenExpired(accessToken)) {
-        if (isTokenExpired(refreshToken)) {
-          accessToken = '';
-          refreshToken = '';
-        } else {
-          const { url } = jwtDecode(refreshToken) as JwtPayload & { url: string };
-
-          try {
-            const client = axios.create({
-              baseURL: url,
-            });
-
-            const response = await client.post<{ accessToken: string }>('/refresh', {
-              refreshToken,
-              userData: extractUserData?.({ token: accessToken, data: user }) || {},
-            });
-
-            accessToken = response.data.accessToken;
-          } catch (error) {
-            console.error('Error refreshing access token');
-            console.error(error);
-            accessToken = '';
-            refreshToken = '';
-          }
-        }
-      }
+    if (accessToken && isTokenExpired(accessToken)) {
+      const userData = extractUserData?.({ token: accessToken, data: user });
+      accessToken = await refreshAccessToken(userData);
     }
 
     if (accessToken) {
@@ -301,8 +120,8 @@ export function createAuthStorage<
 
     const response = await next();
 
-    accessToken = session.get('accessToken');
-    let newCookie = '';
+    accessToken = session.get('accessToken') as string | null;
+    let newCookie: string;
 
     if (accessToken) {
       newCookie = await storage.commitSession(session);
@@ -371,20 +190,13 @@ export function createAuthStorage<
 
   return {
     storage,
-    // createUserSession,
-    // destroyUserSession,
-    getUserSession: getSession,
     getSession,
     getToken,
     getAccessToken,
     getRefreshToken,
-    // decodeToken,
     getUser,
     ensureRole,
-    // refreshAccessToken,
-    // getOrRefreshAccessToken,
-    // handleForceRefreshToken,
-    // handleCheckTokens,
+    handleForceRefreshToken,
     authContext,
     authMiddleware,
   };
