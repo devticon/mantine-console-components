@@ -2,13 +2,16 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/en.js';
 import 'dayjs/locale/pl.js';
+import utc from 'dayjs/plugin/utc.js';
 import customParseFormat from 'dayjs/plugin/customParseFormat.js';
 import localizedFormat from 'dayjs/plugin/localizedFormat.js';
 import timezone from 'dayjs/plugin/timezone.js';
 import 'dayjs/plugin/localizedFormat.js';
 import 'dayjs/plugin/timezone.js';
+import 'dayjs/plugin/utc.js';
 
 dayjs.locale('pl');
+dayjs.extend(utc);
 dayjs.extend(localizedFormat);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
