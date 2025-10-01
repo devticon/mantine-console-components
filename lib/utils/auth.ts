@@ -49,14 +49,13 @@ export function createAuthStorage<
   });
 
   const handleForceRefreshToken = async (userData: object) => {
+    const refreshToken = getRefreshToken();
     const session = getSession();
-    const accessToken = await refreshAccessToken(userData);
+    const accessToken = await refreshAccessToken(refreshToken, userData);
     session.set('accessToken', accessToken);
   };
 
-  const refreshAccessToken = async (userData?: object) => {
-    const refreshToken = getRefreshToken();
-
+  const refreshAccessToken = async (refreshToken?: string | null, userData?: object) => {
     if (!refreshToken || isTokenExpired(refreshToken)) {
       return null;
     }
@@ -98,7 +97,7 @@ export function createAuthStorage<
 
     if (accessToken && isTokenExpired(accessToken)) {
       const userData = extractUserData?.({ token: accessToken, data: user });
-      accessToken = await refreshAccessToken(userData);
+      accessToken = await refreshAccessToken(refreshToken, userData);
     }
 
     if (accessToken) {
