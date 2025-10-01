@@ -65,7 +65,7 @@ export function preprocessNumberInput(
   }, schema);
 }
 
-export function preprocessPatternInput(schema: ZodType = text()) {
+export function preprocessPatternInput(schema: ZodType<string | undefined> = text()) {
   return preprocess(value => {
     if (typeof value === 'string') {
       return value.replace(/-/g, '').replace(/_/g, '').replace(/\s/g, '');
