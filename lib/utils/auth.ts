@@ -123,7 +123,7 @@ export function createAuthStorage<
     if (newAccessToken !== accessToken) {
       let newCookie: string;
 
-      if (accessToken) {
+      if (newAccessToken) {
         newCookie = await storage.commitSession(session);
       } else {
         newCookie = await storage.destroySession(session);
