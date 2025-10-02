@@ -49,8 +49,8 @@ export function transformPrice(value?: number) {
   return value ? Math.round(value * 100) : 0;
 }
 
-export function preprocessNumberInput(
-  schema: ZodType<number | undefined> = numeric(),
+export function preprocessNumberInput<T extends ZodType = ZodType<number>>(
+  schema?: T,
   params?: { prefix?: string; suffix?: string },
 ) {
   return preprocess(value => {
@@ -62,17 +62,17 @@ export function preprocessNumberInput(
     } else {
       return value;
     }
-  }, schema);
+  }, schema || number());
 }
 
-export function preprocessPatternInput(schema: ZodType<string | undefined> = text()) {
+export function preprocessPatternInput<T extends ZodType>(schema?: T) {
   return preprocess(value => {
     if (typeof value === 'string') {
       return value.replace(/-/g, '').replace(/_/g, '').replace(/\s/g, '');
     } else {
       return value;
     }
-  }, schema);
+  }, schema || text());
 }
 
 export function preprocessJSONInput<I extends ZodType>(schema: I) {
