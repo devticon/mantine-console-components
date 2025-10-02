@@ -118,17 +118,19 @@ export function createAuthStorage<
     });
 
     const response = await next();
+    const newAccessToken = session.get('accessToken') as string | null;
 
-    accessToken = session.get('accessToken') as string | null;
-    let newCookie: string;
+    if (newAccessToken !== accessToken) {
+      let newCookie: string;
 
-    if (accessToken) {
-      newCookie = await storage.commitSession(session);
-    } else {
-      newCookie = await storage.destroySession(session);
+      if (accessToken) {
+        newCookie = await storage.commitSession(session);
+      } else {
+        newCookie = await storage.destroySession(session);
+      }
+
+      response.headers.set('Set-Cookie', newCookie);
     }
-
-    response.headers.set('Set-Cookie', newCookie);
 
     return response;
   };
