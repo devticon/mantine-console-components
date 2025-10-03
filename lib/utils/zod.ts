@@ -62,7 +62,7 @@ export function preprocessNumberInput<T extends ZodType = ZodType<number>>(
     } else {
       return value;
     }
-  }, schema || number());
+  }, schema || numeric());
 }
 
 export function preprocessPatternInput<T extends ZodType>(schema?: T) {
