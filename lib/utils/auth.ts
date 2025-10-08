@@ -135,9 +135,19 @@ export function createAuthStorage<
     return response;
   };
 
-  const getUser = () => {
+  const getUser = <T extends boolean>(ensureUser: T = false as T): T extends true ? User : User | null => {
     const context = getContext();
-    return context.get(authContext)?.user;
+    const user = context.get(authContext)?.user;
+
+    if (ensureUser) {
+      if (user) {
+        return user;
+      } else {
+        throw new Error('missing user');
+      }
+    } else {
+      return user!;
+    }
   };
 
   const getSession = () => {
