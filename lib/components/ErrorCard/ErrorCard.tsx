@@ -1,16 +1,30 @@
-import { Button, Center, Container, Text, Title, useMantineTheme } from '@mantine/core';
-import { useLocation } from 'react-router';
-import type { FC, ReactNode } from 'react';
+import { Alert, Button, Center, Code, Container, Text, Title, useMantineTheme } from '@mantine/core';
+import { FC, ReactNode, useMemo } from 'react';
+import { isRouteErrorResponse, useLocation } from 'react-router';
 
 type Props = {
+  error?: unknown;
+  isDev?: boolean;
   errorCode?: string | number;
   customContent?: ReactNode;
   defaultContentOverrides?: Record<string | number, ReactNode>;
 };
 
-export const ErrorCard: FC<Props> = ({ errorCode, customContent, defaultContentOverrides }) => {
+export const ErrorCard: FC<Props> = ({ isDev, error, errorCode, customContent, defaultContentOverrides }) => {
   const location = useLocation();
   const { primaryColor } = useMantineTheme();
+
+  const statusCode = useMemo(() => {
+    if (errorCode) {
+      return errorCode;
+    }
+
+    if (isRouteErrorResponse(error)) {
+      return error.status;
+    }
+
+    return 500;
+  }, [error, errorCode]);
 
   const defaultContent: Record<string | number, ReactNode> = {
     404: (
@@ -58,15 +72,25 @@ export const ErrorCard: FC<Props> = ({ errorCode, customContent, defaultContentO
   };
 
   return (
-    <Center mih="100vh" bg="dark">
+    <Center mih="100vh" bg="dark" style={{ flexDirection: 'column' }}>
       <Container py="xl" ta="center" size="xs">
-        {errorCode && (
+        {statusCode && (
           <Text fw="bold" c={`${primaryColor}.4`} fz={220} lh={1} mb="lg">
-            {errorCode}
+            {statusCode}
           </Text>
         )}
-        {customContent || defaultContent[errorCode || 500] || defaultContent[500]}
+        {customContent || defaultContent[statusCode || 500] || defaultContent[500]}
       </Container>
+      {isDev && error instanceof Error && (
+        <Container py="xl">
+          <Alert color="red" variant="filled">
+            {error.message}
+          </Alert>
+          <Code block mt="md">
+            {error.stack}
+          </Code>
+        </Container>
+      )}
     </Center>
   );
 };
