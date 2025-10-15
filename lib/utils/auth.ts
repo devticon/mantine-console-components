@@ -107,6 +107,8 @@ export function createAuthStorage<
       } catch (error) {
         console.error(error);
       }
+    } else {
+      user = null;
     }
 
     session.set('accessToken', accessToken);
