@@ -47,7 +47,12 @@ export const TablePagination = <F extends BaseFilters>({
 
   return (
     <Group justify="space-between" {...props}>
-      <Pagination total={totalPages} withEdges value={page} onChange={handlePageChange} />
+      <Pagination
+        total={totalPages}
+        withEdges={pagination.type === 'default'}
+        value={page}
+        onChange={handlePageChange}
+      />
       <Select
         value={perPage.toString()}
         data={perPageOptions}
