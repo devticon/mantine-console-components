@@ -43,7 +43,7 @@ export function createAuthStorage<
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
-      maxAge: 60 * 60 * 24 * 30,
+      maxAge: 60 * 60 * 24 * 90,
       httpOnly: true,
       secrets: cookieSecrets,
     },
@@ -65,7 +65,9 @@ export function createAuthStorage<
   const destroyUserSession = async (request: Request, redirectTo = '/') => {
     const cookies = request.headers.get('Cookie');
     const session = await storage.getSession(cookies);
-    const newCookies = await storage.destroySession(session);
+    session.set('accessToken', '');
+    session.set('refreshToken', '');
+    const newCookies = await storage.commitSession(session);
     return redirect(redirectTo, { headers: { 'Set-Cookie': newCookies } });
   };
 
