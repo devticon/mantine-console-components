@@ -83,6 +83,7 @@ export function createAuthStorage<
     const session = await storage.getSession(cookies);
     let accessToken = session.get('accessToken') as string | null;
     let refreshToken = session.get('refreshToken');
+    const initialAccessToken = accessToken;
 
     let user: User | null = null;
 
@@ -120,12 +121,11 @@ export function createAuthStorage<
     });
 
     const response = await next();
-    const newAccessToken = session.get('accessToken') as string | null;
 
-    if (newAccessToken !== accessToken) {
+    if (initialAccessToken !== accessToken) {
       let newCookie: string;
 
-      if (newAccessToken) {
+      if (accessToken) {
         newCookie = await storage.commitSession(session);
       } else {
         newCookie = await storage.destroySession(session);
