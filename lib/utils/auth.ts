@@ -121,6 +121,7 @@ export function createAuthStorage<
     });
 
     const response = await next();
+    accessToken = session.get('accessToken') as string | null;
 
     if (initialAccessToken !== accessToken) {
       let newCookie: string;
