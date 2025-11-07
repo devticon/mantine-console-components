@@ -40,6 +40,7 @@ export function createAuthStorage<
     cookie: {
       name: cookieName,
       secure: process.env.NODE_ENV === 'production',
+      priority: 'high',
       sameSite: 'lax',
       path: '/',
       maxAge: 60 * 60 * 24 * 30,
@@ -202,8 +203,20 @@ export function createAuthStorage<
     }
   };
 
+  const getCookieValue = () => {
+    const request = getRequest();
+
+    return request.headers
+      .get('cookie')
+      ?.split('; ')
+      .find(x => x.startsWith(`${cookieName}=`))
+      ?.split('=')[1];
+  };
+
   return {
     storage,
+    cookieName,
+    getCookieValue,
     getSession,
     getToken,
     getAccessToken,
