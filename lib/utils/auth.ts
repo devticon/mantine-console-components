@@ -10,6 +10,7 @@ type RedirectStrategy<Roles extends string> = Partial<
 
 type Params<Roles extends string, User, RawDecodedJwtToken = any> = {
   cookieName: string;
+  cookieDomain?: string;
   cookieSecrets?: string[];
   rawTokenMapper?: (raw: RawDecodedJwtToken) => User;
   extractUserRole: (data: { token?: string | null; data?: User | null }) => Promise<Roles>;
@@ -30,6 +31,7 @@ export function createAuthStorage<
   SD extends SessionData = SessionData,
 >({
   cookieName,
+  cookieDomain,
   cookieSecrets,
   rawTokenMapper,
   extractUserRole,
@@ -46,6 +48,7 @@ export function createAuthStorage<
       maxAge: 60 * 60 * 24 * 30,
       httpOnly: true,
       secrets: cookieSecrets,
+      domain: cookieDomain,
     },
   });
 
