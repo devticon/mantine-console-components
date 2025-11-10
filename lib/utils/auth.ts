@@ -10,7 +10,7 @@ type RedirectStrategy<Roles extends string> = Partial<
 
 type Params<Roles extends string, User, RawDecodedJwtToken = any> = {
   cookieName: string;
-  cookieDomain?: string;
+  cookieIncludeSubDomains?: boolean;
   cookieSecrets?: string[];
   rawTokenMapper?: (raw: RawDecodedJwtToken) => User;
   extractUserRole: (data: { token?: string | null; data?: User | null }) => Promise<Roles>;
@@ -31,26 +31,31 @@ export function createAuthStorage<
   SD extends SessionData = SessionData,
 >({
   cookieName,
-  cookieDomain,
+  cookieIncludeSubDomains,
   cookieSecrets,
   rawTokenMapper,
   extractUserRole,
   redirectStrategy,
   extractUserData,
 }: Params<Roles, User, RawDecodedJwtToken>) {
-  const storage = createCookieSessionStorage<SD>({
-    cookie: {
-      name: cookieName,
-      secure: process.env.NODE_ENV === 'production',
-      priority: 'high',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 60 * 60 * 24 * 30,
-      httpOnly: true,
-      secrets: cookieSecrets,
-      domain: cookieDomain,
-    },
-  });
+  const getStorage = (request: Request) => {
+    const url = new URL(request.url);
+    const domain = url.hostname.split('.').slice(-2).join('.');
+
+    return createCookieSessionStorage<SD>({
+      cookie: {
+        name: cookieName,
+        secure: process.env.NODE_ENV === 'production',
+        priority: 'high',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 60 * 60 * 24 * 30,
+        httpOnly: true,
+        secrets: cookieSecrets,
+        domain: cookieIncludeSubDomains ? `.${domain}` : undefined,
+      },
+    });
+  };
 
   const handleForceRefreshToken = async (userData: object) => {
     const refreshToken = getRefreshToken();
@@ -84,6 +89,7 @@ export function createAuthStorage<
 
   const authMiddleware: MiddlewareFunction<Response> = async ({ request, context }, next) => {
     const cookies = request.headers.get('Cookie');
+    const storage = getStorage(request);
     const session = await storage.getSession(cookies);
     let accessToken = session.get('accessToken') as string | null;
     let refreshToken = session.get('refreshToken');
@@ -217,7 +223,7 @@ export function createAuthStorage<
   };
 
   return {
-    storage,
+    getStorage,
     cookieName,
     getCookieValue,
     getSession,
