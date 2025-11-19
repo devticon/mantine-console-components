@@ -9,7 +9,7 @@ type RedirectStrategy<Roles extends string> = Partial<
 >;
 
 type Params<Roles extends string, User, RawDecodedJwtToken = any> = {
-  cookieName: string;
+  cookieName: string | ((request: Request) => string);
   cookieIncludeSubDomains?: boolean;
   cookieSecrets?: string[];
   rawTokenMapper?: (raw: RawDecodedJwtToken) => User;
@@ -44,7 +44,7 @@ export function createAuthStorage<
 
     return createCookieSessionStorage<SD>({
       cookie: {
-        name: cookieName,
+        name: typeof cookieName === 'string' ? cookieName : cookieName(request),
         secure: process.env.NODE_ENV === 'production',
         priority: 'high',
         sameSite: 'lax',
@@ -109,6 +109,10 @@ export function createAuthStorage<
     if (accessToken && isTokenExpired(accessToken)) {
       const userData = extractUserData?.({ token: accessToken, data: user });
       accessToken = await refreshAccessToken(refreshToken, userData);
+    }
+
+    if (!accessToken && refreshToken) {
+      accessToken = await refreshAccessToken(refreshToken);
     }
 
     if (accessToken) {
