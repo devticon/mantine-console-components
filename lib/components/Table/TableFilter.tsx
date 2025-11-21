@@ -33,7 +33,7 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
     return (
       <TextInput
         value={(filters[props.name as keyof F] as string) || ''}
-        onChange={event => onChange({ [props.name]: event.currentTarget.value } as Partial<F>)}
+        onChange={event => onChange({ [props.name]: event.currentTarget.value.trimStart() } as Partial<F>)}
         {...props}
       />
     );
