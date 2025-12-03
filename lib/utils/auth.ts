@@ -146,7 +146,7 @@ export function createAuthStorage<
         newCookie = await storage.destroySession(session);
       }
 
-      response.headers.set('Set-Cookie', newCookie);
+      response.headers.append('Set-Cookie', newCookie);
     }
 
     return response;
