@@ -38,13 +38,18 @@ export function createAuthStorage<
   redirectStrategy,
   extractUserData,
 }: Params<Roles, User, RawDecodedJwtToken>) {
+  const getCookieName = () => {
+    const request = getRequest();
+    return typeof cookieName === 'string' ? cookieName : cookieName(request);
+  };
+
   const getStorage = (request: Request) => {
     const url = new URL(request.url);
     const domain = url.hostname.split('.').slice(-2).join('.');
 
     return createCookieSessionStorage<SD>({
       cookie: {
-        name: typeof cookieName === 'string' ? cookieName : cookieName(request),
+        name: getCookieName(),
         secure: process.env.NODE_ENV === 'production',
         priority: 'high',
         sameSite: 'lax',
@@ -222,13 +227,13 @@ export function createAuthStorage<
     return request.headers
       .get('cookie')
       ?.split('; ')
-      .find(x => x.startsWith(`${cookieName}=`))
+      .find(x => x.startsWith(`${getCookieName()}=`))
       ?.split('=')[1];
   };
 
   return {
     getStorage,
-    cookieName,
+    getCookieName,
     getCookieValue,
     getSession,
     getToken,
