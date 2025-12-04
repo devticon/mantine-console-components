@@ -11,10 +11,10 @@ import { TableTh } from './TableTh.js';
 import { TableWrapper } from './TableWrapper.js';
 import type { BaseFilters, BaseItem } from './utils.js';
 
-type Child<T extends BaseItem> = ReactElement<TableColumnProps<T>> | false;
+type Child<T extends BaseItem> = ReactElement<TableColumnProps<T>> | false | null | undefined;
 
 type Props<T extends BaseItem, F extends BaseFilters> = Omit<TableProps, 'data'> & {
-  children: Child<T> | Child<T>[] | false | null;
+  children: Child<T> | Child<T>[] | (Child<T> | Child<T>[])[];
   data: T[];
   loading?: boolean;
   pagination?: { count: number; type?: 'default' | 'optimized' };
