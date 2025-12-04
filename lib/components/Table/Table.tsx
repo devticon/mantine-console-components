@@ -14,7 +14,7 @@ import type { BaseFilters, BaseItem } from './utils.js';
 type Child<T extends BaseItem> = ReactElement<TableColumnProps<T>> | false;
 
 type Props<T extends BaseItem, F extends BaseFilters> = Omit<TableProps, 'data'> & {
-  children: Child<T> | Child<T>[];
+  children: Child<T> | Child<T>[] | false | null;
   data: T[];
   loading?: boolean;
   pagination?: { count: number; type?: 'default' | 'optimized' };
