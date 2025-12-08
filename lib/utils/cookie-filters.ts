@@ -9,7 +9,7 @@ export async function getCookieFilters<T extends object>(filters: T, key: string
   const searchParams = new URL(request.url).searchParams;
   const hasSearchParams = Array.from(searchParams.keys()).length > 0;
 
-  if (hasSearchParams) {
+  if (hasSearchParams || !savedFilters[key]) {
     savedFilters[key] = filters;
   }
 
