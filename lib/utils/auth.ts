@@ -97,16 +97,26 @@ export function createAuthStorage<
     const storage = getStorage(request);
     const session = await storage.getSession(cookies);
     let accessToken = session.get('accessToken') as string | null;
-    let refreshToken = session.get('refreshToken');
+    let refreshToken = session.get('refreshToken') as string | null;
     const initialAccessToken = accessToken;
 
     let user: User | null = null;
+
+    if (refreshToken) {
+      try {
+        jwtDecode(refreshToken);
+      } catch (error) {
+        refreshToken = null;
+        console.error(error);
+      }
+    }
 
     if (accessToken) {
       try {
         const decodedJwt = jwtDecode<RawDecodedJwtToken>(accessToken);
         user = rawTokenMapper?.(decodedJwt) || null;
       } catch (error) {
+        accessToken = null;
         console.error(error);
       }
     }
