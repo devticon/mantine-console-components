@@ -12,6 +12,7 @@ type Params<Roles extends string, User, RawDecodedJwtToken = any> = {
   cookieName: string | ((request: Request) => string);
   cookieIncludeSubDomains?: boolean;
   cookieSecrets?: string[];
+  cookieIsSession?: boolean;
   rawTokenMapper?: (raw: RawDecodedJwtToken) => User;
   extractUserRole: (data: { token?: string | null; data?: User | null }) => Promise<Roles>;
   redirectStrategy: RedirectStrategy<Roles> | ((request: Request) => RedirectStrategy<Roles>);
@@ -32,6 +33,7 @@ export function createAuthStorage<
 >({
   cookieName,
   cookieIncludeSubDomains,
+  cookieIsSession,
   cookieSecrets,
   rawTokenMapper,
   extractUserRole,
@@ -54,7 +56,7 @@ export function createAuthStorage<
         priority: 'high',
         sameSite: 'lax',
         path: '/',
-        maxAge: 60 * 60 * 24 * 30,
+        maxAge: cookieIsSession ? undefined : 60 * 60 * 24 * 30,
         httpOnly: true,
         secrets: cookieSecrets,
         domain: cookieIncludeSubDomains ? `.${domain}` : undefined,
