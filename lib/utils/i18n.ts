@@ -6,6 +6,7 @@ import { createI18nextMiddleware } from 'remix-i18next/middleware';
 import { z } from 'zod';
 import { pl } from '../translations/pl.js';
 import { en } from '../translations/en.js';
+import crypto from 'crypto';
 
 export type I18nLibConfig = {
   supportedLngs: string[];
@@ -52,9 +53,23 @@ export function createRemixI18n(config: I18nLibConfig) {
       return badRequest({ error: '"lng" and "ns" query params are required' });
     }
 
-    return data(config.resources?.[lng]?.[ns] || {}, {
+    const localeData = config.resources?.[lng]?.[ns] || {};
+    const content = JSON.stringify(localeData);
+    const etag = `"${crypto.createHash('md5').update(content).digest('hex')}"`;
+    const ifNoneMatch = request.headers.get('If-None-Match');
+
+    if (ifNoneMatch === etag) {
+      return new Response(null, {
+        status: 304,
+        headers: { 'Cache-Control': 'no-cache', ETag: etag },
+      });
+    }
+
+    return new Response(content, {
       headers: {
-        'Cache-Control': 'max-age=86400, stale-while-revalidate=604800',
+        'Content-Type': 'application/json; charset=utf-8',
+        'Cache-Control': 'no-cache',
+        ETag: etag,
       },
     });
   };
