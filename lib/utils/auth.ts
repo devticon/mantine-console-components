@@ -1,7 +1,6 @@
 import { createContext, createCookieSessionStorage, MiddlewareFunction, redirect, Session } from 'react-router';
 import axios from 'axios';
-import * as jwt from 'jsonwebtoken';
-import { JwtPayload } from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { getContext, getRequest } from './session-context.js';
 
 type RedirectStrategy<Roles extends string> = Partial<
@@ -96,6 +95,17 @@ export function createAuthStorage<
     user: User | null;
   }>();
 
+  const decodeAccessToken = (token: string) => {
+    if (jwtPublicKey) {
+      const key = Buffer.from(jwtPublicKey, 'base64');
+      const decodedJwt = jwt.verify(token, key) as RawDecodedJwtToken;
+      return rawTokenMapper?.(decodedJwt) || null;
+    } else {
+      const decodedJwt = jwt.decode(token) as RawDecodedJwtToken;
+      return rawTokenMapper?.(decodedJwt) || null;
+    }
+  };
+
   const authMiddleware: MiddlewareFunction<Response> = async ({ request, context }, next) => {
     const cookies = request.headers.get('Cookie');
     const storage = getStorage(request);
@@ -117,14 +127,7 @@ export function createAuthStorage<
 
     if (accessToken) {
       try {
-        if (jwtPublicKey) {
-          const key = Buffer.from(jwtPublicKey, 'base64');
-          const decodedJwt = jwt.verify(accessToken, key) as RawDecodedJwtToken;
-          user = rawTokenMapper?.(decodedJwt) || null;
-        } else {
-          const decodedJwt = jwt.decode(accessToken) as RawDecodedJwtToken;
-          user = rawTokenMapper?.(decodedJwt) || null;
-        }
+        user = decodeAccessToken(accessToken);
       } catch (error) {
         accessToken = null;
         console.error(error);
@@ -142,8 +145,7 @@ export function createAuthStorage<
 
     if (accessToken) {
       try {
-        const decodedJwt = jwt.decode(accessToken) as RawDecodedJwtToken;
-        user = rawTokenMapper?.(decodedJwt) || null;
+        user = decodeAccessToken(accessToken);
       } catch (error) {
         console.error(error);
       }
