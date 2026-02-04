@@ -38,6 +38,11 @@ export function getRawErrorMessage(error: unknown) {
   }
 }
 
+export function getRawErrorLevel(error: unknown) {
+  // @ts-ignore
+  return error?.gqlErrors?.[0]?.extensions?.level || 'error';
+}
+
 export function handleErrorFactory(
   getI18nInstance: (context: Readonly<RouterContextProvider>) => i18n,
   constraints: { key: string; field: string | null }[],
