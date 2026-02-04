@@ -49,9 +49,6 @@ export function handleErrorFactory(
     const message = getRawErrorMessage(error);
     const constraint = constraints.find(({ key }) => message.includes(key));
 
-    console.error({ code, message });
-    console.error(error);
-
     const translatedMessage = constraint
       ? t(`common:errors.${code}.${constraint?.key}`, { defaultValue: message })
       : t(`common:errors.${code}.${action}`, { defaultValue: '' }) ||
