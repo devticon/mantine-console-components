@@ -1,7 +1,7 @@
 import { createContext, createCookieSessionStorage, MiddlewareFunction, redirect, Session } from 'react-router';
 import axios from 'axios';
-import type { JwtPayload } from 'jwt-decode';
-import { jwtDecode } from 'jwt-decode';
+import * as jwt from 'jsonwebtoken';
+import { JwtPayload } from 'jsonwebtoken';
 import { getContext, getRequest } from './session-context.js';
 
 type RedirectStrategy<Roles extends string> = Partial<
@@ -17,6 +17,7 @@ type Params<Roles extends string, User, RawDecodedJwtToken = any> = {
   extractUserRole: (data: { token?: string | null; data?: User | null }) => Promise<Roles>;
   redirectStrategy: RedirectStrategy<Roles> | ((request: Request) => RedirectStrategy<Roles>);
   extractUserData?: (data: { token?: string; data?: User | null }) => object;
+  jwtPublicKey?: string;
 };
 
 export type SessionData = {
@@ -39,6 +40,7 @@ export function createAuthStorage<
   extractUserRole,
   redirectStrategy,
   extractUserData,
+  jwtPublicKey,
 }: Params<Roles, User, RawDecodedJwtToken>) {
   const getCookieName = () => {
     const request = getRequest();
@@ -77,7 +79,7 @@ export function createAuthStorage<
     }
 
     try {
-      const { url } = jwtDecode(refreshToken) as JwtPayload & { url: string };
+      const { url } = jwt.decode(refreshToken) as { url: string };
       const client = axios.create({ baseURL: url });
       const body = { refreshToken, userData: userData || {} };
       const response = await client.post<{ accessToken: string }>('/refresh', body);
@@ -106,7 +108,7 @@ export function createAuthStorage<
 
     if (refreshToken) {
       try {
-        jwtDecode(refreshToken);
+        jwt.decode(refreshToken);
       } catch (error) {
         refreshToken = null;
         console.error(error);
@@ -115,8 +117,14 @@ export function createAuthStorage<
 
     if (accessToken) {
       try {
-        const decodedJwt = jwtDecode<RawDecodedJwtToken>(accessToken);
-        user = rawTokenMapper?.(decodedJwt) || null;
+        if (jwtPublicKey) {
+          const key = Buffer.from(jwtPublicKey, 'base64');
+          const decodedJwt = jwt.verify(accessToken, key) as RawDecodedJwtToken;
+          user = rawTokenMapper?.(decodedJwt) || null;
+        } else {
+          const decodedJwt = jwt.decode(accessToken) as RawDecodedJwtToken;
+          user = rawTokenMapper?.(decodedJwt) || null;
+        }
       } catch (error) {
         accessToken = null;
         console.error(error);
@@ -134,7 +142,7 @@ export function createAuthStorage<
 
     if (accessToken) {
       try {
-        const decodedJwt = jwtDecode<RawDecodedJwtToken>(accessToken);
+        const decodedJwt = jwt.decode(accessToken) as RawDecodedJwtToken;
         user = rawTokenMapper?.(decodedJwt) || null;
       } catch (error) {
         console.error(error);
@@ -260,6 +268,6 @@ export function createAuthStorage<
 }
 
 export function isTokenExpired(token: string) {
-  const { exp } = jwtDecode(token) as JwtPayload;
+  const { exp } = jwt.decode(token) as JwtPayload;
   return exp! * 1000 < Date.now();
 }
