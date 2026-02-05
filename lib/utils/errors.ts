@@ -3,12 +3,23 @@ import { i18n } from 'i18next';
 import { RouterContextProvider } from 'react-router';
 import { getContext } from './session-context.js';
 
+export interface CodeErrorOptions {
+  cause?: unknown;
+  level?: 'error' | 'warn';
+}
+
 export class CodeError extends Error {
-  constructor(
-    message: string,
-    public code: string,
-  ) {
-    super(message);
+  public readonly code: string;
+  public readonly level: 'error' | 'warn';
+
+  constructor(message: string, code: string, options: CodeErrorOptions = {}) {
+    super(message, { cause: options.cause });
+
+    this.code = code;
+    this.level = options.level ?? 'error';
+
+    Object.setPrototypeOf(this, new.target.prototype);
+    Error.captureStackTrace(this, this.constructor);
   }
 }
 
@@ -31,6 +42,8 @@ export function getRawErrorMessage(error: unknown) {
   } else if (error instanceof Error && 'gqlErrors' in error) {
     // @ts-ignore
     return (error.gqlErrors?.[0]?.message as string) || error.message;
+  } else if (error instanceof Error) {
+    return error.message;
   } else if (typeof error === 'string') {
     return error;
   } else {
@@ -39,8 +52,12 @@ export function getRawErrorMessage(error: unknown) {
 }
 
 export function getRawErrorLevel(error: unknown) {
-  // @ts-ignore
-  return error?.gqlErrors?.[0]?.extensions?.level || 'error';
+  if (error instanceof CodeError) {
+    return error.level;
+  } else {
+    // @ts-ignore
+    return (error?.gqlErrors?.[0]?.extensions?.level as string) || 'error';
+  }
 }
 
 export function handleErrorFactory(
