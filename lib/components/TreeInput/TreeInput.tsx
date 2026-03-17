@@ -35,11 +35,15 @@ const renderTreeNode = ({ node, expanded, hasChildren, elementProps, tree }: Ren
 type Props = InputWrapperProps & {
   treeData: TreeNodeData[];
   initialExpandedState?: Record<string, boolean>;
+  initialCheckedState?: string[];
   name?: string;
 };
 
-export const TreeInput: FC<Props> = ({ treeData, initialExpandedState, name, ...props }) => {
-  const tree = useTree({ initialExpandedState });
+export const TreeInput: FC<Props> = ({ treeData, initialExpandedState, initialCheckedState, name, ...props }) => {
+  const tree = useTree({
+    initialExpandedState,
+    initialCheckedState,
+  });
 
   return (
     <Input.Wrapper {...props}>
