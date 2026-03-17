@@ -20,6 +20,7 @@ export { TransferList } from './components/TransferList/TransferList.js';
 export { divideByIds } from './components/TransferList/utils.js';
 export { CopyButton } from './components/Buttons/CopyButton.js';
 export { RemixTabs } from './components/Tabs/RemixTabs.js';
+export { TreeInput } from './components/TreeInput/TreeInput.js';
 
 export * from './utils/search-params.js';
 export * from './utils/price.js';
