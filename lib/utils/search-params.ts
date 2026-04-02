@@ -25,7 +25,13 @@ export function mapObjectToSearchParams(filters: Record<string, JsonPrimitive | 
         params.append(key, mapValueToString(v));
       });
     } else {
-      params.set(key, mapValueToString(value));
+      const newVal = mapValueToString(value);
+
+      if (newVal !== '') {
+        params.set(key, newVal);
+      } else {
+        params.delete(key);
+      }
     }
   });
 
