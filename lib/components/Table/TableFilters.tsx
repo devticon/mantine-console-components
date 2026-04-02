@@ -5,8 +5,7 @@ import { Children, cloneElement, isValidElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TbFilter, TbFilterX } from 'react-icons/tb';
 import type { Props as TableFilterProps } from './TableFilter.js';
-import type { BaseFilters } from './utils.js';
-import { isEqual } from 'lodash-es';
+import { areFiltersEqual, BaseFilters } from './utils.js';
 
 type Child<F extends BaseFilters> = ReactElement<TableFilterProps<F>> | false;
 
@@ -36,7 +35,7 @@ export const TableFilters = <F extends BaseFilters>({
   const theme = useMantineTheme();
   const isDesktop = useMediaQuery(`(min-width: ${theme.breakpoints.md})`);
   const [drawerFilters, setDrawerFilters] = useState<F>(filters);
-  const areSame = defaultFilters && isEqual(filters, defaultFilters);
+  const areSame = defaultFilters && areFiltersEqual(filters, defaultFilters);
 
   const hasDrawerFilters = Children.map(children, child => {
     return isValidElement(child) && (!child.props.alwaysOn || !isDesktop);
@@ -109,14 +108,13 @@ export const TableFilters = <F extends BaseFilters>({
           )}
           {handleFiltersReset && !areSame && (
             <>
-              <Button visibleFrom="md" onClick={handleFiltersReset} color="red" rightSection={<TbFilterX size={20} />}>
+              <Button visibleFrom="md" onClick={handleFiltersReset} rightSection={<TbFilterX size={20} />}>
                 {t('Table.resetFiltersButton')}
               </Button>
               <ActionIcon
                 hiddenFrom="md"
                 size="lg"
                 onClick={handleFiltersReset}
-                color="red"
                 aria-label={t('Table.resetFiltersButton')}
               >
                 <TbFilterX size={20} />
