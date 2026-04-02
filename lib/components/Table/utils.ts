@@ -1,17 +1,20 @@
 import type { JsonPrimitive } from '../../utils/search-params.js';
-import { isEqualWith } from 'lodash-es';
+import { isEmpty, isEqual, keys, union } from 'lodash-es';
 
 export type BaseFilters = Record<string, JsonPrimitive | JsonPrimitive[]>;
 export type BaseItem = { id: string | number };
 
 export function areFiltersEqual(a: BaseFilters, b: BaseFilters) {
-  const isEmptyValue = (val: unknown) => {
-    return val === null || val === undefined || val === '';
-  };
+  const allKeys = union(keys(a), keys(b));
 
-  return isEqualWith(a, b, (objValue, othValue) => {
-    if (isEmptyValue(objValue) && isEmptyValue(othValue)) {
+  return allKeys.every(key => {
+    const val1 = a[key];
+    const val2 = b[key];
+
+    if (isEmpty(val1) && isEmpty(val2)) {
       return true;
+    } else {
+      return isEqual(val1, val2);
     }
   });
 }
