@@ -65,7 +65,7 @@ export const FetcherActionButton: FetcherActionButtonType = forwardRef<HTMLButto
         labels: { confirm: t('FetcherActionButton.confirm'), cancel: t('FetcherActionButton.cancel') },
         centered: true,
         onConfirm: handleSubmit,
-        confirmProps: { autoFocus: true, 'data-auto-focus': true },
+        confirmProps: { autoFocus: true, 'data-autofocus': true },
         ...modalProps,
       });
     };
