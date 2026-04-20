@@ -14,7 +14,7 @@ type Params<Roles extends string, User extends Record<string, unknown>> = {
   challenges: { [key in Challenge]: string };
 };
 
-export function createAuthStorage<Roles extends string, User extends Record<string, unknown>>({
+export function createAuthV3Storage<Roles extends string, User extends Record<string, unknown>>({
   instance: authticon,
   extractUserRole,
   redirectStrategy,
