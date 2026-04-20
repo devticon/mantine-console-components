@@ -2,6 +2,7 @@ import { badRequest } from './responses.js';
 import { i18n } from 'i18next';
 import { RouterContextProvider } from 'react-router';
 import { getContext } from './session-context.js';
+import { isAuthticonApiError, isAuthticonTokenError } from '@authticon/client';
 
 export interface CodeErrorOptions {
   cause?: unknown;
@@ -24,7 +25,9 @@ export class CodeError extends Error {
 }
 
 export function getRawErrorCode(error: unknown) {
-  if (error instanceof CodeError) {
+  if (isAuthticonApiError(error) || isAuthticonTokenError(error)) {
+    return error.code;
+  } else if (error instanceof CodeError) {
     return error.code;
   } else if (error instanceof Error && 'gqlErrors' in error) {
     // @ts-ignore
@@ -37,7 +40,9 @@ export function getRawErrorCode(error: unknown) {
 }
 
 export function getRawErrorMessage(error: unknown) {
-  if (error instanceof CodeError) {
+  if (isAuthticonApiError(error) || isAuthticonTokenError(error)) {
+    return error.message;
+  } else if (error instanceof CodeError) {
     return error.message;
   } else if (error instanceof Error && 'gqlErrors' in error) {
     // @ts-ignore
