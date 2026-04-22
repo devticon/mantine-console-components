@@ -34,7 +34,9 @@ export function createAuthV3Storage<Roles extends string, User extends Record<st
         if (firstChallenge) {
           const currentUrl = new URL(request.url);
           const challengeRedirect = challenges[firstChallenge];
+
           if (challengeRedirect && challengeRedirect !== currentUrl.pathname) {
+            console.log(`required challenge: ${firstChallenge}, redirecting to: ${challengeRedirect}`);
             return redirect(challengeRedirect);
           }
         }
@@ -98,6 +100,7 @@ export function createAuthV3Storage<Roles extends string, User extends Record<st
         : request.url.replace('http://', 'https://');
 
       const firstRedirect = redirects.find(Boolean);
+      console.log(`user role: ${role}, redirect to: ${firstRedirect || '/'}`);
       const params = new URLSearchParams({ redirectTo });
       throw redirect(`${firstRedirect || '/'}?${params.toString()}`);
     }
