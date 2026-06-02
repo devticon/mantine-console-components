@@ -1,4 +1,4 @@
-import { Challenge, createAuthticon, Session } from '@authticon/client';
+import { Challenge, createAuthticon, Session, TokenStorageOptions } from '@authticon/client';
 import { createContext, MiddlewareFunction, redirect } from 'react-router';
 import { getContext, getRequest } from './session-context.js';
 
@@ -12,6 +12,7 @@ type Params<Roles extends string, User extends Record<string, unknown>> = {
   redirectStrategy: RedirectStrategy<Roles> | ((request: Request) => RedirectStrategy<Roles>);
   extractUserData?: (data: { token?: string; data?: User | null }) => object;
   challenges: { [key in Challenge]: string };
+  tokenStorageOptions?: TokenStorageOptions;
 };
 
 export function createAuthV3Storage<Roles extends string, User extends Record<string, unknown>>({
@@ -19,14 +20,21 @@ export function createAuthV3Storage<Roles extends string, User extends Record<st
   extractUserRole,
   redirectStrategy,
   challenges,
+  tokenStorageOptions,
 }: Params<Roles, User>) {
   // eslint-disable-next-line @eslint-react/naming-convention/context-name
   const authContext = createContext<{ session: Session<User> }>();
 
   const authMiddleware: MiddlewareFunction<Response> = async ({ request, context }, next) => {
     try {
-      const session = await authticon.session({ request });
-      context.set(authContext, { session });
+      const session = await authticon.session({
+        request,
+        tokenStorage: tokenStorageOptions,
+      });
+
+      context.set(authContext, {
+        session,
+      });
 
       if (session.isLoggedIn()) {
         const firstChallenge = session.getFirstChallenge();
