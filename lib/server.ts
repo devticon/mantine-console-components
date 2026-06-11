@@ -4,3 +4,4 @@ export * from './utils/auth-v3.js';
 export * from './utils/errors.js';
 export * from './utils/i18n.js';
 export * from './utils/cookie-filters.js';
+export * from './utils/redirect.js';

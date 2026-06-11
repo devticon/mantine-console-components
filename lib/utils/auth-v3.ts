@@ -1,6 +1,7 @@
 import { Challenge, createAuthticon, Session, TokenStorageOptions } from '@authticon/client';
 import { createContext, MiddlewareFunction, redirect } from 'react-router';
 import { getContext, getRequest } from './session-context.js';
+import { clearRedirectToCookie, getRedirectToCookie, setRedirectToCookie } from './redirect.js';
 
 type RedirectStrategy<Roles extends string> = Partial<
   Record<`${Roles}_${Roles}` | `${Roles}_*` | `*_${Roles}` | '*_*', string>
@@ -48,6 +49,12 @@ export function createAuthV3Storage<Roles extends string, User extends Record<st
           if (challengeRedirect && challengeRedirect !== currentUrl.pathname) {
             console.log(`required challenge: ${firstChallenge}, redirecting to: ${challengeRedirect}`);
             return redirect(challengeRedirect);
+          }
+        } else {
+          const destination = await getRedirectToCookie(request);
+
+          if (destination) {
+            return redirect(destination, { headers: { 'Set-Cookie': await clearRedirectToCookie() } });
           }
         }
       }
@@ -111,8 +118,12 @@ export function createAuthV3Storage<Roles extends string, User extends Record<st
 
       const firstRedirect = redirects.find(Boolean);
       console.log(`user role: ${role}, redirect to: ${firstRedirect || '/'}`);
-      const params = new URLSearchParams({ redirectTo });
-      throw redirect(`${firstRedirect || '/'}?${params.toString()}`);
+
+      const headers: HeadersInit = (await getRedirectToCookie(request))
+        ? {}
+        : { 'Set-Cookie': await setRedirectToCookie(redirectTo) };
+
+      throw redirect(firstRedirect || '/', { headers });
     }
   };
 
