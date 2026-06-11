@@ -1,6 +1,6 @@
 import type { JSONSchema7 } from 'json-schema';
-import type { output, ZodString, ZodType } from 'zod';
-import { number, preprocess, string } from 'zod';
+import type { output, ZodNumber, ZodString, ZodType } from 'zod';
+import { enum as nativeEnum, number, preprocess, string } from 'zod';
 import { checkbox, formData, numeric, text } from 'zod-form-data';
 
 export { z, number, coerce, string, enum as nativeEnum, array, boolean, object, preprocess } from 'zod';
@@ -89,6 +89,16 @@ export function nullableText(schema: ZodString = string()) {
   return text(schema.nullish()).transform(v => v || null);
 }
 
+export function nullableNumeric(schema: ZodNumber = number()) {
+  return numeric(schema.nullish()).transform(v => v ?? null);
+}
+
+export function nullableNativeEnum<T extends Record<string, string>>(values: T) {
+  return nativeEnum(values)
+    .nullish()
+    .transform(v => v ?? null);
+}
+
 export function jsonSchemaToZod(schema: JSONSchema7) {
   return formData(
     Object.fromEntries(
@@ -107,4 +117,24 @@ export function jsonSchemaToZod(schema: JSONSchema7) {
       }),
     ),
   );
+}
+
+export const validatePlTaxNumber = (value: string) => {
+  if (value?.length !== 10) {
+    return false;
+  }
+
+  const weights = [6, 5, 7, 2, 3, 4, 5, 6, 7];
+  const checksum = parseInt(value.slice(-1), 10);
+  const sum = value
+    .split('')
+    .splice(0, 9)
+    .map(digit => parseInt(digit, 10))
+    .reduce((acc, digit, index) => acc + digit * weights[index], 0);
+
+  return sum % 11 === checksum;
+};
+
+export function textPlTaxNumber(schema: ZodString = string()) {
+  return text(schema.refine(validatePlTaxNumber, { message: 'invalid_tax_number' }));
 }
