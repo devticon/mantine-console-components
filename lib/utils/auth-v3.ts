@@ -7,7 +7,7 @@ type RedirectStrategy<Roles extends string> = Partial<
 >;
 
 type Params<Roles extends string, User extends Record<string, unknown>> = {
-  instance: ReturnType<typeof createAuthticon<User>>;
+  instance: ReturnType<typeof createAuthticon<User>> | (() => ReturnType<typeof createAuthticon<User>>);
   extractUserRole: (data: { token?: string | null; data?: User | null }) => Promise<Roles>;
   redirectStrategy: RedirectStrategy<Roles> | ((request: Request) => RedirectStrategy<Roles>);
   extractUserData?: (data: { token?: string; data?: User | null }) => object;
@@ -16,7 +16,7 @@ type Params<Roles extends string, User extends Record<string, unknown>> = {
 };
 
 export function createAuthV3Storage<Roles extends string, User extends Record<string, unknown>>({
-  instance: authticon,
+  instance,
   extractUserRole,
   redirectStrategy,
   challenges,
@@ -27,6 +27,8 @@ export function createAuthV3Storage<Roles extends string, User extends Record<st
 
   const authMiddleware: MiddlewareFunction<Response> = async ({ request, context }, next) => {
     try {
+      const authticon = typeof instance === 'function' ? instance() : instance;
+
       const session = await authticon.session({
         request,
         tokenStorage: tokenStorageOptions,
