@@ -26,9 +26,13 @@ export function createAuthV3Storage<Roles extends string, User extends Record<st
   // eslint-disable-next-line @eslint-react/naming-convention/context-name
   const authContext = createContext<{ session: Session<User> }>();
 
+  const getAuthticon = () => {
+    return typeof instance === 'function' ? instance() : instance;
+  };
+
   const authMiddleware: MiddlewareFunction<Response> = async ({ request, context }, next) => {
     try {
-      const authticon = typeof instance === 'function' ? instance() : instance;
+      const authticon = getAuthticon();
 
       const session = await authticon.session({
         request,
@@ -128,6 +132,7 @@ export function createAuthV3Storage<Roles extends string, User extends Record<st
   };
 
   return {
+    getAuthticon,
     getAccessToken,
     getRefreshToken,
     getUser,
