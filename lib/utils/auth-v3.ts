@@ -14,6 +14,7 @@ type Params<Roles extends string, User extends Record<string, unknown>> = {
   extractUserData?: (data: { token?: string; data?: User | null }) => object;
   challenges: { [key in Challenge]: string };
   tokenStorageOptions?: TokenStorageOptions;
+  excludedPaths?: string[];
 };
 
 export function createAuthV3Storage<Roles extends string, User extends Record<string, unknown>>({
@@ -22,6 +23,7 @@ export function createAuthV3Storage<Roles extends string, User extends Record<st
   redirectStrategy,
   challenges,
   tokenStorageOptions,
+  excludedPaths,
 }: Params<Roles, User>) {
   // eslint-disable-next-line @eslint-react/naming-convention/context-name
   const authContext = createContext<{ session: Session<User> }>();
@@ -31,6 +33,12 @@ export function createAuthV3Storage<Roles extends string, User extends Record<st
   };
 
   const authMiddleware: MiddlewareFunction<Response> = async ({ request, context }, next) => {
+    const { pathname } = new URL(request.url);
+
+    if (excludedPaths?.includes(pathname)) {
+      return next();
+    }
+
     try {
       const authticon = getAuthticon();
 
