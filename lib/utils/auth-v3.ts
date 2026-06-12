@@ -14,8 +14,12 @@ type Params<Roles extends string, User extends Record<string, unknown>> = {
   extractUserData?: (data: { token?: string; data?: User | null }) => object;
   challenges: { [key in Challenge]: string };
   tokenStorageOptions?: TokenStorageOptions;
-  excludedPaths?: string[];
+  excludedPaths?: (string | RegExp)[];
 };
+
+function isExcludedPath(pathname: string, excludedPaths: (string | RegExp)[]) {
+  return excludedPaths.some(path => (typeof path === 'string' ? pathname === path : path.test(pathname)));
+}
 
 export function createAuthV3Storage<Roles extends string, User extends Record<string, unknown>>({
   instance,
@@ -35,7 +39,7 @@ export function createAuthV3Storage<Roles extends string, User extends Record<st
   const authMiddleware: MiddlewareFunction<Response> = async ({ request, context }, next) => {
     const { pathname } = new URL(request.url);
 
-    if (excludedPaths?.includes(pathname)) {
+    if (excludedPaths && isExcludedPath(pathname, excludedPaths)) {
       return next();
     }
 
