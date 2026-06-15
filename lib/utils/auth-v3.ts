@@ -63,7 +63,7 @@ export function createAuthV3Storage<Roles extends string, User extends Record<st
           const challengeRedirect = challenges[firstChallenge];
 
           if (challengeRedirect && challengeRedirect !== currentUrl.pathname) {
-            console.log(`required challenge: ${firstChallenge}, redirecting to: ${challengeRedirect}`);
+            console.log(`current url: ${request.url} ,challenge: ${firstChallenge}, redirect to: ${challengeRedirect}`);
             return redirect(challengeRedirect);
           }
         } else {
