@@ -138,9 +138,10 @@ export function createAuthV3Storage<Roles extends string, User extends Record<st
         `user role: ${role}, expected roles: ${expectedRoles.join(',')}, current path: ${request.url}, redirect to: ${firstRedirect || '/'}`,
       );
 
-      const headers: HeadersInit = (await getRedirectToCookie(request))
-        ? {}
-        : { 'Set-Cookie': await setRedirectToCookie(redirectTo) };
+      const headers: HeadersInit =
+        (await getRedirectToCookie(request)) || role !== 'guest'
+          ? {}
+          : { 'Set-Cookie': await setRedirectToCookie(redirectTo) };
 
       throw redirect(firstRedirect || '/', { headers });
     }
