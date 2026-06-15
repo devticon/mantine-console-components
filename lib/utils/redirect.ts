@@ -9,7 +9,7 @@ export async function setRedirectToCookie(redirectTo: string) {
 }
 
 export async function getRedirectToCookie(request: Request) {
-  return redirectToCookie.parse(request.headers.get('Cookie'));
+  return (await redirectToCookie.parse(request.headers.get('Cookie'))) as string | null;
 }
 
 export async function clearRedirectToCookie() {

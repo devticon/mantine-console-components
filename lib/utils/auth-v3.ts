@@ -70,6 +70,7 @@ export function createAuthV3Storage<Roles extends string, User extends Record<st
           const destination = await getRedirectToCookie(request);
 
           if (destination) {
+            console.log(`redirect to url from cookie, url: ${destination}`);
             return redirect(destination, { headers: { 'Set-Cookie': await clearRedirectToCookie() } });
           }
         }
@@ -133,7 +134,9 @@ export function createAuthV3Storage<Roles extends string, User extends Record<st
         : request.url.replace('http://', 'https://');
 
       const firstRedirect = redirects.find(Boolean);
-      console.log(`user role: ${role}, redirect to: ${firstRedirect || '/'}`);
+      console.log(
+        `user role: ${role}, expected roles: ${expectedRoles.join(',')}, current path: ${request.url}, redirect to: ${firstRedirect || '/'}`,
+      );
 
       const headers: HeadersInit = (await getRedirectToCookie(request))
         ? {}
