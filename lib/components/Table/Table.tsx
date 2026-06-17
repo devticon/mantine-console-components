@@ -20,7 +20,7 @@ type Props<T extends BaseItem, F extends BaseFilters> = Omit<TableProps, 'data'>
   pagination?: { count: number; type?: 'default' | 'optimized' };
   ns?: string;
   filters?: F;
-  handleFiltersChange?: (filters: Partial<F>) => void;
+  handleFiltersChange?: (filters: Partial<F>, debounce?: boolean) => void;
   selection?: { selectedRows: T[]; setSelectedRows: Dispatch<SetStateAction<T[]>> };
   withBorder?: boolean;
   additionalRows?: ReactNode;

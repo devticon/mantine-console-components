@@ -12,6 +12,7 @@ export const pl = {
     resetFiltersButton: 'Wyczyść',
     saveFiltersButton: 'Zapisz',
     sortColumn: 'Sortuj kolumnę',
+    filterColumn: 'Filtruj kolumnę',
   },
   TransferList: {
     searchPlaceholder: 'Szukaj...',

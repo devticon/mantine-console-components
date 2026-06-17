@@ -14,6 +14,7 @@ export const en = {
     resetFiltersButton: 'Reset',
     saveFiltersButton: 'Save',
     sortColumn: 'Sort column',
+    filterColumn: 'Filter column',
   },
   TransferList: {
     searchPlaceholder: 'Search...',
