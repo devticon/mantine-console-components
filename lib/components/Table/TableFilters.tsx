@@ -96,14 +96,14 @@ export const TableFilters = <F extends BaseFilters>({
           {Children.map(children, child => handleChild(child, true))}
           {hasDrawerFilters && (
             <Tooltip label={openFiltersButtonLabel || t('Table.openFiltersButton')}>
-              <ActionIcon size="lg" onClick={openDrawer}>
+              <ActionIcon size="lg" onClick={openDrawer} h={36} w={36}>
                 <TbFilter size={20} />
               </ActionIcon>
             </Tooltip>
           )}
           {handleFiltersReset && !areSame && (
             <Tooltip label={t('Table.resetFiltersButton')}>
-              <ActionIcon size="lg" onClick={handleFiltersReset}>
+              <ActionIcon size="lg" onClick={handleFiltersReset} h={36} w={36}>
                 <TbFilterX size={20} />
               </ActionIcon>
             </Tooltip>
