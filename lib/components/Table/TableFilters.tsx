@@ -92,7 +92,7 @@ export const TableFilters = <F extends BaseFilters>({
       </Drawer>
 
       <Group justify="space-between" align="flex-end" mb="md">
-        <Group gap="sm" wrap="nowrap">
+        <Group gap="sm" wrap="nowrap" align="flex-end">
           {Children.map(children, child => handleChild(child, true))}
           {hasDrawerFilters && (
             <Tooltip label={openFiltersButtonLabel || t('Table.openFiltersButton')}>
