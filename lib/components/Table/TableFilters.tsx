@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Drawer, Group, SimpleGrid, useMantineTheme } from '@mantine/core';
+import { ActionIcon, Button, Drawer, Group, SimpleGrid, Tooltip, useMantineTheme } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import type { ReactElement, ReactNode } from 'react';
 import { Children, cloneElement, isValidElement, useState } from 'react';
@@ -94,35 +94,22 @@ export const TableFilters = <F extends BaseFilters>({
       <Group justify="space-between" align="flex-end" mb="md">
         <Group gap="sm" wrap="nowrap">
           {Children.map(children, child => handleChild(child, true))}
-        </Group>
-        <Group gap="sm">
           {hasDrawerFilters && (
-            <>
-              <Button visibleFrom="md" onClick={openDrawer} rightSection={<TbFilter size={20} />}>
-                {openFiltersButtonLabel || t('Table.openFiltersButton')}
-              </Button>
-              <ActionIcon hiddenFrom="md" size="lg" onClick={openDrawer} aria-label={t('Table.openFiltersButton')}>
+            <Tooltip label={openFiltersButtonLabel || t('Table.openFiltersButton')}>
+              <ActionIcon size="lg" onClick={openDrawer}>
                 <TbFilter size={20} />
               </ActionIcon>
-            </>
+            </Tooltip>
           )}
           {handleFiltersReset && !areSame && (
-            <>
-              <Button visibleFrom="md" onClick={handleFiltersReset} rightSection={<TbFilterX size={20} />}>
-                {t('Table.resetFiltersButton')}
-              </Button>
-              <ActionIcon
-                hiddenFrom="md"
-                size="lg"
-                onClick={handleFiltersReset}
-                aria-label={t('Table.resetFiltersButton')}
-              >
+            <Tooltip label={t('Table.resetFiltersButton')}>
+              <ActionIcon size="lg" onClick={handleFiltersReset}>
                 <TbFilterX size={20} />
               </ActionIcon>
-            </>
+            </Tooltip>
           )}
-          {actions}
         </Group>
+        {actions && <Group gap="sm">{actions}</Group>}
       </Group>
     </>
   );
