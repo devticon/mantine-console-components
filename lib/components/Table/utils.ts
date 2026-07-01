@@ -1,5 +1,5 @@
 import type { JsonPrimitive } from '../../utils/search-params.js';
-import { isEmpty, isEqual, keys, union } from 'lodash-es';
+import { isArray, isEmpty, isEqual, isNil, keys, union } from 'lodash-es';
 import type { Props as TableFilterProps } from './TableFilter.js';
 
 export type BaseFilters = Record<string, JsonPrimitive | JsonPrimitive[]>;
@@ -35,7 +35,9 @@ export function areFiltersEqual(a: BaseFilters, b: BaseFilters) {
     const val1 = a[key];
     const val2 = b[key];
 
-    if (isEmpty(val1) && isEmpty(val2)) {
+    if (isNil(val1) && isNil(val2)) {
+      return true;
+    } else if (isArray(val1) && isEmpty(val1) && isArray(val2) && isEmpty(val2)) {
       return true;
     } else {
       return isEqual(val1, val2);
