@@ -1,6 +1,7 @@
 import type { MantineThemeOverride } from '@mantine/core';
 
 export const baseTheme: MantineThemeOverride = {
+  defaultRadius: 'sm',
   components: {
     Text: {
       defaultProps: {

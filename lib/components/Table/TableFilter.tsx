@@ -19,7 +19,7 @@ export type Props<F extends BaseFilters> = {
   | ({ type: 'switch' } & Omit<ComponentProps<typeof Switch>, 'value' | 'onChange'>)
   | ({ type: 'multi-select' } & Omit<ComponentProps<typeof MultiSelect>, 'value' | 'onChange'>)
   | ({ type: 'date' } & Omit<ComponentProps<typeof DatePickerInput<'default'>>, 'value' | 'onChange' | 'type'>)
-  | ({ type: 'date-time' } & Omit<ComponentProps<typeof DateTimePicker>, 'value' | 'onChange'>)
+  | ({ type: 'date-time' } & Omit<ComponentProps<typeof DateTimePicker<'default'>>, 'value' | 'onChange' | 'type'>)
   | ({ type: 'date-range' } & Omit<ComponentProps<typeof DatePickerInput<'range'>>, 'value' | 'onChange' | 'type'>)
   | ({ type: 'range' } & Omit<ComponentProps<typeof NumberInput>, 'value' | 'onChange' | 'type'>)
   | ({ type: 'custom' } & { render: (filters: F, onChange?: (filters: Partial<F>) => void) => ReactElement })
@@ -93,6 +93,7 @@ export const TableFilter = <F extends BaseFilters>({ value: filters, onChange, .
         value={parseDate(filters[props.name as keyof F] as string)}
         onChange={value => onChange({ [props.name]: value } as Partial<F>)}
         {...props}
+        type="default"
       />
     );
   }
