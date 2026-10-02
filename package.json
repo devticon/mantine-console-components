@@ -29,9 +29,9 @@
     "pino": "^9.12.0 || ^10.0.0",
     "react": "^19.0.0",
     "react-icons": "^5.0.0",
-    "react-router": "^7.9.3",
-    "remix-i18next": "^7.4.0",
-    "remix-utils": "^9.0.0",
+    "react-router": "^7.9.3 || ^8.0.0",
+    "remix-i18next": "^7.4.0 || ^8.0.0",
+    "remix-utils": "^9.0.0 || ^10.0.0",
     "zod": "^4.0.0",
     "zod-form-data": "^3.0.0"
   },
@@ -42,20 +42,20 @@
     "@types/json-schema": "^7.0.15",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/lodash-es": "^4.17.12",
-    "@types/node": "^20.19.33",
-    "@types/react": "^19.2.14",
+    "@types/node": "^20.19.43",
+    "@types/react": "^19.3.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
-    "prettier": "^3.8.1",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.9.9",
     "typescript": "^5.9.3"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "files": [
     "dist"
