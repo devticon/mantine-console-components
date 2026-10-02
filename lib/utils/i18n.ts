@@ -2,7 +2,7 @@ import { createCookie, data, LoaderFunctionArgs, RouterContextProvider } from 'r
 import type { Resource } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { badRequest } from './responses.js';
-import { createI18nextMiddleware } from 'remix-i18next/middleware';
+import { createI18nextMiddleware } from 'remix-i18next';
 import { z } from 'zod';
 import { pl } from '../translations/pl.js';
 import { en } from '../translations/en.js';
@@ -38,7 +38,6 @@ export function createRemixI18n(config: I18nLibConfig) {
       resources: config.resources,
       defaultNS: config.defaultNS,
       ns: config.defaultNS,
-      showSupportNotice: false,
     },
     plugins: [initReactI18next],
   });
