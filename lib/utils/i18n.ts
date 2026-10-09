@@ -30,8 +30,8 @@ export function createRemixI18n(config: I18nLibConfig) {
 
   const [i18nextMiddleware, getLocale, getInstance] = createI18nextMiddleware({
     detection: {
-      supportedLanguages: ['en', 'pl'],
-      fallbackLanguage: 'en',
+      supportedLanguages: config.supportedLngs,
+      fallbackLanguage: config.fallbackLng,
       cookie: i18nCookie,
     },
     i18next: {
