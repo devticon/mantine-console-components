@@ -17,16 +17,22 @@ dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 dayjs.tz.setDefault('Europe/Warsaw');
 
+// `tz.setDefault` only applies to `dayjs.tz()` / `.tz()`; plain `dayjs(date).format()` uses the process time zone, so a
+// UTC server would render a different hour than the browser. Format in the default zone instead.
+function inDefaultZone(date: Date | number | string) {
+  return dayjs(date).tz();
+}
+
 export function formatDate(date: Date | number | string, template?: string): string {
-  return dayjs(date).format(template || 'L');
+  return inDefaultZone(date).format(template || 'L');
 }
 
 export function formatTime(date: Date | number | string, template?: string): string {
-  return dayjs(date).format(template || 'LTS');
+  return inDefaultZone(date).format(template || 'LTS');
 }
 
 export function formatDateTime(date: Date | number | string, template?: string): string {
-  return dayjs(date).format(template || 'L LTS');
+  return inDefaultZone(date).format(template || 'L LTS');
 }
 
 export function parseDate(date: Date | string | null | undefined) {
