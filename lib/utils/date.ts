@@ -17,16 +17,16 @@ dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 dayjs.tz.setDefault('Europe/Warsaw');
 
-export function formatDate(date: Date | number | string): string {
-  return dayjs(date).format('L');
+export function formatDate(date: Date | number | string, template?: string): string {
+  return dayjs(date).format(template || 'L');
 }
 
-export function formatTime(date: Date | number | string): string {
-  return dayjs(date).format('LTS');
+export function formatTime(date: Date | number | string, template?: string): string {
+  return dayjs(date).format(template || 'LTS');
 }
 
-export function formatDateTime(date: Date | number | string): string {
-  return dayjs(date).format('L LTS');
+export function formatDateTime(date: Date | number | string, template?: string): string {
+  return dayjs(date).format(template || 'L LTS');
 }
 
 export function parseDate(date: Date | string | null | undefined) {
