@@ -1,6 +1,6 @@
 {
   "name": "@devticon/mantine-console-components",
-  "version": "7.1.0",
+  "version": "7.2.0",
   "type": "module",
   "module": "./dist/main.js",
   "types": "./dist/main.d.ts",
