@@ -88,7 +88,7 @@ export const ErrorCard: FC<Props> = ({ isDev, error, errorCode, customContent, d
     <Center mih="100vh" bg="dark" style={{ flexDirection: 'column' }}>
       <Container py="xl" ta="center" size="xs">
         {statusCode && (
-          <Text fw="bold" c={`${primaryColor}.4`} fz={220} lh={1} mb="lg">
+          <Text fw="bold" c={`${primaryColor}.4`} fz={160} lh={1} mb="lg">
             {statusCode}
           </Text>
         )}
