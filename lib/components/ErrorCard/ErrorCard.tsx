@@ -68,6 +68,19 @@ export const ErrorCard: FC<Props> = ({ isDev, error, errorCode, customContent, d
         </Button>
       </>
     ),
+    offline: (
+      <>
+        <Title c="white" size="h1" mb="lg">
+          No internet connection...
+        </Title>
+        <Text size="lg" mb="xl" c={`${primaryColor}.1`}>
+          It looks like you're currently offline. Please check your Wi-Fi or mobile data connection and try again.
+        </Text>
+        <Button size="lg" component="a" href={location.pathname}>
+          Refresh page
+        </Button>
+      </>
+    ),
     ...defaultContentOverrides,
   };
 
