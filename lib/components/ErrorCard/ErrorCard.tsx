@@ -10,6 +10,13 @@ type Props = {
   defaultContentOverrides?: Record<string | number, ReactNode>;
 };
 
+const NETWORK_ERROR_MESSAGES = [
+  'Failed to fetch', // Chrome, Edge
+  'Load failed', // Safari
+  'NetworkError when attempting to fetch resource', // Firefox
+  'Network request failed',
+];
+
 export const ErrorCard: FC<Props> = ({ isDev, error, errorCode, customContent, defaultContentOverrides }) => {
   const location = useLocation();
   const { primaryColor } = useMantineTheme();
@@ -17,6 +24,10 @@ export const ErrorCard: FC<Props> = ({ isDev, error, errorCode, customContent, d
   const statusCode = useMemo(() => {
     if (errorCode) {
       return errorCode;
+    }
+
+    if (error instanceof TypeError && NETWORK_ERROR_MESSAGES.some(message => error.message.includes(message))) {
+      return 'offline';
     }
 
     if (isRouteErrorResponse(error)) {
