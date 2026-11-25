@@ -1,7 +1,7 @@
 import type { NotificationData } from '@mantine/notifications';
 import { notifications } from '@mantine/notifications';
 import { Fetcher, useActionData } from 'react-router';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { TbInfoCircle, TbInfoTriangle } from 'react-icons/tb';
 
 export function showSuccessNotification(params: NotificationData) {
@@ -36,10 +36,16 @@ export function showNotificationFromData(
 
 export function useFetcherNotification<T = any>(fetcher: Fetcher<T>, params: Params<T>) {
   const data = fetcher.data as any;
+  const shown = useRef<any>(undefined);
 
+  // No dependency array on purpose: React may discard a render that already read new `fetcher.data`
+  // but still remember its effect deps, so an effect keyed on `[data]` would never fire.
   useEffect(() => {
-    showNotificationFromData(data, params);
-  }, [data]);
+    if (shown.current !== data) {
+      shown.current = data;
+      showNotificationFromData(data, params);
+    }
+  });
 }
 
 export function useActionDataNotification<T = any>(params: Params<T>) {
