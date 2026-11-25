@@ -52,7 +52,8 @@
     "typescript": "^5.9.3"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com",
+    "tag": "legacy-v5"
   },
   "engines": {
     "node": ">=18"
